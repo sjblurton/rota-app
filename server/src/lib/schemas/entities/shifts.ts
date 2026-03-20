@@ -1,7 +1,7 @@
 import z from "zod";
 import { createdAtBaseSchema } from "./base";
 
-const shiftStatusEnum = z.enum([
+export const shiftStatusEnum = z.enum([
   "pending",
   "confirmed",
   "declined",

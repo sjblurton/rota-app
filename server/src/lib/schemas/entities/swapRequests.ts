@@ -1,7 +1,11 @@
 import z from "zod";
 import { organizationBaseSchema } from "./base";
 
-const swapRequestStatusEnum = z.enum(["pending", "accepted", "rejected"]);
+export const swapRequestStatusEnum = z.enum([
+  "pending",
+  "accepted",
+  "rejected",
+]);
 
 export const swapRequestSchema = organizationBaseSchema.extend({
   original_shift_id: z.string(),

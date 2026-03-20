@@ -1,7 +1,7 @@
 import z from "zod";
 import { createdAtBaseSchema } from "./base";
 
-const entityTypeEnum = z.enum(["shift", "staff", "manager", "swap"]);
+export const entityTypeEnum = z.enum(["shift", "staff", "manager", "swap"]);
 
 export const auditLogsSchema = createdAtBaseSchema.extend({
   entity_type: entityTypeEnum,
