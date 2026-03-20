@@ -73,6 +73,11 @@ export default [
           message:
             "z.string().datetime() is deprecated in Zod v4. Use z.iso.datetime() instead.",
         },
+        {
+          selector: "CallExpression[callee.property.name='merge']",
+          message:
+            ".merge() is deprecated in Zod v4. Use .and() to combine schemas instead.",
+        },
       ],
       "boundaries/no-unknown": "error",
       "boundaries/dependencies": [
