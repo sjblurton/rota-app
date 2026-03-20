@@ -1,8 +1,8 @@
 import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
-import z from "./zod-openapi";
-import { shiftsSchema } from "../schemas/models/shifts";
-import { staffSchema } from "../schemas/models/staff";
-import { swapRequestSchema } from "../schemas/models/swapRequests";
+import z from "./internal/zod-openapi";
+import { shiftsSchema } from "../lib/schemas/models/shifts";
+import { staffSchema } from "../lib/schemas/models/staff";
+import { swapRequestSchema } from "../lib/schemas/models/swapRequests";
 
 const registry = new OpenAPIRegistry();
 
