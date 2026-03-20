@@ -1,0 +1,11 @@
+node_modules/
+dist/
+*.log
+.env
+.env.local
+.env.*.local
+.nyc_output/
+.vscode/settings.json
+
+# API specific
+server/coverage/
