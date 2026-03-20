@@ -8,10 +8,14 @@ import {
   shiftOpenApiSchema,
   staffOpenApiSchema,
   swapRequestOpenApiSchema,
+  auditLogsOpenApiSchema,
 } from "../../../docs/schemas";
 import z from "zod";
-import { shiftsSchema } from "../../../lib/schemas/entities/shifts";
-import { swapRequestSchema } from "../../../lib/schemas/entities/swapRequests";
+import {
+  shiftsListQuerySchema,
+  swapsListQuerySchema,
+  auditLogsFilterQuerySchema,
+} from "../../../lib/schemas/queries";
 
 const registry = new OpenAPIRegistry();
 
@@ -36,38 +40,6 @@ const successResponse = (schema: z.ZodType, description: string) => ({
 
 const staffIdParamsSchema = z.object({
   staffId: z.string().describe("ID of the staff member"),
-});
-
-const timeAndShiftFilterQuerySchema = z.object({
-  start_time: z.iso
-    .datetime()
-    .optional()
-    .describe("Filter records that start on or after this ISO datetime"),
-  end_time: z.iso
-    .datetime()
-    .optional()
-    .describe("Filter records that end on or before this ISO datetime"),
-  shift_id: z.string().optional().describe("Filter by a specific shift ID"),
-});
-
-const shiftsListQuerySchema = timeAndShiftFilterQuerySchema.extend({
-  staff_id: z
-    .string()
-    .optional()
-    .describe("Filter by the assigned staff member ID"),
-  status: shiftsSchema.shape.status
-    .optional()
-    .describe("Filter by shift status"),
-});
-
-const swapsListQuerySchema = timeAndShiftFilterQuerySchema.extend({
-  staff_id: z
-    .string()
-    .optional()
-    .describe("Filter by requesting or target staff member ID"),
-  status: swapRequestSchema.shape.status
-    .optional()
-    .describe("Filter by swap request status"),
 });
 
 registry.registerPath({
@@ -119,6 +91,24 @@ registry.registerPath({
     ...successResponse(
       shiftOpenApiSchema.array(),
       "Shifts returned successfully",
+    ),
+    ...adminErrorResponses,
+  },
+});
+registry.registerPath({
+  method: "get",
+  path: "/api/admin/audit-logs",
+  summary: "List audit logs",
+  description:
+    "Returns audit logs for all events in the organisation. Requires admin authentication.",
+  tags: adminTags,
+  request: {
+    query: auditLogsFilterQuerySchema,
+  },
+  responses: {
+    ...successResponse(
+      auditLogsOpenApiSchema.array(),
+      "Audit logs returned successfully",
     ),
     ...adminErrorResponses,
   },
