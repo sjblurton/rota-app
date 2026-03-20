@@ -31,7 +31,6 @@
     "@prisma/adapter-pg": "^7.4.2",
     "@prisma/client": "^7.4.2",
     "@storybook/react-vite": "^10.2.15",
-    "@supabase/supabase-js": "^2.99.3",
     "@tanstack/react-devtools": "latest",
     "@tanstack/react-query": "latest",
     "@tanstack/react-query-devtools": "latest",
