@@ -22,10 +22,10 @@ src/
 │   ├── internal/       # Private helpers (only docs/schemas.ts may import)
 │   ├── openapi.ts      # Merges all module OpenAPI documents
 │   ├── responses.ts    # Shared HTTP response schemas
-│   └── schemas.ts      # OpenAPI schema registry (registers Zod models)
+│   └── schemas.ts      # OpenAPI schema registry (registers Zod entities)
 ├── lib/                # Shared domain libraries
 │   └── schemas/
-│       ├── models/     # Zod model schemas (shifts, staff, swaps, etc.)
+│       ├── entities/   # Zod entity schemas (shifts, staff, swaps, etc.)
 │       └── queries/    # Zod query/param schemas (token, etc.)
 ├── modules/            # Feature modules (isolated per feature)
 │   ├── admin/

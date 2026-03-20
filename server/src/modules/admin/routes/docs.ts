@@ -11,8 +11,8 @@ import {
   swapRequestOpenApiSchema,
 } from "../../../docs/schemas";
 import z from "zod";
-import { shiftsSchema } from "../../../lib/schemas/models/shifts";
-import { swapRequestSchema } from "../../../lib/schemas/models/swapRequests";
+import { shiftsSchema } from "../../../lib/schemas/entities/shifts";
+import { swapRequestSchema } from "../../../lib/schemas/entities/swapRequests";
 
 const registry = new OpenAPIRegistry();
 
