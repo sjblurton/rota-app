@@ -1,5 +1,4 @@
 import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
-import type { ZodTypeAny } from "zod";
 import {
   badRequestResponse,
   notFoundResponse,
@@ -24,7 +23,7 @@ const adminErrorResponses = {
   "404": notFoundResponse,
 } as const;
 
-const successResponse = (schema: ZodTypeAny, description: string) => ({
+const successResponse = (schema: z.ZodType, description: string) => ({
   "200": {
     description,
     content: {
@@ -40,12 +39,12 @@ const staffIdParamsSchema = z.object({
 });
 
 const timeAndShiftFilterQuerySchema = z.object({
-  start_time: z
-    .date()
+  start_time: z.iso
+    .datetime()
     .optional()
     .describe("Filter records that start on or after this ISO datetime"),
-  end_time: z
-    .date()
+  end_time: z.iso
+    .datetime()
     .optional()
     .describe("Filter records that end on or before this ISO datetime"),
   shift_id: z.string().optional().describe("Filter by a specific shift ID"),
