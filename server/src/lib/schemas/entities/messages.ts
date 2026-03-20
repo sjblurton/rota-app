@@ -7,5 +7,5 @@ export const messageSchema = organizationBaseSchema.extend({
   staff_id: z.string(),
   type: messageTypeEnum,
   content: z.string(),
-  sent_at: z.string().default(() => new Date().toISOString()),
+  sent_at: z.iso.datetime().default(() => new Date().toISOString()),
 });

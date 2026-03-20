@@ -1,5 +1,6 @@
 import { adminOpenApiDocument } from "../modules/admin/routes/openapi";
 import { shiftsOpenApiDocument } from "../modules/shifts/routes/openapi";
+import { superadminOpenApiDocument } from "../modules/superadmin/routes/openapi";
 import { swapsOpenApiDocument } from "../modules/swaps/routes/openapi";
 import { tokenOpenApiDocument } from "../modules/token/routes/openapi";
 import { webhooksOpenApiDocument } from "../modules/webhooks/routes/openapi";
@@ -19,6 +20,10 @@ export const openApiDocument = {
   ],
   tags: [
     {
+      name: "Superadmin",
+      description: "Owner-only provisioning routes",
+    },
+    {
       name: "Admin",
       description: "Authenticated manager routes",
     },
@@ -36,6 +41,7 @@ export const openApiDocument = {
     },
   ],
   paths: {
+    ...superadminOpenApiDocument.paths,
     ...adminOpenApiDocument.paths,
     ...shiftsOpenApiDocument.paths,
     ...tokenOpenApiDocument.paths,
@@ -44,6 +50,7 @@ export const openApiDocument = {
   },
   components: {
     schemas: {
+      ...superadminOpenApiDocument.components?.schemas,
       ...adminOpenApiDocument.components?.schemas,
       ...shiftsOpenApiDocument.components?.schemas,
       ...tokenOpenApiDocument.components?.schemas,

@@ -9,5 +9,5 @@ export const organizationBaseSchema = baseSchema.extend({
 });
 
 export const createdAtBaseSchema = baseSchema.extend({
-  created_at: z.string().default(() => new Date().toISOString()),
+  created_at: z.iso.datetime().default(() => new Date().toISOString()),
 });
