@@ -15,7 +15,7 @@ import {
   shiftsListQuerySchema,
   swapsListQuerySchema,
   auditLogsFilterQuerySchema,
-} from "../../../lib/schemas/queries";
+} from "../../../lib/schemas/parameters/filters";
 
 const registry = new OpenAPIRegistry();
 

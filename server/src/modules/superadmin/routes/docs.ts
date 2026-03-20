@@ -8,7 +8,7 @@ import {
 import {
   createOrganizationSchema,
   organizationSchema,
-} from "../../../lib/schemas/entities/orginzation";
+} from "../../../lib/schemas/entities/organization";
 import {
   createManagerSchema,
   managerWithOrganizationSchema,

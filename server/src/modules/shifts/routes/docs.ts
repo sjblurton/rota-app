@@ -1,5 +1,6 @@
 import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
-import { tokenSchema } from "../../../lib/schemas/queries/token";
+import { tokenSchema } from "../../../lib/schemas/parameters/token";
+import { shiftResponseBodySchema } from "../../../lib/schemas/parameters/inputs";
 import {
   badRequestResponse,
   notFoundResponse,
@@ -35,18 +36,27 @@ registry.registerPath({
 });
 
 registry.registerPath({
-  method: "post",
-  path: "/api/t/{token}/confirm",
-  summary: "Confirm a shift",
+  method: "patch",
+  path: "/api/t/{token}/response",
+  summary: "Update shift response status",
   tags: ["Staff"],
   request: {
     params: tokenSchema,
+    body: {
+      required: true,
+      description: "Shift response state update",
+      content: {
+        "application/json": {
+          schema: shiftResponseBodySchema,
+        },
+      },
+    },
   },
   description:
-    "Confirms the shift associated with the provided public staff token.",
+    "Updates the shift response (confirm or decline) associated with the provided public staff token.",
   responses: {
     "204": {
-      description: "Shift confirmed successfully",
+      description: "Shift response updated successfully",
     },
     "400": badRequestResponse,
     "401": unauthorisedResponse,

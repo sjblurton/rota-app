@@ -1,6 +1,6 @@
 import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
-import z from "zod";
-import { tokenSchema } from "../../../lib/schemas/queries/token";
+import { tokenSchema } from "../../../lib/schemas/parameters/token";
+import { swapRequestBodySchema } from "../../../lib/schemas/parameters/inputs";
 import {
   badRequestResponse,
   notFoundResponse,
@@ -9,34 +9,10 @@ import {
 
 const registry = new OpenAPIRegistry();
 
-const swapRequestBodySchema = z.object({
-  target_staff_id: z.string().describe("Staff member selected for the swap"),
-});
-
 registry.registerPath({
   method: "post",
-  path: "/api/t/{token}/decline",
-  summary: "Decline a shift",
-  description:
-    "Declines the shift associated with the provided public staff token.",
-  tags: ["Staff"],
-  request: {
-    params: tokenSchema,
-  },
-  responses: {
-    "204": {
-      description: "Shift declined successfully",
-    },
-    "400": badRequestResponse,
-    "401": unauthorisedResponse,
-    "404": notFoundResponse,
-  },
-});
-
-registry.registerPath({
-  method: "post",
-  path: "/api/t/{token}/swap",
-  summary: "Request a shift swap",
+  path: "/api/t/{token}/swap-requests",
+  summary: "Create a swap request",
   description:
     "Creates a swap request for the shift associated with the provided public staff token.",
   tags: ["Staff"],
