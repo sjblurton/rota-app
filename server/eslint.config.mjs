@@ -65,6 +65,15 @@ export default [
     },
     rules: {
       ...boundaries.configs.recommended.rules,
+      "no-restricted-syntax": [
+        "error",
+        {
+          selector:
+            "CallExpression[callee.property.name='datetime'][callee.object.type='CallExpression'][callee.object.callee.property.name='string'][callee.object.callee.object.name='z']",
+          message:
+            "z.string().datetime() is deprecated in Zod v4. Use z.iso.datetime() instead.",
+        },
+      ],
       "boundaries/no-unknown": "error",
       "boundaries/dependencies": [
         "error",
