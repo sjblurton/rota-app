@@ -25,14 +25,18 @@ src/
 │   └── schemas.ts      # OpenAPI schema registry (registers Zod entities)
 ├── lib/                # Shared domain libraries
 │   └── schemas/
-│       ├── entities/   # Zod entity schemas (shifts, staff, swaps, etc.)
-│       └── queries/    # Zod query/param schemas (token, etc.)
+│       ├── entities/   # Zod entity schemas (shifts, staff, organisation, swaps, etc.)
+│       └── parameters/ # Zod request/query schemas
+│           ├── token.ts    # Path parameters (token)
+│           ├── filters.ts  # Query filters (time ranges, entity types, etc.)
+│           └── inputs.ts   # Request body schemas (shift responses, swap statuses, etc.)
 ├── modules/            # Feature modules (isolated per feature)
-│   ├── admin/
-│   ├── shifts/
-│   ├── swaps/
-│   ├── token/
-│   └── webhooks/
+│   ├── admin/          # Admin management routes
+│   ├── shifts/         # Shift management routes
+│   ├── swaps/          # Swap request routes
+│   ├── superadmin/     # Owner-only provisioning routes
+│   ├── token/          # Public token-based routes
+│   └── webhooks/       # Inbound webhook handlers
 └── utils/              # Stateless helpers and utilities
 ```
 

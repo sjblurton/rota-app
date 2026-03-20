@@ -1,7 +1,7 @@
 import z from "zod";
-import { shiftStatusEnum } from "./entities/shifts";
-import { swapRequestStatusEnum } from "./entities/swapRequests";
-import { entityTypeEnum } from "./entities/auditLogs";
+import { shiftStatusEnum } from "../entities/shifts";
+import { swapRequestStatusEnum } from "../entities/swapRequests";
+import { entityTypeEnum } from "../entities/auditLogs";
 
 export const timeRangeFilterSchema = z.object({
   start_time: z.iso
