@@ -72,3 +72,9 @@ npm run test           # Run tests (Vitest)
 - Shared date-time validation lives in `src/lib/schemas/dateTime.ts` and should be reused rather than redefining date schemas.
 - Timezone conversion for display happens in the client only.
 - Server-side comparisons should use parsed instants, not lexicographic string comparison.
+
+## Naming Conventions
+
+- API field names in request, response, query, and path payloads use snake_case.
+- JavaScript and TypeScript variable, function, and parameter names use camelCase.
+- API file names under `src/modules/**` and `src/docs/**` use kebab-case.
