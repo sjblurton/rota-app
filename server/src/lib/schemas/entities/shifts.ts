@@ -1,5 +1,5 @@
 import z from "zod";
-import { utcDateTimeSchema } from "../dateTime";
+import { utcDateTimeSchema } from "../time/dateTime";
 import { createdAtBaseSchema } from "./base";
 
 export const shiftStatusEnum = z.enum([

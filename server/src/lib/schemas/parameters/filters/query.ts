@@ -1,5 +1,5 @@
 import z from "zod";
-import { utcDateTimeSchema } from "../../dateTime";
+import { utcDateTimeSchema } from "../../time/dateTime";
 import { shiftStatusEnum } from "../../entities/shifts";
 import { swapRequestStatusEnum } from "../../entities/swapRequests";
 import { entityTypeEnum } from "../../entities/auditLogs";

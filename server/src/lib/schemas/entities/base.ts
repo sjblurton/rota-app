@@ -1,5 +1,5 @@
 import z from "zod";
-import { utcDateTimeNowDefaultSchema } from "../dateTime";
+import { utcDateTimeNowDefaultSchema } from "../time/dateTime";
 
 export const baseSchema = z.object({
   id: z.string(),

@@ -1,5 +1,5 @@
 import z from "zod";
-import { utcDateTimeNowDefaultSchema } from "../dateTime";
+import { utcDateTimeNowDefaultSchema } from "../time/dateTime";
 import { organizationBaseSchema } from "./base";
 
 const messageTypeEnum = z.enum(["sms"]);

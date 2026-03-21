@@ -1,5 +1,5 @@
 import z from "zod";
-import { utcDateTimeSchema } from "../dateTime";
+import { utcDateTimeSchema } from "../time/dateTime";
 import { baseSchema } from "./base";
 
 export const organizationSchema = baseSchema.extend({
