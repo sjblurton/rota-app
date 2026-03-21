@@ -1,10 +1,10 @@
 import z from "zod";
 import { utcDateTimeNowDefaultSchema } from "../time/dateTime";
-import { organizationBaseSchema } from "./base";
+import { organisationBaseSchema } from "./base";
 
 const messageTypeEnum = z.enum(["sms"]);
 
-export const messageSchema = organizationBaseSchema.extend({
+export const messageSchema = organisationBaseSchema.extend({
   staff_id: z.string(),
   type: messageTypeEnum,
   content: z.string(),

@@ -1,5 +1,5 @@
 import z from "zod";
-import { organizationBaseSchema } from "./base";
+import { organisationBaseSchema } from "./base";
 
 export const swapRequestStatusEnum = z.enum([
   "awaiting_target_response",
@@ -10,7 +10,7 @@ export const swapRequestStatusEnum = z.enum([
   "expired",
 ]);
 
-export const swapRequestSchema = organizationBaseSchema.extend({
+export const swapRequestSchema = organisationBaseSchema.extend({
   original_shift_id: z.string(),
   requesting_staff_id: z.string(),
   target_staff_id: z.string(),

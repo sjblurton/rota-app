@@ -22,3 +22,8 @@ export const swapIdParamSchema = createIdParamSchema(
   "swap_id",
   "ID of the swap request",
 );
+
+export const organisationIdParamSchema = createIdParamSchema(
+  "organisation_id",
+  "ID of the organisation",
+);

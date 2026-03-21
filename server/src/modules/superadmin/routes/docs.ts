@@ -1,18 +1,19 @@
 import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
-import z from "zod";
 import {
   badRequestResponse,
+  conflictResponse,
   notFoundResponse,
   unauthorisedResponse,
 } from "../../../docs/responses";
 import {
-  createOrganizationSchema,
-  organizationSchema,
-} from "../../../lib/schemas/entities/organization";
+  createOrganisationSchema,
+  organisationSchema,
+} from "../../../lib/schemas/entities/organisation";
 import {
   createManagerSchema,
-  managerWithOrganizationSchema,
+  managerWithOrganisationSchema,
 } from "../../../lib/schemas/entities/staff";
+import { organisationIdParamSchema } from "../../../lib/schemas/parameters/ids/params";
 
 export const superadminOpenApiRegistry = new OpenAPIRegistry();
 
@@ -35,21 +36,18 @@ const superadminErrorResponses = {
   "400": badRequestResponse,
   "401": unauthorisedResponse,
   "404": notFoundResponse,
+  "409": conflictResponse,
 } as const;
 
-const createOrganisationBodySchema = createOrganizationSchema;
+const createOrganisationBodySchema = createOrganisationSchema;
 
-const organisationResponseSchema = organizationSchema;
+const organisationResponseSchema = organisationSchema;
 
-const organisationIdParamsSchema = z.object({
-  organization_id: z
-    .string()
-    .describe("Organisation ID that the manager should be linked to"),
-});
+const organisationIdParamsSchema = organisationIdParamSchema;
 
 const createManagerBodySchema = createManagerSchema;
 
-const managerResponseSchema = managerWithOrganizationSchema;
+const managerResponseSchema = managerWithOrganisationSchema;
 
 superadminOpenApiRegistry.registerPath({
   method: "post",
@@ -84,7 +82,7 @@ superadminOpenApiRegistry.registerPath({
 
 superadminOpenApiRegistry.registerPath({
   method: "post",
-  path: "/api/superadmin/organisations/{organization_id}/managers",
+  path: "/api/superadmin/organisations/{organisation_id}/managers",
   summary: "Add a manager to an organisation",
   description:
     "Creates a manager account and links it to the target organisation. Restricted to the owner via `X-Superadmin-Key`.",

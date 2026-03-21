@@ -21,10 +21,10 @@ export const createManagerSchema = managerSchema
     password: z.string().min(8),
   });
 
-export const managerWithOrganizationSchema = managerSchema
+export const managerWithOrganisationSchema = managerSchema
   .omit({
     password_hash: true,
   })
   .extend({
-    organization_id: z.string(),
+    organisation_id: z.string(),
   });
