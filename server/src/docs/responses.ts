@@ -53,7 +53,8 @@ export const conflictResponse = {
     "application/json": {
       schema: errorResponseSchema,
       example: {
-        message: "Swap request is no longer in a state that allows this decision",
+        message:
+          "Swap request is no longer in a state that allows this decision",
       },
     },
   },
