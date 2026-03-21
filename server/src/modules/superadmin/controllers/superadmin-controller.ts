@@ -57,7 +57,9 @@ export const createManagerForOrganisationController = (
   }
 
   if (result.kind === "manager_email_conflict") {
-    response.status(409).json({ message: "Manager with this email already exists" });
+    response
+      .status(409)
+      .json({ message: "Manager with this email already exists" });
     return;
   }
 
