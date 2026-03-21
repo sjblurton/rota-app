@@ -21,12 +21,35 @@ Your job is to design API changes before implementation.
 - Do not propose request bodies for GET endpoints.
 - Prefer shared validation schemas in `server/src/lib/schemas/**`.
 - Prefer shared OpenAPI helper schemas in `server/src/docs/**` when documentation patterns repeat.
+- Ensure clear separation between authenticated routes and token-based public routes.
+
+## Naming & Consistency Responsibility
+
+- Enforce consistent naming conventions across routes, schemas, and fields.
+- Ensure API paths, parameters, and schema fields are predictable and uniform.
+
+## Token vs Auth Awareness
+
+- Ensure clear separation between authenticated routes and token-based public routes.
+  - token-based (staff)
+  - auth-based (manager)
 
 ## Approach
 
-1. Inspect the existing routes, schemas, and documentation.
+1. Inspect the existing routes, schemas, and OpenAPI documentation as the source of truth.
 2. Propose the smallest design that fits the current module boundaries.
 3. Call out assumptions, risks, and follow-up implementation tasks.
+
+## Add Edge Case Thinking
+
+- Identify edge cases including:
+  - expired or invalid tokens
+  - duplicate actions (e.g. confirming twice)
+  - race conditions (e.g. swap conflicts)
+
+## Consistency + Linting Guidance
+
+- Suggest improvements to enforce consistency via ESLint or project structure where applicable.
 
 ## Output Format
 
@@ -35,3 +58,7 @@ Your job is to design API changes before implementation.
 - Request and response schemas
 - Risks and migrations
 - Next implementation steps
+- Naming and consistency issues
+- Missing endpoints or flows
+- Edge cases and risks
+- Suggested conventions and linting rules
