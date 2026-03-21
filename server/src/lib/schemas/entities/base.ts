@@ -1,4 +1,5 @@
 import z from "zod";
+import { utcDateTimeNowDefaultSchema } from "../dateTime";
 
 export const baseSchema = z.object({
   id: z.string(),
@@ -9,5 +10,5 @@ export const organizationBaseSchema = baseSchema.extend({
 });
 
 export const createdAtBaseSchema = baseSchema.extend({
-  created_at: z.iso.datetime().default(() => new Date().toISOString()),
+  created_at: utcDateTimeNowDefaultSchema,
 });
