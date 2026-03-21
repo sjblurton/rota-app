@@ -19,6 +19,7 @@ Your job is to make focused backend changes that keep runtime behaviour, shared 
 ## Constraints
 
 - Do not add request bodies to GET endpoints.
+- Do not create `index.ts` barrel files. Name modules explicitly by their content (e.g. `params.ts`, `query.ts`, `schemas.ts`). Import directly from the explicit file path, not from a folder.
 - Keep shared request, query, and body schemas in `server/src/lib/schemas/**`, not inside route docs files.
 - Keep reusable OpenAPI schema helpers in `server/src/docs/**`.
 - Keep HTTP handling in routes or controllers and business logic in services.

@@ -18,6 +18,11 @@
 - Prefer type inference when obvious.
 - Avoid any; use unknown when input type is uncertain.
 
+## Module Conventions
+
+- Do not create `index.ts` barrel files. Name modules explicitly by their content (e.g. `params.ts`, `query.ts`, `schemas.ts`).
+- Import directly from the explicit file path, not from a folder.
+
 ## API and Validation
 
 - Follow REST conventions for resource naming, HTTP methods, and status codes.

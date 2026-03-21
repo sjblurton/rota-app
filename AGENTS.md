@@ -20,6 +20,7 @@
 
 ## Conventions
 
+- Do not create `index.ts` barrel files. Name modules explicitly by their content (e.g. `params.ts`, `query.ts`, `schemas.ts`). Import directly from the explicit file path, not from a folder.
 - Use strict TypeScript typing and avoid any.
 - Add or update tests for behavioural changes.
 - For backend API contracts, use ISO 8601 UTC datetimes with trailing Z and convert to local time only in client UI.

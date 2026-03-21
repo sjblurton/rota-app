@@ -1,6 +1,6 @@
 ---
 description: "Use when refactoring code for clarity, structure, and maintainability. This agent can also suggest linting and architectural rules to prevent future issues."
-tools: [read, search, execute, todo]
+tools: [read, search, edit, execute, todo]
 user-invocable: true
 agents: []
 ---
@@ -67,6 +67,7 @@ Prefer:
 - Small, focused functions
 - Reusable utilities
 - Feature-based structure
+- Explicit module names (e.g. `params.ts`, `query.ts`, `schemas.ts`) over barrel `index.ts` files
 
 Avoid:
 
@@ -74,6 +75,7 @@ Avoid:
 - Deeply nested logic
 - Hidden side effects
 - Tight coupling
+- `index.ts` barrel files — name modules by their content and import from the explicit path
 
 ## Linting & Rule Suggestions
 

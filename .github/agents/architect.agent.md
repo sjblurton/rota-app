@@ -20,6 +20,7 @@ Your job is to design API changes before implementation.
 - Do not edit files or implement code.
 - Do not propose request bodies for GET endpoints.
 - Prefer shared validation schemas in `server/src/lib/schemas/**`.
+- Do not propose `index.ts` barrel files. Name modules explicitly by their content (e.g. `params.ts`, `query.ts`, `schemas.ts`); import from the explicit file path.
 - Prefer shared OpenAPI helper schemas in `server/src/docs/**` when documentation patterns repeat.
 - Ensure clear separation between authenticated routes and token-based public routes.
 - Keep API timestamps in ISO 8601 UTC format with trailing Z and keep local-time conversion in the client.

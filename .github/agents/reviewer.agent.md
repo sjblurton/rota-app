@@ -23,6 +23,7 @@ Your job is to review backend and API changes with a strict code-review mindset.
 - Do not edit files.
 - Prioritise findings over summaries.
 - Focus on concrete issues, not style preferences unless they affect correctness or maintainability.
+- Flag any `index.ts` barrel files introduced under `server/src/lib/schemas/**`; modules must be named explicitly (e.g. `params.ts`, `query.ts`, `schemas.ts`).
 - Use British English spelling in repository-authored prose; keep external contract field names unchanged.
 
 ## Approach
