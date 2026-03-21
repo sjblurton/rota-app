@@ -46,3 +46,15 @@ export const notFoundResponse = {
     },
   },
 } as const;
+
+export const conflictResponse = {
+  description: "Conflict — request conflicts with the current workflow state",
+  content: {
+    "application/json": {
+      schema: errorResponseSchema,
+      example: {
+        message: "Swap request is no longer in a state that allows this decision",
+      },
+    },
+  },
+} as const;
