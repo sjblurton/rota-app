@@ -6,8 +6,8 @@ import {
   unauthorisedResponse,
 } from "../../../docs/responses";
 import { swapRequestOpenApiSchema } from "../../../docs/schemas";
-import { tokenParamSchema } from "../../../lib/schemas/parameters/token";
-import { swapTargetDecisionBodySchema } from "../../../lib/schemas/parameters/inputs";
+import { tokenParamSchema } from "../../../lib/schemas/parameters/token/params";
+import { swapTargetDecisionBodySchema } from "../../../lib/schemas/parameters/inputs/schemas";
 
 const registry = new OpenAPIRegistry();
 

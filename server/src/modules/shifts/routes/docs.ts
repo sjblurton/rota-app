@@ -1,6 +1,6 @@
 import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
-import { tokenSchema } from "../../../lib/schemas/parameters/token";
-import { shiftResponseBodySchema } from "../../../lib/schemas/parameters/inputs";
+import { tokenSchema } from "../../../lib/schemas/parameters/token/params";
+import { shiftResponseBodySchema } from "../../../lib/schemas/parameters/inputs/schemas";
 import {
   badRequestResponse,
   notFoundResponse,

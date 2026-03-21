@@ -18,19 +18,19 @@ import {
   shiftsListQuerySchema,
   swapsListQuerySchema,
   auditLogsFilterQuerySchema,
-} from "../../../lib/schemas/parameters/filters";
+} from "../../../lib/schemas/parameters/filters/query";
 import {
   createShiftBodySchema,
   createStaffBodySchema,
   swapManagerDecisionBodySchema,
   updateShiftBodySchema,
   updateStaffBodySchema,
-} from "../../../lib/schemas/parameters/inputs";
+} from "../../../lib/schemas/parameters/inputs/schemas";
 import {
   shiftIdParamSchema,
   staffIdParamSchema,
   swapIdParamSchema,
-} from "../../../lib/schemas/parameters/ids";
+} from "../../../lib/schemas/parameters/ids/params";
 
 const registry = new OpenAPIRegistry();
 

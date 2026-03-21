@@ -1,8 +1,10 @@
 import z from "zod";
-import { utcDateTimeSchema } from "../dateTime";
-
-const toEpochMilliseconds = (isoUtcDateTime: string) =>
-  Date.parse(isoUtcDateTime);
+import { utcDateTimeSchema } from "../../dateTime";
+import {
+  hasAtLeastOneDefinedField,
+  hasValidTimeRangeWhenProvided,
+  toEpochMilliseconds,
+} from "./shared";
 
 export const shiftResponseBodySchema = z.object({
   status: z
@@ -43,13 +45,9 @@ export const updateStaffBodySchema = z
       .optional()
       .describe("Updated staff mobile number in E.164 format"),
   })
-  .refine(
-    (payload) =>
-      payload.name !== undefined || payload.phone_number !== undefined,
-    {
-      message: "At least one field must be provided to update staff",
-    },
-  );
+  .refine((payload) => hasAtLeastOneDefinedField(payload), {
+    message: "At least one field must be provided to update staff",
+  });
 
 export const createShiftBodySchema = z
   .object({
@@ -87,21 +85,12 @@ export const updateShiftBodySchema = z
         "Updated shift end datetime in ISO 8601 UTC format (trailing Z)",
       ),
   })
+  .refine((payload) => hasAtLeastOneDefinedField(payload), {
+    message: "At least one field must be provided to update a shift",
+  })
   .refine(
     (payload) =>
-      payload.staff_id !== undefined ||
-      payload.start_time !== undefined ||
-      payload.end_time !== undefined,
-    {
-      message: "At least one field must be provided to update a shift",
-    },
-  )
-  .refine(
-    (payload) =>
-      payload.start_time === undefined ||
-      payload.end_time === undefined ||
-      toEpochMilliseconds(payload.start_time) <
-        toEpochMilliseconds(payload.end_time),
+      hasValidTimeRangeWhenProvided(payload.start_time, payload.end_time),
     {
       message: "start_time must be before end_time when both are provided",
     },
