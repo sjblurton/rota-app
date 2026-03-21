@@ -124,6 +124,8 @@ describe("superadmin repository", () => {
 
     expect(findOrganisationByNormalisedName("Acme Hospital")).toBeUndefined();
     expect(doesOrganisationExist(organisation.id)).toBe(false);
-    expect(findManagerByNormalisedEmail("jane.manager@example.com")).toBeUndefined();
+    expect(
+      findManagerByNormalisedEmail("jane.manager@example.com"),
+    ).toBeUndefined();
   });
 });

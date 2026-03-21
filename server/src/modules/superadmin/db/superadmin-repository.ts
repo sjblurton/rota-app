@@ -25,8 +25,9 @@ export const resetSuperadminStore = () => {
 };
 
 export const findOrganisationByNormalisedName = (name: string) =>
-  organisations.find((organisation) =>
-    organisation.name.trim().toLowerCase() === name.trim().toLowerCase(),
+  organisations.find(
+    (organisation) =>
+      organisation.name.trim().toLowerCase() === name.trim().toLowerCase(),
   );
 
 export const createOrganisationRecord = (name: string): Organisation => {
