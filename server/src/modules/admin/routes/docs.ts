@@ -125,7 +125,7 @@ registerAdminPath({
 
 registerAdminPath({
   method: "get",
-  path: "/api/admin/staff/{staffId}",
+  path: "/api/admin/staff/{staff_id}",
   summary: "Get staff member details",
   description:
     "Returns the details of a specific staff member. Requires admin authentication.",
@@ -144,7 +144,7 @@ registerAdminPath({
 
 registerAdminPath({
   method: "patch",
-  path: "/api/admin/staff/{staffId}",
+  path: "/api/admin/staff/{staff_id}",
   summary: "Update staff member",
   description:
     "Updates a staff member in the organisation. Requires admin authentication.",
@@ -169,7 +169,7 @@ registerAdminPath({
 
 registerAdminPath({
   method: "delete",
-  path: "/api/admin/staff/{staffId}",
+  path: "/api/admin/staff/{staff_id}",
   summary: "Delete staff member",
   description:
     "Deletes a staff member from the organisation. Requires admin authentication.",
@@ -230,7 +230,7 @@ registerAdminPath({
 
 registerAdminPath({
   method: "get",
-  path: "/api/admin/shifts/{shiftId}",
+  path: "/api/admin/shifts/{shift_id}",
   summary: "Get shift details",
   description:
     "Returns details for a specific shift. Requires admin authentication.",
@@ -249,7 +249,7 @@ registerAdminPath({
 
 registerAdminPath({
   method: "patch",
-  path: "/api/admin/shifts/{shiftId}",
+  path: "/api/admin/shifts/{shift_id}",
   summary: "Update shift",
   description:
     "Updates a shift in the organisation. Requires admin authentication.",
@@ -274,7 +274,7 @@ registerAdminPath({
 
 registerAdminPath({
   method: "delete",
-  path: "/api/admin/shifts/{shiftId}",
+  path: "/api/admin/shifts/{shift_id}",
   summary: "Delete shift",
   description:
     "Deletes a shift from the organisation. Requires admin authentication.",
@@ -330,7 +330,7 @@ registerAdminPath({
 
 registerAdminPath({
   method: "patch",
-  path: "/api/admin/swaps/{swapId}",
+  path: "/api/admin/swaps/{swap_id}",
   summary: "Review swap request",
   description:
     "Allows a manager to approve or reject a swap request after the target staff member has accepted it. The backend advances the workflow state based on this decision.",

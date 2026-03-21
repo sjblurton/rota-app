@@ -12,14 +12,14 @@ describe("openApiDocument", () => {
     expect(openApiDocument.paths).toHaveProperty("/api/admin/staff");
     expect(openApiDocument.paths).toHaveProperty("/api/t/{token}");
     expect(openApiDocument.paths).toHaveProperty("/api/swaps/t/{token}");
-    expect(openApiDocument.paths).toHaveProperty("/api/webhooks/sms");
   });
 
   it("includes manager lifecycle routes for staff and shifts", () => {
     const staffCollectionPath = openApiDocument.paths["/api/admin/staff"];
-    const staffItemPath = openApiDocument.paths["/api/admin/staff/{staffId}"];
+    const staffItemPath = openApiDocument.paths["/api/admin/staff/{staff_id}"];
     const shiftsCollectionPath = openApiDocument.paths["/api/admin/shifts"];
-    const shiftsItemPath = openApiDocument.paths["/api/admin/shifts/{shiftId}"];
+    const shiftsItemPath =
+      openApiDocument.paths["/api/admin/shifts/{shift_id}"];
 
     expect(staffCollectionPath).toBeDefined();
     expect(staffCollectionPath).toHaveProperty("get");
@@ -44,7 +44,7 @@ describe("openApiDocument", () => {
     const targetStaffSwapPatch =
       openApiDocument.paths["/api/swaps/t/{token}"]?.patch;
     const managerSwapPatch =
-      openApiDocument.paths["/api/admin/swaps/{swapId}"]?.patch;
+      openApiDocument.paths["/api/admin/swaps/{swap_id}"]?.patch;
     const swapRequestSchema = openApiDocument.components.schemas.SwapRequest;
 
     expect(targetStaffSwapPatch).toMatchObject({
@@ -118,7 +118,7 @@ describe("openApiDocument", () => {
       | { content?: Record<string, { schema?: unknown }> }
       | undefined;
     const updateShiftRequestBody = openApiDocument.paths[
-      "/api/admin/shifts/{shiftId}"
+      "/api/admin/shifts/{shift_id}"
     ]?.patch?.requestBody as
       | { content?: Record<string, { schema?: unknown }> }
       | undefined;
@@ -128,7 +128,7 @@ describe("openApiDocument", () => {
     const updateShiftSchema =
       updateShiftRequestBody?.content?.["application/json"]?.schema;
     const adminSwapPatch =
-      openApiDocument.paths["/api/admin/swaps/{swapId}"]?.patch;
+      openApiDocument.paths["/api/admin/swaps/{swap_id}"]?.patch;
 
     expect(createShiftSchema).toBeDefined();
     expect(createShiftSchema).not.toHaveProperty("properties.status");

@@ -42,7 +42,7 @@ const createOrganisationBodySchema = createOrganizationSchema;
 const organisationResponseSchema = organizationSchema;
 
 const organisationIdParamsSchema = z.object({
-  organizationId: z
+  organization_id: z
     .string()
     .describe("Organisation ID that the manager should be linked to"),
 });
@@ -84,7 +84,7 @@ superadminOpenApiRegistry.registerPath({
 
 superadminOpenApiRegistry.registerPath({
   method: "post",
-  path: "/api/superadmin/organisations/{organizationId}/managers",
+  path: "/api/superadmin/organisations/{organization_id}/managers",
   summary: "Add a manager to an organisation",
   description:
     "Creates a manager account and links it to the target organisation. Restricted to the owner via `X-Superadmin-Key`.",
