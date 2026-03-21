@@ -1,5 +1,6 @@
 import js from "@eslint/js";
 import boundaries from "eslint-plugin-boundaries";
+import unicorn from "eslint-plugin-unicorn";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
@@ -10,6 +11,46 @@ export default [
     languageOptions: { globals: globals.browser },
   },
   ...tseslint.configs.recommended,
+  {
+    files: ["src/**/*.{js,mjs,cjs,ts,mts,cts}"],
+    rules: {
+      "@typescript-eslint/naming-convention": [
+        "error",
+        {
+          selector: "variableLike",
+          format: ["camelCase", "UPPER_CASE"],
+          leadingUnderscore: "allow",
+        },
+        {
+          selector: "typeLike",
+          format: ["PascalCase"],
+        },
+        {
+          selector: "property",
+          modifiers: ["requiresQuotes"],
+          format: null,
+        },
+        {
+          selector: "property",
+          format: ["camelCase", "snake_case", "PascalCase"],
+          leadingUnderscore: "allow",
+        },
+      ],
+    },
+  },
+  {
+    files: ["src/{docs,modules}/**/*.{js,mjs,cjs,ts,mts,cts}"],
+    plugins: { unicorn },
+    rules: {
+      "unicorn/filename-case": [
+        "error",
+        {
+          case: "kebabCase",
+          multipleFileExtensions: true,
+        },
+      ],
+    },
+  },
   {
     files: ["src/**/*.{js,mjs,cjs,ts,mts,cts}"],
     plugins: { boundaries },
@@ -77,6 +118,11 @@ export default [
           selector: "CallExpression[callee.property.name='merge']",
           message:
             ".merge() is deprecated in Zod v4. Use .and() to combine schemas instead.",
+        },
+        {
+          selector:
+            "CallExpression[callee.property.name='object'][callee.object.name='z'] > ObjectExpression > Property[key.type='Identifier']:not([key.name=/^[a-z][a-z0-9]*(?:_[a-z0-9]+)*$/])",
+          message: "API schema field names must use snake_case.",
         },
       ],
       "boundaries/no-unknown": "error",
