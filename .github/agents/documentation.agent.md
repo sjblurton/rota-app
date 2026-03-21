@@ -63,8 +63,9 @@ Your job is to define and maintain **OpenAPI documentation and Zod schemas** as 
   - root README → high-level overview
   - server/README.md → backend-specific details
 - Naming:
-  - camelCase for TypeScript
-  - consistent API field naming (follow existing convention)
+  - camelCase for JavaScript and TypeScript symbols
+  - snake_case for API fields in request, response, query, and path payloads
+  - kebab-case for API file names under `server/src/modules/**` and `server/src/docs/**`
 - Date and time:
   - use ISO 8601 UTC datetimes with trailing Z for API contracts
   - reuse shared date-time schemas from `server/src/lib/schemas/dateTime.ts`

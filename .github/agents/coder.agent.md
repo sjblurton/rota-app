@@ -24,6 +24,7 @@ Your job is to make focused backend changes that keep runtime behaviour, shared 
 - Keep HTTP handling in routes or controllers and business logic in services.
 - Do not change unrelated files.
 - Keep API timestamps in ISO 8601 UTC format with trailing Z and reuse shared date-time schemas.
+- Use snake_case for API field names and camelCase for JavaScript and TypeScript symbols.
 - Use British English spelling in repository-authored prose; keep external contract field names unchanged.
 
 ## Approach

@@ -16,6 +16,7 @@ Your job is to review backend and API changes with a strict code-review mindset.
 - Check REST semantics, pagination shape, and backward-compatibility risks.
 - Identify missing or weak test coverage.
 - Check date-time contract consistency (ISO 8601 UTC with trailing Z) and shared schema reuse.
+- Check naming conventions: API fields use snake_case and JavaScript and TypeScript symbols use camelCase.
 
 ## Constraints
 

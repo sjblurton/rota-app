@@ -23,6 +23,7 @@ Your job is to design API changes before implementation.
 - Prefer shared OpenAPI helper schemas in `server/src/docs/**` when documentation patterns repeat.
 - Ensure clear separation between authenticated routes and token-based public routes.
 - Keep API timestamps in ISO 8601 UTC format with trailing Z and keep local-time conversion in the client.
+- Use snake_case for API field names and camelCase for JavaScript and TypeScript symbols.
 - Use British English spelling in repository-authored prose; keep external contract field names unchanged.
 
 ## Naming & Consistency Responsibility

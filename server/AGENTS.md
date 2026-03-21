@@ -27,6 +27,9 @@
 - Use ISO 8601 UTC datetimes with trailing Z for API request and response timestamps.
 - Reuse shared date-time schemas from `server/src/lib/schemas/dateTime.ts` instead of redefining date validators.
 - Convert timestamps to local time only in the client display layer.
+- Use snake_case for API field names in request, response, query, and path payloads.
+- Use camelCase for JavaScript and TypeScript variable, function, and parameter names.
+- Use kebab-case for API file names under `server/src/modules/**` and `server/src/docs/**`.
 - Use British English spelling in repository-authored prose; keep external contract field names unchanged.
 
 ## Services and Controllers
