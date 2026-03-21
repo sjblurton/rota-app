@@ -57,5 +57,13 @@ export const openApiDocument = {
       ...swapsOpenApiDocument.components?.schemas,
       ...webhooksOpenApiDocument.components?.schemas,
     },
+    securitySchemes: {
+      ...superadminOpenApiDocument.components?.securitySchemes,
+      ...adminOpenApiDocument.components?.securitySchemes,
+      ...shiftsOpenApiDocument.components?.securitySchemes,
+      ...tokenOpenApiDocument.components?.securitySchemes,
+      ...swapsOpenApiDocument.components?.securitySchemes,
+      ...webhooksOpenApiDocument.components?.securitySchemes,
+    },
   },
 } as const;
