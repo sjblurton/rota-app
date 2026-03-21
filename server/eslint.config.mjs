@@ -92,6 +92,36 @@ export default [
           mode: "full",
         },
         {
+          type: "module-db",
+          pattern: "src/modules/*/db/**/*",
+          capture: ["moduleName"],
+          mode: "full",
+        },
+        {
+          type: "module-services",
+          pattern: "src/modules/*/services/**/*",
+          capture: ["moduleName"],
+          mode: "full",
+        },
+        {
+          type: "module-controllers",
+          pattern: "src/modules/*/controllers/**/*",
+          capture: ["moduleName"],
+          mode: "full",
+        },
+        {
+          type: "module-router",
+          pattern: "src/modules/*/routes/*router.ts",
+          capture: ["moduleName"],
+          mode: "full",
+        },
+        {
+          type: "module-routes",
+          pattern: "src/modules/*/routes/**/*",
+          capture: ["moduleName"],
+          mode: "full",
+        },
+        {
           type: "module",
           pattern: "src/modules/*/**/*",
           capture: ["moduleName"],
@@ -99,7 +129,7 @@ export default [
         },
         {
           type: "source",
-          pattern: "src/**/*",
+          pattern: "src/*.*",
           mode: "full",
         },
       ],
@@ -144,10 +174,107 @@ export default [
                     "docs-schemas",
                     "docs-internal",
                     "module",
+                    "module-routes",
                     "lib",
                   ],
                 },
               },
+            },
+            {
+              from: { type: "module-db" },
+              allow: [
+                {
+                  to: {
+                    type: "module-db",
+                    captured: { moduleName: "{{ from.captured.moduleName }}" },
+                  },
+                },
+                { to: { type: ["docs", "docs-schemas", "lib", "utils"] } },
+              ],
+            },
+            {
+              from: { type: "module-services" },
+              allow: [
+                {
+                  to: {
+                    type: "module-services",
+                    captured: { moduleName: "{{ from.captured.moduleName }}" },
+                  },
+                },
+                {
+                  to: {
+                    type: "module-db",
+                    captured: { moduleName: "{{ from.captured.moduleName }}" },
+                  },
+                },
+                { to: { type: ["docs", "docs-schemas", "lib", "utils"] } },
+              ],
+            },
+            {
+              from: { type: "module-controllers" },
+              allow: [
+                {
+                  to: {
+                    type: "module-controllers",
+                    captured: { moduleName: "{{ from.captured.moduleName }}" },
+                  },
+                },
+                {
+                  to: {
+                    type: "module-services",
+                    captured: { moduleName: "{{ from.captured.moduleName }}" },
+                  },
+                },
+                { to: { type: ["docs", "docs-schemas", "lib", "utils"] } },
+              ],
+            },
+            {
+              from: { type: "module-router" },
+              allow: [
+                {
+                  to: {
+                    type: "module-router",
+                    captured: { moduleName: "{{ from.captured.moduleName }}" },
+                  },
+                },
+                {
+                  to: {
+                    type: "module-controllers",
+                    captured: { moduleName: "{{ from.captured.moduleName }}" },
+                  },
+                },
+                {
+                  to: {
+                    type: "module-routes",
+                    captured: { moduleName: "{{ from.captured.moduleName }}" },
+                  },
+                },
+                { to: { type: ["docs", "docs-schemas", "lib", "utils"] } },
+              ],
+            },
+            {
+              from: { type: "module-routes" },
+              allow: [
+                {
+                  to: {
+                    type: "module-routes",
+                    captured: { moduleName: "{{ from.captured.moduleName }}" },
+                  },
+                },
+                {
+                  to: {
+                    type: "module-router",
+                    captured: { moduleName: "{{ from.captured.moduleName }}" },
+                  },
+                },
+                {
+                  to: {
+                    type: "module-controllers",
+                    captured: { moduleName: "{{ from.captured.moduleName }}" },
+                  },
+                },
+                { to: { type: ["docs", "docs-schemas", "lib", "utils"] } },
+              ],
             },
             {
               from: { type: "module" },
@@ -171,7 +298,10 @@ export default [
             },
             {
               from: { type: "source" },
-              allow: { to: { type: ["source", "docs", "lib", "utils"] } },
+              allow: [
+                { to: { type: ["source", "docs", "lib", "utils"] } },
+                { to: { type: "module-router" } },
+              ],
             },
           ],
         },
