@@ -1,17 +1,17 @@
 import z from "zod";
+import { utcDateTimeSchema } from "../dateTime";
 import { shiftStatusEnum } from "../entities/shifts";
 import { swapRequestStatusEnum } from "../entities/swapRequests";
 import { entityTypeEnum } from "../entities/auditLogs";
 
+const timeDescription = (type: "start_time" | "end_time") =>
+  `Filter records that ${type === "start_time" ? "start on or after" : "end on or before"} this ISO 8601 UTC datetime (e.g. 2024-01-01T00:00:00Z)`;
+
 export const timeRangeFilterSchema = z.object({
-  start_time: z.iso
-    .datetime()
+  start_time: utcDateTimeSchema
     .optional()
-    .describe("Filter records that start on or after this ISO datetime"),
-  end_time: z.iso
-    .datetime()
-    .optional()
-    .describe("Filter records that end on or before this ISO datetime"),
+    .describe(timeDescription("start_time")),
+  end_time: utcDateTimeSchema.optional().describe(timeDescription("end_time")),
 });
 
 const paginationQuerySchema = z.object({

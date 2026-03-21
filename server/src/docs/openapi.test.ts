@@ -113,9 +113,8 @@ describe("openApiDocument", () => {
   });
 
   it("documents manager auth on admin routes and keeps shift status backend-owned", () => {
-    const createShiftRequestBody = openApiDocument.paths[
-      "/api/admin/shifts"
-    ]?.post?.requestBody as
+    const createShiftRequestBody = openApiDocument.paths["/api/admin/shifts"]
+      ?.post?.requestBody as
       | { content?: Record<string, { schema?: unknown }> }
       | undefined;
     const updateShiftRequestBody = openApiDocument.paths[
@@ -128,8 +127,8 @@ describe("openApiDocument", () => {
       createShiftRequestBody?.content?.["application/json"]?.schema;
     const updateShiftSchema =
       updateShiftRequestBody?.content?.["application/json"]?.schema;
-    const adminSwapPatch = openApiDocument.paths["/api/admin/swaps/{swapId}"]
-      ?.patch;
+    const adminSwapPatch =
+      openApiDocument.paths["/api/admin/swaps/{swapId}"]?.patch;
 
     expect(createShiftSchema).toBeDefined();
     expect(createShiftSchema).not.toHaveProperty("properties.status");
