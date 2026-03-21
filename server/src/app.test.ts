@@ -12,3 +12,11 @@ describe("GET /api/docs", () => {
     expect(response.text.toLowerCase()).toContain("swagger ui");
   });
 });
+
+describe("superadmin route mounting", () => {
+  it("mounts the superadmin router under /api/superadmin", async () => {
+    const response = await request(app).post("/api/superadmin/organisations");
+
+    expect(response.status).not.toBe(404);
+  });
+});
