@@ -1,6 +1,7 @@
 import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
 import {
   badRequestResponse,
+  conflictResponse,
   notFoundResponse,
   unauthorisedResponse,
 } from "../../../docs/responses";
@@ -18,10 +19,31 @@ import {
   swapsListQuerySchema,
   auditLogsFilterQuerySchema,
 } from "../../../lib/schemas/parameters/filters";
+import {
+  createShiftBodySchema,
+  createStaffBodySchema,
+  swapManagerDecisionBodySchema,
+  updateShiftBodySchema,
+  updateStaffBodySchema,
+} from "../../../lib/schemas/parameters/inputs";
+import {
+  shiftIdParamSchema,
+  staffIdParamSchema,
+  swapIdParamSchema,
+} from "../../../lib/schemas/parameters/ids";
 
 const registry = new OpenAPIRegistry();
 
+registry.registerComponent("securitySchemes", "ManagerAuth", {
+  type: "http",
+  scheme: "bearer",
+  bearerFormat: "JWT",
+  description: "Manager access token. Required for all admin endpoints.",
+});
+
 const adminTags: string[] = ["Admin"];
+
+const adminSecurity = [{ ManagerAuth: [] }];
 
 const adminErrorResponses = {
   "400": badRequestResponse,
@@ -40,11 +62,25 @@ const successResponse = (schema: z.ZodType, description: string) => ({
   },
 });
 
-const staffIdParamsSchema = z.object({
-  staffId: z.string().describe("ID of the staff member"),
+const createdResponse = (schema: z.ZodType, description: string) => ({
+  "201": {
+    description,
+    content: {
+      "application/json": {
+        schema,
+      },
+    },
+  },
 });
 
-registry.registerPath({
+const registerAdminPath = (path: Parameters<typeof registry.registerPath>[0]) =>
+  registry.registerPath({
+    ...path,
+    tags: adminTags,
+    security: adminSecurity,
+  });
+
+registerAdminPath({
   method: "get",
   path: "/api/admin/staff",
   summary: "List staff members",
@@ -63,7 +99,31 @@ registry.registerPath({
   },
 });
 
-registry.registerPath({
+registerAdminPath({
+  method: "post",
+  path: "/api/admin/staff",
+  summary: "Create staff member",
+  description:
+    "Creates a new staff member in the organisation. Requires admin authentication.",
+  tags: adminTags,
+  request: {
+    body: {
+      required: true,
+      description: "Staff member details",
+      content: {
+        "application/json": {
+          schema: createStaffBodySchema,
+        },
+      },
+    },
+  },
+  responses: {
+    ...createdResponse(staffOpenApiSchema, "Staff member created successfully"),
+    ...adminErrorResponses,
+  },
+});
+
+registerAdminPath({
   method: "get",
   path: "/api/admin/staff/{staffId}",
   summary: "Get staff member details",
@@ -71,7 +131,7 @@ registry.registerPath({
     "Returns the details of a specific staff member. Requires admin authentication.",
   tags: adminTags,
   request: {
-    params: staffIdParamsSchema,
+    params: staffIdParamSchema,
   },
   responses: {
     ...successResponse(
@@ -82,7 +142,50 @@ registry.registerPath({
   },
 });
 
-registry.registerPath({
+registerAdminPath({
+  method: "patch",
+  path: "/api/admin/staff/{staffId}",
+  summary: "Update staff member",
+  description:
+    "Updates a staff member in the organisation. Requires admin authentication.",
+  tags: adminTags,
+  request: {
+    params: staffIdParamSchema,
+    body: {
+      required: true,
+      description: "Staff fields to update",
+      content: {
+        "application/json": {
+          schema: updateStaffBodySchema,
+        },
+      },
+    },
+  },
+  responses: {
+    ...successResponse(staffOpenApiSchema, "Staff member updated successfully"),
+    ...adminErrorResponses,
+  },
+});
+
+registerAdminPath({
+  method: "delete",
+  path: "/api/admin/staff/{staffId}",
+  summary: "Delete staff member",
+  description:
+    "Deletes a staff member from the organisation. Requires admin authentication.",
+  tags: adminTags,
+  request: {
+    params: staffIdParamSchema,
+  },
+  responses: {
+    "204": {
+      description: "Staff member deleted successfully",
+    },
+    ...adminErrorResponses,
+  },
+});
+
+registerAdminPath({
   method: "get",
   path: "/api/admin/shifts",
   summary: "List shifts",
@@ -100,7 +203,94 @@ registry.registerPath({
     ...adminErrorResponses,
   },
 });
-registry.registerPath({
+
+registerAdminPath({
+  method: "post",
+  path: "/api/admin/shifts",
+  summary: "Create shift",
+  description:
+    "Creates a new shift in the organisation. Requires admin authentication.",
+  tags: adminTags,
+  request: {
+    body: {
+      required: true,
+      description: "Shift details",
+      content: {
+        "application/json": {
+          schema: createShiftBodySchema,
+        },
+      },
+    },
+  },
+  responses: {
+    ...createdResponse(shiftOpenApiSchema, "Shift created successfully"),
+    ...adminErrorResponses,
+  },
+});
+
+registerAdminPath({
+  method: "get",
+  path: "/api/admin/shifts/{shiftId}",
+  summary: "Get shift details",
+  description:
+    "Returns details for a specific shift. Requires admin authentication.",
+  tags: adminTags,
+  request: {
+    params: shiftIdParamSchema,
+  },
+  responses: {
+    ...successResponse(
+      shiftOpenApiSchema,
+      "Shift details returned successfully",
+    ),
+    ...adminErrorResponses,
+  },
+});
+
+registerAdminPath({
+  method: "patch",
+  path: "/api/admin/shifts/{shiftId}",
+  summary: "Update shift",
+  description:
+    "Updates a shift in the organisation. Requires admin authentication.",
+  tags: adminTags,
+  request: {
+    params: shiftIdParamSchema,
+    body: {
+      required: true,
+      description: "Shift fields to update",
+      content: {
+        "application/json": {
+          schema: updateShiftBodySchema,
+        },
+      },
+    },
+  },
+  responses: {
+    ...successResponse(shiftOpenApiSchema, "Shift updated successfully"),
+    ...adminErrorResponses,
+  },
+});
+
+registerAdminPath({
+  method: "delete",
+  path: "/api/admin/shifts/{shiftId}",
+  summary: "Delete shift",
+  description:
+    "Deletes a shift from the organisation. Requires admin authentication.",
+  tags: adminTags,
+  request: {
+    params: shiftIdParamSchema,
+  },
+  responses: {
+    "204": {
+      description: "Shift deleted successfully",
+    },
+    ...adminErrorResponses,
+  },
+});
+
+registerAdminPath({
   method: "get",
   path: "/api/admin/audit-logs",
   summary: "List audit logs",
@@ -119,7 +309,7 @@ registry.registerPath({
   },
 });
 
-registry.registerPath({
+registerAdminPath({
   method: "get",
   path: "/api/admin/swaps",
   summary: "List swap requests",
@@ -134,6 +324,34 @@ registry.registerPath({
       createPaginatedResponseSchema(swapRequestOpenApiSchema),
       "Paginated swap requests returned successfully",
     ),
+    ...adminErrorResponses,
+  },
+});
+
+registerAdminPath({
+  method: "patch",
+  path: "/api/admin/swaps/{swapId}",
+  summary: "Review swap request",
+  description:
+    "Allows a manager to approve or reject a swap request after the target staff member has accepted it. The backend advances the workflow state based on this decision.",
+  tags: adminTags,
+  request: {
+    params: swapIdParamSchema,
+    body: {
+      required: true,
+      description: "Manager decision for the accepted swap request",
+      content: {
+        "application/json": {
+          schema: swapManagerDecisionBodySchema,
+        },
+      },
+    },
+  },
+  responses: {
+    "204": {
+      description: "Manager decision recorded successfully",
+    },
+    "409": conflictResponse,
     ...adminErrorResponses,
   },
 });

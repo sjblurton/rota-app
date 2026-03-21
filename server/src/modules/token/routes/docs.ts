@@ -14,7 +14,7 @@ registry.registerPath({
   path: "/api/t/{token}/swap-requests",
   summary: "Create a swap request",
   description:
-    "Creates a swap request for the shift associated with the provided public staff token.",
+    "Creates a swap request for the shift associated with the provided public staff token. The backend starts the swap workflow in `awaiting_target_response`.",
   tags: ["Staff"],
   request: {
     params: tokenSchema,
