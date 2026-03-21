@@ -5,6 +5,7 @@ import {
   unauthorisedResponse,
 } from "../../../docs/responses";
 import {
+  createPaginatedResponseSchema,
   shiftOpenApiSchema,
   staffOpenApiSchema,
   swapRequestOpenApiSchema,
@@ -12,6 +13,7 @@ import {
 } from "../../../docs/schemas";
 import z from "zod";
 import {
+  staffListQuerySchema,
   shiftsListQuerySchema,
   swapsListQuerySchema,
   auditLogsFilterQuerySchema,
@@ -49,10 +51,13 @@ registry.registerPath({
   description:
     "Returns all staff members in the organisation. Requires admin authentication.",
   tags: adminTags,
+  request: {
+    query: staffListQuerySchema,
+  },
   responses: {
     ...successResponse(
-      staffOpenApiSchema.array(),
-      "Staff members returned successfully",
+      createPaginatedResponseSchema(staffOpenApiSchema),
+      "Paginated staff members returned successfully",
     ),
     ...adminErrorResponses,
   },
@@ -89,8 +94,8 @@ registry.registerPath({
   },
   responses: {
     ...successResponse(
-      shiftOpenApiSchema.array(),
-      "Shifts returned successfully",
+      createPaginatedResponseSchema(shiftOpenApiSchema),
+      "Paginated shifts returned successfully",
     ),
     ...adminErrorResponses,
   },
@@ -107,8 +112,8 @@ registry.registerPath({
   },
   responses: {
     ...successResponse(
-      auditLogsOpenApiSchema.array(),
-      "Audit logs returned successfully",
+      createPaginatedResponseSchema(auditLogsOpenApiSchema),
+      "Paginated audit logs returned successfully",
     ),
     ...adminErrorResponses,
   },
@@ -126,8 +131,8 @@ registry.registerPath({
   },
   responses: {
     ...successResponse(
-      swapRequestOpenApiSchema.array(),
-      "Swap requests returned successfully",
+      createPaginatedResponseSchema(swapRequestOpenApiSchema),
+      "Paginated swap requests returned successfully",
     ),
     ...adminErrorResponses,
   },
