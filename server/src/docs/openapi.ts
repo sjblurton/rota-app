@@ -1,6 +1,6 @@
 import { adminOpenApiDocument } from "../modules/admin/routes/openapi";
 import { shiftsOpenApiDocument } from "../modules/shifts/routes/openapi";
-import { superadminOpenApiDocument } from "../modules/superadmin/routes/openapi";
+import { superadminOpenApiDocument } from "../modules/superadmin/docs/openapi";
 import { swapsOpenApiDocument } from "../modules/swaps/routes/openapi";
 import { tokenOpenApiDocument } from "../modules/token/routes/openapi";
 
