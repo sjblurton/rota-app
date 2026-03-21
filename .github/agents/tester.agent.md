@@ -15,6 +15,7 @@ Your job is to write and maintain tests that verify server behaviour accurately 
 - Write integration tests for HTTP endpoints and controller behaviour.
 - Fix failing or flaky tests.
 - Identify untested edge cases, missing assertions, and weak mocks.
+- Validate date-time contract behaviour for API schemas and routes (ISO 8601 UTC with trailing Z).
 
 ## Coverage Goals
 
@@ -30,6 +31,7 @@ Your job is to write and maintain tests that verify server behaviour accurately 
 - Do not test implementation details — test observable behaviour and outputs.
 - Do not modify the implementation under test unless the behaviour is provably wrong.
 - Name test files `*.test.ts` co-located with the file under test.
+- Use British English spelling in repository-authored prose; keep external contract field names unchanged.
 
 ## Approach
 

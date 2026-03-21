@@ -22,6 +22,8 @@ Your job is to design API changes before implementation.
 - Prefer shared validation schemas in `server/src/lib/schemas/**`.
 - Prefer shared OpenAPI helper schemas in `server/src/docs/**` when documentation patterns repeat.
 - Ensure clear separation between authenticated routes and token-based public routes.
+- Keep API timestamps in ISO 8601 UTC format with trailing Z and keep local-time conversion in the client.
+- Use British English spelling in repository-authored prose; keep external contract field names unchanged.
 
 ## Naming & Consistency Responsibility
 

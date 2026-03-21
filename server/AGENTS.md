@@ -24,6 +24,10 @@
 - Return clear and consistent error responses.
 - Keep endpoints predictable and idempotent where applicable.
 - Validate incoming data with zod.
+- Use ISO 8601 UTC datetimes with trailing Z for API request and response timestamps.
+- Reuse shared date-time schemas from `server/src/lib/schemas/dateTime.ts` instead of redefining date validators.
+- Convert timestamps to local time only in the client display layer.
+- Use British English spelling in repository-authored prose; keep external contract field names unchanged.
 
 ## Services and Controllers
 
@@ -33,9 +37,9 @@
 
 ## Testing and Reliability
 
-- Add or update tests for every behavioral change.
+- Add or update tests for every behavioural change.
 - Write unit tests for services and utilities.
-- Write integration tests for HTTP endpoints and controller behavior.
+- Write integration tests for HTTP endpoints and controller behaviour.
 - Keep tests deterministic and isolate dependencies with test doubles.
 
 ## Deprecations and Migrations

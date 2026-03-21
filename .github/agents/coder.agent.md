@@ -23,12 +23,14 @@ Your job is to make focused backend changes that keep runtime behaviour, shared 
 - Keep reusable OpenAPI schema helpers in `server/src/docs/**`.
 - Keep HTTP handling in routes or controllers and business logic in services.
 - Do not change unrelated files.
+- Keep API timestamps in ISO 8601 UTC format with trailing Z and reuse shared date-time schemas.
+- Use British English spelling in repository-authored prose; keep external contract field names unchanged.
 
 ## Approach
 
 1. Read the nearest `AGENTS.md` instructions and existing module patterns.
 2. Implement the smallest coherent change.
-3. Update docs, schemas, and tests when behavior changes.
+3. Update docs, schemas, and tests when behaviour changes.
 4. Run `cd server && npm run lint && npm run lint:typescript` and tests when relevant.
 
 ## Output Format

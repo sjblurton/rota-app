@@ -22,6 +22,8 @@ Your job is to design and implement database schema changes, data access pattern
 - Do not drop columns or tables without a migration plan and confirmation.
 - Do not generate migrations automatically — propose the migration steps for review first.
 - Do not change application route or business logic code unrelated to data access.
+- Keep persisted API-facing timestamps aligned to ISO 8601 UTC (trailing Z in serialised responses).
+- Use British English spelling in repository-authored prose; keep external contract field names unchanged.
 
 ## Approach
 

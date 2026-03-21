@@ -22,3 +22,5 @@
 
 - Use strict TypeScript typing and avoid any.
 - Add or update tests for behavioural changes.
+- For backend API contracts, use ISO 8601 UTC datetimes with trailing Z and convert to local time only in client UI.
+- Use British English spelling in repository-authored prose; keep external contract field names unchanged.

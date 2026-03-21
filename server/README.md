@@ -65,3 +65,10 @@ npm run lint           # ESLint
 npm run lint:typescript # TypeScript type check
 npm run test           # Run tests (Vitest)
 ```
+
+## Date and Time Contract
+
+- API request and response timestamps use ISO 8601 UTC datetimes with a trailing Z suffix.
+- Shared date-time validation lives in `src/lib/schemas/dateTime.ts` and should be reused rather than redefining date schemas.
+- Timezone conversion for display happens in the client only.
+- Server-side comparisons should use parsed instants, not lexicographic string comparison.
