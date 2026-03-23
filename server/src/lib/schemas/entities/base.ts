@@ -2,11 +2,11 @@ import z from "zod";
 import { utcDateTimeNowDefaultSchema } from "../time/dateTime";
 
 export const baseSchema = z.object({
-  id: z.string(),
+  id: z.uuid(),
 });
 
 export const organisationBaseSchema = baseSchema.extend({
-  organisation_id: z.string(),
+  organisation_id: z.uuid(),
 });
 
 export const createdAtBaseSchema = baseSchema.extend({

@@ -1,8 +1,7 @@
 import z from "zod";
 import { utcDateTimeSchema } from "../../time/dateTime";
-import { shiftStatusEnum } from "../../entities/shifts";
-import { swapRequestStatusEnum } from "../../entities/swapRequests";
-import { entityTypeEnum } from "../../entities/auditLogs";
+import { entityTypeEnum } from "../../constants/entityTypes";
+import { shiftStatusEnum, swapRequestStatusEnum } from "../../constants/status";
 
 const timeDescription = (type: "start_time" | "end_time") =>
   `Filter records that ${type === "start_time" ? "start on or after" : "end on or before"} this ISO 8601 UTC datetime (e.g. 2024-01-01T00:00:00Z)`;

@@ -32,7 +32,7 @@ export default [
         },
         {
           selector: "property",
-          format: ["camelCase", "snake_case", "PascalCase"],
+          format: ["camelCase", "snake_case", "PascalCase", "UPPER_CASE"],
           leadingUnderscore: "allow",
         },
       ],

@@ -5,8 +5,8 @@ const createIdParamSchema = <TFieldName extends string>(
   description: string,
 ) =>
   z.object({
-    [fieldName]: z.string().describe(description),
-  } as Record<TFieldName, z.ZodString>);
+    [fieldName]: z.uuid().describe(description),
+  } as Record<TFieldName, z.ZodUUID>);
 
 export const staffIdParamSchema = createIdParamSchema(
   "staff_id",

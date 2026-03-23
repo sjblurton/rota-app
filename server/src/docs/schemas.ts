@@ -54,6 +54,7 @@ export const errorResponseSchema = registry.register(
   "ErrorResponse",
   z.object({
     message: z.string(),
+    error_details: z.string().optional(),
   }),
 );
 

@@ -1,10 +1,12 @@
 import z from "zod";
+import { nonEmptyTrimmedStringSchema } from "../../strings/non-empty-trimmed-string";
 import { utcDateTimeSchema } from "../../time/dateTime";
 import {
   hasAtLeastOneDefinedField,
   hasValidTimeRangeWhenProvided,
   toEpochMilliseconds,
 } from "./shared";
+import { phoneNumberSchema } from "../../strings/phone-number";
 
 export const shiftResponseBodySchema = z.object({
   status: z
@@ -13,7 +15,7 @@ export const shiftResponseBodySchema = z.object({
 });
 
 export const swapRequestBodySchema = z.object({
-  target_staff_id: z.string().describe("Staff member selected for the swap"),
+  target_staff_id: z.uuid().describe("Staff member selected for the swap"),
 });
 
 export const swapTargetDecisionBodySchema = z.object({
@@ -29,21 +31,20 @@ export const swapManagerDecisionBodySchema = z.object({
 });
 
 export const createStaffBodySchema = z.object({
-  name: z.string().min(1).describe("Full name of the staff member"),
-  phone_number: z
-    .string()
-    .min(1)
-    .describe("Staff mobile number in E.164 format"),
+  name: nonEmptyTrimmedStringSchema.describe("Full name of the staff member"),
+  phone_number: phoneNumberSchema.describe(
+    "Staff mobile number in international format (for example, +447123456789)",
+  ),
 });
 
 export const updateStaffBodySchema = z
   .object({
-    name: z.string().min(1).optional().describe("Updated staff name"),
-    phone_number: z
-      .string()
-      .min(1)
+    name: nonEmptyTrimmedStringSchema.optional().describe("Updated staff name"),
+    phone_number: phoneNumberSchema
       .optional()
-      .describe("Updated staff mobile number in E.164 format"),
+      .describe(
+        "Updated staff mobile number in international format (for example, +447123456789)",
+      ),
   })
   .refine((payload) => hasAtLeastOneDefinedField(payload), {
     message: "At least one field must be provided to update staff",
@@ -51,7 +52,7 @@ export const updateStaffBodySchema = z
 
 export const createShiftBodySchema = z
   .object({
-    staff_id: z.string().describe("Assigned staff member ID"),
+    staff_id: z.uuid().describe("Assigned staff member ID"),
     start_time: utcDateTimeSchema.describe(
       "Shift start datetime in ISO 8601 UTC format (trailing Z)",
     ),
@@ -70,10 +71,6 @@ export const createShiftBodySchema = z
 
 export const updateShiftBodySchema = z
   .object({
-    staff_id: z
-      .string()
-      .optional()
-      .describe("Updated assigned staff member ID"),
     start_time: utcDateTimeSchema
       .optional()
       .describe(

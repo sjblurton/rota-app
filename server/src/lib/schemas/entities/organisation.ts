@@ -1,9 +1,9 @@
-import z from "zod";
+import { nonEmptyTrimmedStringSchema } from "../strings/non-empty-trimmed-string";
 import { utcDateTimeSchema } from "../time/dateTime";
 import { baseSchema } from "./base";
 
 export const organisationSchema = baseSchema.extend({
-  name: z.string(),
+  name: nonEmptyTrimmedStringSchema,
   created_at: utcDateTimeSchema,
 });
 

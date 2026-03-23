@@ -1,14 +1,16 @@
 import z from "zod";
+import { nonEmptyTrimmedStringSchema } from "../strings/non-empty-trimmed-string";
 import { createdAtBaseSchema } from "./base";
+import { phoneNumberSchema } from "../strings/phone-number";
 
 export const staffSchema = createdAtBaseSchema.extend({
-  name: z.string(),
-  phone_number: z.string(),
+  name: nonEmptyTrimmedStringSchema,
+  phone_number: phoneNumberSchema,
 });
 
 export const managerSchema = staffSchema.extend({
   email: z.email(),
-  password_hash: z.string(),
+  password_hash: z.hash("sha256", { enc: "base64" }),
 });
 
 export const createManagerSchema = managerSchema
@@ -26,5 +28,5 @@ export const managerWithOrganisationSchema = managerSchema
     password_hash: true,
   })
   .extend({
-    organisation_id: z.string(),
+    organisation_id: z.uuid(),
   });
