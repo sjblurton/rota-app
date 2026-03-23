@@ -14,6 +14,7 @@ import {
   createManagerForOrganisation,
   createOrganisation,
 } from "./superadmin-service";
+import { createHash } from "node:crypto";
 
 describe("createOrganisation", () => {
   beforeEach(() => {
@@ -92,6 +93,10 @@ describe("createManagerForOrganisation", () => {
   });
 
   it("creates a manager when the organisation exists and email is unique", () => {
+    const expectedPasswordHash = createHash("sha256")
+      .update("strong-password")
+      .digest("base64");
+
     const createdManager = {
       id: "mgr-1",
       created_at: "2024-01-01T00:00:00Z",
@@ -118,7 +123,7 @@ describe("createManagerForOrganisation", () => {
         phone_number: "+447700900123",
         email: "jane.manager@example.com",
         organisation_id: "org-1",
-        password_hash: expect.any(String),
+        password_hash: expectedPasswordHash,
       }),
     );
     expect(result).toEqual({

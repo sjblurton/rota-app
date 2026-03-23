@@ -6,12 +6,15 @@ const serviceMocks = vi.hoisted(() => ({
   createOrganisation: vi.fn(),
 }));
 
+const ORGANISATION_ID = randomUUID();
+
 vi.mock("../services/superadmin-service", () => serviceMocks);
 
 import {
   createManagerForOrganisationController,
   createOrganisationController,
 } from "./superadmin-controller";
+import { randomUUID } from "node:crypto";
 
 const createRequest = (request: Partial<Request>) =>
   request as unknown as Request;
@@ -43,6 +46,23 @@ describe("createOrganisationController", () => {
     expect(response.status).toHaveBeenCalledWith(400);
     expect(response.json).toHaveBeenCalledWith({
       message: "Invalid organisation payload",
+      error_details: expect.any(String),
+    });
+    expect(serviceMocks.createOrganisation).not.toHaveBeenCalled();
+  });
+
+  it("returns bad request when the organisation name is an empty string", () => {
+    const request = createRequest({
+      body: { name: "  " },
+    });
+    const response = createResponse();
+
+    createOrganisationController(request, response);
+
+    expect(response.status).toHaveBeenCalledWith(400);
+    expect(response.json).toHaveBeenCalledWith({
+      message: "Invalid organisation payload",
+      error_details: expect.any(String),
     });
     expect(serviceMocks.createOrganisation).not.toHaveBeenCalled();
   });
@@ -68,7 +88,7 @@ describe("createOrganisationController", () => {
 
   it("returns created organisation when the request succeeds", () => {
     const createdOrganisation = {
-      id: "org-1",
+      id: ORGANISATION_ID,
       name: "Acme Hospital",
       created_at: "2024-01-01T00:00:00Z",
     };
@@ -109,6 +129,7 @@ describe("createManagerForOrganisationController", () => {
     expect(response.status).toHaveBeenCalledWith(400);
     expect(response.json).toHaveBeenCalledWith({
       message: "Invalid organisation ID",
+      error_details: expect.any(String),
     });
     expect(serviceMocks.createManagerForOrganisation).not.toHaveBeenCalled();
   });
@@ -118,7 +139,7 @@ describe("createManagerForOrganisationController", () => {
       body: {
         name: "Jane Manager",
       },
-      params: { organisation_id: "org-1" },
+      params: { organisation_id: ORGANISATION_ID },
     });
     const response = createResponse();
 
@@ -127,6 +148,7 @@ describe("createManagerForOrganisationController", () => {
     expect(response.status).toHaveBeenCalledWith(400);
     expect(response.json).toHaveBeenCalledWith({
       message: "Invalid manager payload",
+      error_details: expect.any(String),
     });
     expect(serviceMocks.createManagerForOrganisation).not.toHaveBeenCalled();
   });
@@ -143,14 +165,14 @@ describe("createManagerForOrganisationController", () => {
         email: "jane.manager@example.com",
         password: "strong-password",
       },
-      params: { organisation_id: "org-1" },
+      params: { organisation_id: ORGANISATION_ID },
     });
     const response = createResponse();
 
     createManagerForOrganisationController(request, response);
 
     expect(serviceMocks.createManagerForOrganisation).toHaveBeenCalledWith(
-      "org-1",
+      ORGANISATION_ID,
       {
         name: "Jane Manager",
         phone_number: "+447700900123",
@@ -176,7 +198,7 @@ describe("createManagerForOrganisationController", () => {
         email: "jane.manager@example.com",
         password: "strong-password",
       },
-      params: { organisation_id: "org-1" },
+      params: { organisation_id: ORGANISATION_ID },
     });
     const response = createResponse();
 
@@ -195,7 +217,7 @@ describe("createManagerForOrganisationController", () => {
       name: "Jane Manager",
       phone_number: "+447700900123",
       email: "jane.manager@example.com",
-      organisation_id: "org-1",
+      organisation_id: ORGANISATION_ID,
     };
 
     serviceMocks.createManagerForOrganisation.mockReturnValue({
@@ -210,7 +232,7 @@ describe("createManagerForOrganisationController", () => {
         email: "jane.manager@example.com",
         password: "strong-password",
       },
-      params: { organisation_id: "org-1" },
+      params: { organisation_id: ORGANISATION_ID },
     });
     const response = createResponse();
 

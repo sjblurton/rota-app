@@ -18,7 +18,7 @@ type CreateManager = z.infer<typeof createManagerSchema>;
 type ManagerWithOrganisation = z.infer<typeof managerWithOrganisationSchema>;
 
 const hashPassword = (password: string) =>
-  createHash("sha256").update(password).digest("hex");
+  createHash("sha256").update(password).digest("base64");
 
 export const createOrganisation = (payload: CreateOrganisation) => {
   const duplicateOrganisation = findOrganisationByNormalisedName(payload.name);

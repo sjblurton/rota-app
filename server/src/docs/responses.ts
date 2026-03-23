@@ -30,7 +30,8 @@ export const badRequestResponse = {
       schema: errorResponseSchema,
       example: {
         message: "Invalid request parameters",
-        error_details: "name: Invalid input: expected string, received undefined",
+        error_details:
+          "name: Invalid input: expected string, received undefined",
       },
     },
   },

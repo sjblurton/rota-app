@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { createOrganisationSchema } from "../../../lib/schemas/entities/organisation";
 import { createManagerSchema } from "../../../lib/schemas/entities/staff";
 import { organisationIdParamSchema } from "../../../lib/schemas/parameters/ids/params";
+import { parseOrSendBadRequest } from "../../../utils/http/parse-or-send-bad-request";
 import {
   createManagerForOrganisation,
   createOrganisation,
@@ -11,14 +12,18 @@ export const createOrganisationController = (
   request: Request,
   response: Response,
 ) => {
-  const parsedBody = createOrganisationSchema.safeParse(request.body);
+  const parsedBody = parseOrSendBadRequest(
+    createOrganisationSchema,
+    request.body,
+    response,
+    "Invalid organisation payload",
+  );
 
-  if (!parsedBody.success) {
-    response.status(400).json({ message: "Invalid organisation payload" });
+  if (!parsedBody) {
     return;
   }
 
-  const organisation = createOrganisation(parsedBody.data);
+  const organisation = createOrganisation(parsedBody);
 
   if (!organisation) {
     response.status(409).json({ message: "Organisation already exists" });
@@ -32,23 +37,31 @@ export const createManagerForOrganisationController = (
   request: Request,
   response: Response,
 ) => {
-  const parsedParams = organisationIdParamSchema.safeParse(request.params);
+  const parsedParams = parseOrSendBadRequest(
+    organisationIdParamSchema,
+    request.params,
+    response,
+    "Invalid organisation ID",
+  );
 
-  if (!parsedParams.success) {
-    response.status(400).json({ message: "Invalid organisation ID" });
+  if (!parsedParams) {
     return;
   }
 
-  const parsedBody = createManagerSchema.safeParse(request.body);
+  const parsedBody = parseOrSendBadRequest(
+    createManagerSchema,
+    request.body,
+    response,
+    "Invalid manager payload",
+  );
 
-  if (!parsedBody.success) {
-    response.status(400).json({ message: "Invalid manager payload" });
+  if (!parsedBody) {
     return;
   }
 
   const result = createManagerForOrganisation(
-    parsedParams.data.organisation_id,
-    parsedBody.data,
+    parsedParams.organisation_id,
+    parsedBody,
   );
 
   if (result.kind === "organisation_not_found") {

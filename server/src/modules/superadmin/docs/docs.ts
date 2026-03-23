@@ -63,6 +63,9 @@ superadminOpenApiRegistry.registerPath({
       content: {
         "application/json": {
           schema: createOrganisationBodySchema,
+          example: {
+            name: "Acme Corporation",
+          },
         },
       },
     },
@@ -73,6 +76,11 @@ superadminOpenApiRegistry.registerPath({
       content: {
         "application/json": {
           schema: organisationResponseSchema,
+          example: {
+            id: "11111111-1111-1111-1111-111111111111",
+            name: "Acme Corporation",
+            created_at: "2023-01-01T00:00:00Z",
+          },
         },
       },
     },
@@ -95,6 +103,12 @@ superadminOpenApiRegistry.registerPath({
       content: {
         "application/json": {
           schema: createManagerBodySchema,
+          example: {
+            name: "Jane Smith",
+            phone_number: "+441234567890",
+            email: "jane.smith@acme.co.uk",
+            password: "S3cur3P@ss!",
+          },
         },
       },
     },
@@ -105,6 +119,14 @@ superadminOpenApiRegistry.registerPath({
       content: {
         "application/json": {
           schema: managerResponseSchema,
+          example: {
+            id: "22222222-2222-2222-2222-222222222222",
+            name: "Jane Smith",
+            phone_number: "+441234567890",
+            email: "jane.smith@acme.co.uk",
+            organisation_id: "11111111-1111-1111-1111-111111111111",
+            created_at: "2023-01-01T00:00:00Z",
+          },
         },
       },
     },

@@ -3,6 +3,7 @@ import request from "supertest";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 import { superadminRouter } from "./superadmin-router";
+import { randomUUID } from "node:crypto";
 
 const testApp = express();
 
@@ -123,7 +124,7 @@ describe("superadminRouter", () => {
 
   it("returns not found when creating a manager for an unknown organisation", async () => {
     const response = await request(testApp)
-      .post("/api/superadmin/organisations/unknown-id/managers")
+      .post(`/api/superadmin/organisations/${randomUUID()}/managers`)
       .set("X-Superadmin-Key", "superadmin-test-key")
       .send({
         name: "Jane Manager",
@@ -168,5 +169,19 @@ describe("superadminRouter", () => {
       });
 
     expect(duplicateResponse.status).toBe(409);
+  });
+
+  it("returns a 400 if the org id is not a valid uuid", async () => {
+    const response = await request(testApp)
+      .post(`/api/superadmin/organisations/invalid-uuid/managers`)
+      .set("X-Superadmin-Key", "superadmin-test-key")
+      .send({
+        name: "Jane Manager",
+        phone_number: "+447700900123",
+        email: uniqueManagerEmail(),
+        password: "strong-password",
+      });
+
+    expect(response.status).toBe(400);
   });
 });
