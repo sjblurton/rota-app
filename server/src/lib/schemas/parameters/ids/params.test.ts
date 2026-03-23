@@ -1,6 +1,8 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  managerIdParamSchema,
+  organisationManagerIdsParamSchema,
   organisationIdParamSchema,
   shiftIdParamSchema,
   staffIdParamSchema,
@@ -25,6 +27,15 @@ describe("id parameter schemas", () => {
       organisationIdParamSchema.safeParse({ organisation_id: validUUID })
         .success,
     ).toBe(true);
+    expect(
+      managerIdParamSchema.safeParse({ manager_id: validUUID }).success,
+    ).toBe(true);
+    expect(
+      organisationManagerIdsParamSchema.safeParse({
+        organisation_id: validUUID,
+        manager_id: validUUID,
+      }).success,
+    ).toBe(true);
   });
 
   it("rejects missing ids", () => {
@@ -32,5 +43,7 @@ describe("id parameter schemas", () => {
     expect(shiftIdParamSchema.safeParse({}).success).toBe(false);
     expect(swapIdParamSchema.safeParse({}).success).toBe(false);
     expect(organisationIdParamSchema.safeParse({}).success).toBe(false);
+    expect(managerIdParamSchema.safeParse({}).success).toBe(false);
+    expect(organisationManagerIdsParamSchema.safeParse({}).success).toBe(false);
   });
 });

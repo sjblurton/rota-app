@@ -27,3 +27,13 @@ export const organisationIdParamSchema = createIdParamSchema(
   "organisation_id",
   "ID of the organisation",
 );
+
+export const managerIdParamSchema = createIdParamSchema(
+  "manager_id",
+  "ID of the manager",
+);
+
+export const organisationManagerIdsParamSchema = z.object({
+  organisation_id: z.uuid().describe("ID of the organisation"),
+  manager_id: z.uuid().describe("ID of the manager"),
+});
