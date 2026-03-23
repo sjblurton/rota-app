@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 
 import { openApiDocument } from "./openapi";
+import { SUPERADMIN_MESSAGES } from "../lib/constants/superadmin-messages";
 
 describe("openApiDocument", () => {
   it("includes expected top-level metadata and key paths", () => {
@@ -9,9 +10,103 @@ describe("openApiDocument", () => {
     expect(openApiDocument.paths).toHaveProperty(
       "/api/superadmin/organisations",
     );
+    expect(openApiDocument.paths).toHaveProperty(
+      "/api/superadmin/organisations/{organisation_id}",
+    );
+    expect(openApiDocument.paths).toHaveProperty(
+      "/api/superadmin/organisations/{organisation_id}/managers/{manager_id}",
+    );
     expect(openApiDocument.paths).toHaveProperty("/api/admin/staff");
     expect(openApiDocument.paths).toHaveProperty("/api/t/{token}");
     expect(openApiDocument.paths).toHaveProperty("/api/swaps/t/{token}");
+  });
+
+  it("documents superadmin organisation and manager maintenance routes", () => {
+    const organisationPath =
+      openApiDocument.paths["/api/superadmin/organisations/{organisation_id}"];
+    const organisationManagerPath =
+      openApiDocument.paths[
+        "/api/superadmin/organisations/{organisation_id}/managers/{manager_id}"
+      ];
+
+    expect(organisationPath).toBeDefined();
+    expect(organisationPath).toHaveProperty("patch");
+    expect(organisationPath).not.toHaveProperty("delete");
+
+    expect(organisationPath?.patch?.responses?.["409"]).toMatchObject({
+      description: "Conflict — organisation with this name already exists",
+      content: {
+        "application/json": {
+          example: {
+            message: SUPERADMIN_MESSAGES.organisationAlreadyExists,
+          },
+        },
+      },
+    });
+
+    expect(organisationManagerPath).toBeDefined();
+    expect(organisationManagerPath).toHaveProperty("patch");
+    expect(organisationManagerPath).not.toHaveProperty("delete");
+
+    const managerCreatePath =
+      openApiDocument.paths[
+        "/api/superadmin/organisations/{organisation_id}/managers"
+      ];
+
+    expect(managerCreatePath).toBeDefined();
+    expect(managerCreatePath).toHaveProperty("post");
+
+    expect(managerCreatePath?.post?.responses?.["409"]).toMatchObject({
+      description:
+        "Conflict — organisation is inactive or an active manager already uses the email address",
+      content: {
+        "application/json": {
+          schema: {
+            $ref: "#/components/schemas/ErrorResponse",
+          },
+          examples: {
+            organisation_inactive: {
+              value: { message: SUPERADMIN_MESSAGES.organisationInactive },
+            },
+            manager_email_conflict: {
+              value: { message: SUPERADMIN_MESSAGES.managerEmailAlreadyExists },
+            },
+          },
+        },
+      },
+    });
+
+    expect(
+      managerCreatePath?.post?.responses?.["409"]?.content?.[
+        "application/json"
+      ],
+    ).not.toHaveProperty("example");
+
+    expect(organisationManagerPath?.patch?.responses?.["409"]).toMatchObject({
+      description:
+        "Conflict — organisation is inactive or manager email conflicts with another active manager",
+      content: {
+        "application/json": {
+          schema: {
+            $ref: "#/components/schemas/ErrorResponse",
+          },
+          examples: {
+            organisation_inactive: {
+              value: { message: SUPERADMIN_MESSAGES.organisationInactive },
+            },
+            manager_email_conflict: {
+              value: { message: SUPERADMIN_MESSAGES.managerEmailAlreadyExists },
+            },
+          },
+        },
+      },
+    });
+
+    expect(
+      organisationManagerPath?.patch?.responses?.["409"]?.content?.[
+        "application/json"
+      ],
+    ).not.toHaveProperty("example");
   });
 
   it("includes manager lifecycle routes for staff and shifts", () => {
