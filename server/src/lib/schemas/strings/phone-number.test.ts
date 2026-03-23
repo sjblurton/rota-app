@@ -15,10 +15,10 @@ describe("phoneNumberSchema", () => {
       expect(result.data).toBe("+1234567890123");
     });
 
-    it("accepts a phone number with + and 14 digits at max length (15 chars)", () => {
-      const result = phoneNumberSchema.safeParse("+12345678901234");
+    it("accepts a phone number with + and 15 digits at max length (16 chars)", () => {
+      const result = phoneNumberSchema.safeParse("+123456789012345");
       expect(result.success).toBe(true);
-      expect(result.data).toBe("+12345678901234");
+      expect(result.data).toBe("+123456789012345");
     });
 
     it("trims leading and trailing whitespace", () => {
@@ -81,12 +81,12 @@ describe("phoneNumberSchema", () => {
       expect(result.success).toBe(false);
     });
 
-    it("rejects phone number exceeding 15 characters", () => {
+    it("rejects phone number exceeding 16 characters", () => {
       const result = phoneNumberSchema.safeParse("+1234567890123456");
       expect(result.success).toBe(false);
     });
 
-    it("rejects phone number exceeding 15 characters without +", () => {
+    it("rejects phone number exceeding 16 characters without +", () => {
       const result = phoneNumberSchema.safeParse("1234567890123456");
       expect(result.success).toBe(false);
     });
@@ -201,13 +201,13 @@ describe("phoneNumberSchema", () => {
       expect(result.data).toBe("+1123456789");
     });
 
-    it("accepts + value at 17-char max length (16 digits)", () => {
+    it("accepts + value at 16-char max length (15 digits)", () => {
       const result = phoneNumberSchema.safeParse("+199999999999999");
       expect(result.success).toBe(true);
       expect(result.data).toBe("+199999999999999");
     });
 
-    it("rejects phone number exceeding max length (16 chars)", () => {
+    it("rejects phone number exceeding max length (17 chars)", () => {
       const result = phoneNumberSchema.safeParse("+1999999999999999");
       expect(result.success).toBe(false);
     });
