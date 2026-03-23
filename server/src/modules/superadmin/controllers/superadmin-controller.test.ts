@@ -4,17 +4,36 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const serviceMocks = vi.hoisted(() => ({
   createManagerForOrganisation: vi.fn(),
   createOrganisation: vi.fn(),
+  updateManagerForOrganisation: vi.fn(),
+  updateOrganisation: vi.fn(),
 }));
 
-const ORGANISATION_ID = randomUUID();
+const parseMocks = vi.hoisted(() => ({
+  parseCreateManagerBody: vi.fn(),
+  parseCreateOrganisationBody: vi.fn(),
+  parseOrganisationIdParams: vi.fn(),
+  parseOrganisationManagerIdsParams: vi.fn(),
+  parseUpdateManagerBody: vi.fn(),
+  parseUpdateOrganisationBody: vi.fn(),
+}));
+
+const responseMapperMocks = vi.hoisted(() => ({
+  sendCreateManagerForOrganisationResponse: vi.fn(),
+  sendCreateOrganisationResponse: vi.fn(),
+  sendUpdateManagerForOrganisationResponse: vi.fn(),
+  sendUpdateOrganisationResponse: vi.fn(),
+}));
 
 vi.mock("../services/superadmin-service", () => serviceMocks);
+vi.mock("./superadmin-controller-parse", () => parseMocks);
+vi.mock("./superadmin-controller-response", () => responseMapperMocks);
 
 import {
   createManagerForOrganisationController,
   createOrganisationController,
+  updateManagerForOrganisationController,
+  updateOrganisationController,
 } from "./superadmin-controller";
-import { randomUUID } from "node:crypto";
 
 const createRequest = (request: Partial<Request>) =>
   request as unknown as Request;
@@ -30,49 +49,30 @@ const createResponse = () => {
   return response as unknown as Response;
 };
 
-describe("createOrganisationController", () => {
+describe("superadmin-controller orchestration", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it("returns bad request when the payload is invalid", () => {
-    const request = createRequest({
-      body: {},
-    });
+  it("returns early when create organisation body parsing fails", () => {
+    parseMocks.parseCreateOrganisationBody.mockReturnValue(null);
+    const request = createRequest({ body: {} });
     const response = createResponse();
 
     createOrganisationController(request, response);
 
-    expect(response.status).toHaveBeenCalledWith(400);
-    expect(response.json).toHaveBeenCalledWith({
-      message: "Invalid organisation payload",
-      error_details: expect.any(String),
-    });
     expect(serviceMocks.createOrganisation).not.toHaveBeenCalled();
+    expect(
+      responseMapperMocks.sendCreateOrganisationResponse,
+    ).not.toHaveBeenCalled();
   });
 
-  it("returns bad request when the organisation name is an empty string", () => {
-    const request = createRequest({
-      body: { name: "  " },
+  it("creates organisation and delegates response mapping", () => {
+    parseMocks.parseCreateOrganisationBody.mockReturnValue({
+      name: "Acme Hospital",
     });
-    const response = createResponse();
-
-    createOrganisationController(request, response);
-
-    expect(response.status).toHaveBeenCalledWith(400);
-    expect(response.json).toHaveBeenCalledWith({
-      message: "Invalid organisation payload",
-      error_details: expect.any(String),
-    });
-    expect(serviceMocks.createOrganisation).not.toHaveBeenCalled();
-  });
-
-  it("returns conflict when the organisation already exists", () => {
     serviceMocks.createOrganisation.mockReturnValue(null);
-
-    const request = createRequest({
-      body: { name: "Acme Hospital" },
-    });
+    const request = createRequest({ body: { name: "Acme Hospital" } });
     const response = createResponse();
 
     createOrganisationController(request, response);
@@ -80,165 +80,148 @@ describe("createOrganisationController", () => {
     expect(serviceMocks.createOrganisation).toHaveBeenCalledWith({
       name: "Acme Hospital",
     });
-    expect(response.status).toHaveBeenCalledWith(409);
-    expect(response.json).toHaveBeenCalledWith({
-      message: "Organisation already exists",
-    });
+    expect(
+      responseMapperMocks.sendCreateOrganisationResponse,
+    ).toHaveBeenCalledWith(response, null);
   });
 
-  it("returns created organisation when the request succeeds", () => {
-    const createdOrganisation = {
-      id: ORGANISATION_ID,
-      name: "Acme Hospital",
-      created_at: "2024-01-01T00:00:00Z",
+  it("returns early when create manager organisation id parsing fails", () => {
+    parseMocks.parseOrganisationIdParams.mockReturnValue(null);
+    const request = createRequest({ params: {}, body: {} });
+    const response = createResponse();
+
+    createManagerForOrganisationController(request, response);
+
+    expect(parseMocks.parseCreateManagerBody).not.toHaveBeenCalled();
+    expect(serviceMocks.createManagerForOrganisation).not.toHaveBeenCalled();
+    expect(
+      responseMapperMocks.sendCreateManagerForOrganisationResponse,
+    ).not.toHaveBeenCalled();
+  });
+
+  it("returns early when create manager body parsing fails", () => {
+    parseMocks.parseOrganisationIdParams.mockReturnValue({
+      organisation_id: "11111111-1111-1111-1111-111111111111",
+    });
+    parseMocks.parseCreateManagerBody.mockReturnValue(null);
+    const request = createRequest({ params: {}, body: {} });
+    const response = createResponse();
+
+    createManagerForOrganisationController(request, response);
+
+    expect(serviceMocks.createManagerForOrganisation).not.toHaveBeenCalled();
+    expect(
+      responseMapperMocks.sendCreateManagerForOrganisationResponse,
+    ).not.toHaveBeenCalled();
+  });
+
+  it("creates manager and delegates response mapping", () => {
+    const parsedParams = {
+      organisation_id: "11111111-1111-1111-1111-111111111111",
     };
+    const parsedBody = {
+      name: "Jane Manager",
+      phone_number: "+447700900123",
+      email: "jane.manager@example.com",
+      password: "strong-password",
+    };
+    const serviceResult = { kind: "organisation_not_found" };
 
-    serviceMocks.createOrganisation.mockReturnValue(createdOrganisation);
+    parseMocks.parseOrganisationIdParams.mockReturnValue(parsedParams);
+    parseMocks.parseCreateManagerBody.mockReturnValue(parsedBody);
+    serviceMocks.createManagerForOrganisation.mockReturnValue(serviceResult);
 
-    const request = createRequest({
-      body: { name: "Acme Hospital" },
-    });
-    const response = createResponse();
-
-    createOrganisationController(request, response);
-
-    expect(response.status).toHaveBeenCalledWith(201);
-    expect(response.json).toHaveBeenCalledWith(createdOrganisation);
-  });
-});
-
-describe("createManagerForOrganisationController", () => {
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
-  it("returns bad request when the organisation ID is invalid", () => {
-    const request = createRequest({
-      body: {
-        name: "Jane Manager",
-        phone_number: "+447700900123",
-        email: "jane.manager@example.com",
-        password: "strong-password",
-      },
-      params: {},
-    });
-    const response = createResponse();
-
-    createManagerForOrganisationController(request, response);
-
-    expect(response.status).toHaveBeenCalledWith(400);
-    expect(response.json).toHaveBeenCalledWith({
-      message: "Invalid organisation ID",
-      error_details: expect.any(String),
-    });
-    expect(serviceMocks.createManagerForOrganisation).not.toHaveBeenCalled();
-  });
-
-  it("returns bad request when the manager payload is invalid", () => {
-    const request = createRequest({
-      body: {
-        name: "Jane Manager",
-      },
-      params: { organisation_id: ORGANISATION_ID },
-    });
-    const response = createResponse();
-
-    createManagerForOrganisationController(request, response);
-
-    expect(response.status).toHaveBeenCalledWith(400);
-    expect(response.json).toHaveBeenCalledWith({
-      message: "Invalid manager payload",
-      error_details: expect.any(String),
-    });
-    expect(serviceMocks.createManagerForOrganisation).not.toHaveBeenCalled();
-  });
-
-  it("returns not found when the organisation does not exist", () => {
-    serviceMocks.createManagerForOrganisation.mockReturnValue({
-      kind: "organisation_not_found",
-    });
-
-    const request = createRequest({
-      body: {
-        name: "Jane Manager",
-        phone_number: "+447700900123",
-        email: "jane.manager@example.com",
-        password: "strong-password",
-      },
-      params: { organisation_id: ORGANISATION_ID },
-    });
+    const request = createRequest({ params: {}, body: {} });
     const response = createResponse();
 
     createManagerForOrganisationController(request, response);
 
     expect(serviceMocks.createManagerForOrganisation).toHaveBeenCalledWith(
-      ORGANISATION_ID,
-      {
-        name: "Jane Manager",
-        phone_number: "+447700900123",
-        email: "jane.manager@example.com",
-        password: "strong-password",
-      },
+      parsedParams.organisation_id,
+      parsedBody,
     );
-    expect(response.status).toHaveBeenCalledWith(404);
-    expect(response.json).toHaveBeenCalledWith({
-      message: "Organisation not found",
-    });
+    expect(
+      responseMapperMocks.sendCreateManagerForOrganisationResponse,
+    ).toHaveBeenCalledWith(response, serviceResult);
   });
 
-  it("returns conflict when the manager email already exists", () => {
-    serviceMocks.createManagerForOrganisation.mockReturnValue({
-      kind: "manager_email_conflict",
-    });
-
-    const request = createRequest({
-      body: {
-        name: "Jane Manager",
-        phone_number: "+447700900123",
-        email: "jane.manager@example.com",
-        password: "strong-password",
-      },
-      params: { organisation_id: ORGANISATION_ID },
-    });
+  it("returns early when update organisation id parsing fails", () => {
+    parseMocks.parseOrganisationIdParams.mockReturnValue(null);
+    const request = createRequest({ params: {}, body: {} });
     const response = createResponse();
 
-    createManagerForOrganisationController(request, response);
+    updateOrganisationController(request, response);
 
-    expect(response.status).toHaveBeenCalledWith(409);
-    expect(response.json).toHaveBeenCalledWith({
-      message: "Manager with this email already exists",
-    });
+    expect(parseMocks.parseUpdateOrganisationBody).not.toHaveBeenCalled();
+    expect(serviceMocks.updateOrganisation).not.toHaveBeenCalled();
+    expect(
+      responseMapperMocks.sendUpdateOrganisationResponse,
+    ).not.toHaveBeenCalled();
   });
 
-  it("returns created manager when the request succeeds", () => {
-    const createdManager = {
-      id: "mgr-1",
-      created_at: "2024-01-01T00:00:00Z",
-      name: "Jane Manager",
-      phone_number: "+447700900123",
-      email: "jane.manager@example.com",
-      organisation_id: ORGANISATION_ID,
+  it("updates organisation and delegates response mapping", () => {
+    const parsedParams = {
+      organisation_id: "11111111-1111-1111-1111-111111111111",
     };
+    const parsedBody = { name: "Updated Name", is_active: false };
+    const serviceResult = { kind: "organisation_not_found" };
 
-    serviceMocks.createManagerForOrganisation.mockReturnValue({
-      kind: "created",
-      manager: createdManager,
-    });
+    parseMocks.parseOrganisationIdParams.mockReturnValue(parsedParams);
+    parseMocks.parseUpdateOrganisationBody.mockReturnValue(parsedBody);
+    serviceMocks.updateOrganisation.mockReturnValue(serviceResult);
 
-    const request = createRequest({
-      body: {
-        name: "Jane Manager",
-        phone_number: "+447700900123",
-        email: "jane.manager@example.com",
-        password: "strong-password",
-      },
-      params: { organisation_id: ORGANISATION_ID },
-    });
+    const request = createRequest({ params: {}, body: {} });
     const response = createResponse();
 
-    createManagerForOrganisationController(request, response);
+    updateOrganisationController(request, response);
 
-    expect(response.status).toHaveBeenCalledWith(201);
-    expect(response.json).toHaveBeenCalledWith(createdManager);
+    expect(serviceMocks.updateOrganisation).toHaveBeenCalledWith(
+      parsedParams.organisation_id,
+      parsedBody,
+    );
+    expect(
+      responseMapperMocks.sendUpdateOrganisationResponse,
+    ).toHaveBeenCalledWith(response, serviceResult);
+  });
+
+  it("returns early when update manager ids parsing fails", () => {
+    parseMocks.parseOrganisationManagerIdsParams.mockReturnValue(null);
+    const request = createRequest({ params: {}, body: {} });
+    const response = createResponse();
+
+    updateManagerForOrganisationController(request, response);
+
+    expect(parseMocks.parseUpdateManagerBody).not.toHaveBeenCalled();
+    expect(serviceMocks.updateManagerForOrganisation).not.toHaveBeenCalled();
+    expect(
+      responseMapperMocks.sendUpdateManagerForOrganisationResponse,
+    ).not.toHaveBeenCalled();
+  });
+
+  it("updates manager and delegates response mapping", () => {
+    const parsedParams = {
+      organisation_id: "11111111-1111-1111-1111-111111111111",
+      manager_id: "22222222-2222-2222-2222-222222222222",
+    };
+    const parsedBody = { email: "updated.manager@example.com" };
+    const serviceResult = { kind: "manager_not_found" };
+
+    parseMocks.parseOrganisationManagerIdsParams.mockReturnValue(parsedParams);
+    parseMocks.parseUpdateManagerBody.mockReturnValue(parsedBody);
+    serviceMocks.updateManagerForOrganisation.mockReturnValue(serviceResult);
+
+    const request = createRequest({ params: {}, body: {} });
+    const response = createResponse();
+
+    updateManagerForOrganisationController(request, response);
+
+    expect(serviceMocks.updateManagerForOrganisation).toHaveBeenCalledWith(
+      parsedParams.organisation_id,
+      parsedParams.manager_id,
+      parsedBody,
+    );
+    expect(
+      responseMapperMocks.sendUpdateManagerForOrganisationResponse,
+    ).toHaveBeenCalledWith(response, serviceResult);
   });
 });

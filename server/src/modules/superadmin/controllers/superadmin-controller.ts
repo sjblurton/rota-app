@@ -1,59 +1,50 @@
 import { Request, Response } from "express";
-import { createOrganisationSchema } from "../../../lib/schemas/entities/organisation";
-import { createManagerSchema } from "../../../lib/schemas/entities/staff";
-import { organisationIdParamSchema } from "../../../lib/schemas/parameters/ids/params";
-import { parseOrSendBadRequest } from "../../../utils/http/parse-or-send-bad-request";
 import {
   createManagerForOrganisation,
   createOrganisation,
+  updateManagerForOrganisation,
+  updateOrganisation,
 } from "../services/superadmin-service";
+import {
+  parseCreateManagerBody,
+  parseCreateOrganisationBody,
+  parseOrganisationIdParams,
+  parseOrganisationManagerIdsParams,
+  parseUpdateManagerBody,
+  parseUpdateOrganisationBody,
+} from "./superadmin-controller-parse";
+import {
+  sendCreateManagerForOrganisationResponse,
+  sendCreateOrganisationResponse,
+  sendUpdateManagerForOrganisationResponse,
+  sendUpdateOrganisationResponse,
+} from "./superadmin-controller-response";
 
 export const createOrganisationController = (
   request: Request,
   response: Response,
 ) => {
-  const parsedBody = parseOrSendBadRequest(
-    createOrganisationSchema,
-    request.body,
-    response,
-    "Invalid organisation payload",
-  );
+  const parsedBody = parseCreateOrganisationBody(request, response);
 
   if (!parsedBody) {
     return;
   }
 
   const organisation = createOrganisation(parsedBody);
-
-  if (!organisation) {
-    response.status(409).json({ message: "Organisation already exists" });
-    return;
-  }
-
-  response.status(201).json(organisation);
+  sendCreateOrganisationResponse(response, organisation);
 };
 
 export const createManagerForOrganisationController = (
   request: Request,
   response: Response,
 ) => {
-  const parsedParams = parseOrSendBadRequest(
-    organisationIdParamSchema,
-    request.params,
-    response,
-    "Invalid organisation ID",
-  );
+  const parsedParams = parseOrganisationIdParams(request, response);
 
   if (!parsedParams) {
     return;
   }
 
-  const parsedBody = parseOrSendBadRequest(
-    createManagerSchema,
-    request.body,
-    response,
-    "Invalid manager payload",
-  );
+  const parsedBody = parseCreateManagerBody(request, response);
 
   if (!parsedBody) {
     return;
@@ -64,17 +55,51 @@ export const createManagerForOrganisationController = (
     parsedBody,
   );
 
-  if (result.kind === "organisation_not_found") {
-    response.status(404).json({ message: "Organisation not found" });
+  sendCreateManagerForOrganisationResponse(response, result);
+};
+
+export const updateOrganisationController = (
+  request: Request,
+  response: Response,
+) => {
+  const parsedParams = parseOrganisationIdParams(request, response);
+
+  if (!parsedParams) {
     return;
   }
 
-  if (result.kind === "manager_email_conflict") {
-    response
-      .status(409)
-      .json({ message: "Manager with this email already exists" });
+  const parsedBody = parseUpdateOrganisationBody(request, response);
+
+  if (!parsedBody) {
     return;
   }
 
-  response.status(201).json(result.manager);
+  const result = updateOrganisation(parsedParams.organisation_id, parsedBody);
+
+  sendUpdateOrganisationResponse(response, result);
+};
+
+export const updateManagerForOrganisationController = (
+  request: Request,
+  response: Response,
+) => {
+  const parsedParams = parseOrganisationManagerIdsParams(request, response);
+
+  if (!parsedParams) {
+    return;
+  }
+
+  const parsedBody = parseUpdateManagerBody(request, response);
+
+  if (!parsedBody) {
+    return;
+  }
+
+  const result = updateManagerForOrganisation(
+    parsedParams.organisation_id,
+    parsedParams.manager_id,
+    parsedBody,
+  );
+
+  sendUpdateManagerForOrganisationResponse(response, result);
 };
