@@ -1,26 +1,36 @@
-import { createHash } from "node:crypto";
-import z from "zod";
-import { createOrganisationSchema } from "../../../lib/schemas/entities/organisation";
-import {
-  createManagerSchema,
-  managerWithOrganisationSchema,
-} from "../../../lib/schemas/entities/staff";
 import {
   createManagerRecord,
   createOrganisationRecord,
-  doesOrganisationExist,
-  findManagerByNormalisedEmail,
+  deactivateManagersForOrganisation,
+  findManagerByIdForOrganisation,
+  findActiveManagerByNormalisedEmail,
+  findOrganisationById,
   findOrganisationByNormalisedName,
+  updateManagerRecord,
+  updateOrganisationRecord,
 } from "../db/superadmin-repository";
+import { SUPERADMIN_RESULT_KINDS } from "./constants/superadmin-result-kinds";
+import type {
+  CreateManager,
+  CreateManagerForOrganisationResult,
+  CreateOrganisation,
+  CreateOrganisationResult,
+  OrganisationUpdateRecordPayload,
+  UpdateManager,
+  UpdateManagerForOrganisationResult,
+  UpdateOrganisation,
+  UpdateOrganisationResult,
+} from "./types/superadmin-service-types";
+import {
+  buildManagerUpdatePayload,
+  buildOrganisationUpdatePayload,
+  hashPassword,
+  shouldCheckManagerEmailConflict,
+} from "./utils/superadmin-service-utils";
 
-type CreateOrganisation = z.infer<typeof createOrganisationSchema>;
-type CreateManager = z.infer<typeof createManagerSchema>;
-type ManagerWithOrganisation = z.infer<typeof managerWithOrganisationSchema>;
-
-const hashPassword = (password: string) =>
-  createHash("sha256").update(password).digest("base64");
-
-export const createOrganisation = (payload: CreateOrganisation) => {
+export const createOrganisation = (
+  payload: CreateOrganisation,
+): CreateOrganisationResult => {
   const duplicateOrganisation = findOrganisationByNormalisedName(payload.name);
 
   if (duplicateOrganisation) {
@@ -33,18 +43,21 @@ export const createOrganisation = (payload: CreateOrganisation) => {
 export const createManagerForOrganisation = (
   organisationId: string,
   payload: CreateManager,
-):
-  | { kind: "organisation_not_found" }
-  | { kind: "manager_email_conflict" }
-  | { kind: "created"; manager: ManagerWithOrganisation } => {
-  if (!doesOrganisationExist(organisationId)) {
-    return { kind: "organisation_not_found" };
+): CreateManagerForOrganisationResult => {
+  const organisation = findOrganisationById(organisationId);
+
+  if (!organisation) {
+    return { kind: SUPERADMIN_RESULT_KINDS.organisationNotFound };
   }
 
-  const duplicateManager = findManagerByNormalisedEmail(payload.email);
+  if (!organisation.is_active) {
+    return { kind: SUPERADMIN_RESULT_KINDS.organisationInactive };
+  }
+
+  const duplicateManager = findActiveManagerByNormalisedEmail(payload.email);
 
   if (duplicateManager) {
-    return { kind: "manager_email_conflict" };
+    return { kind: SUPERADMIN_RESULT_KINDS.managerEmailConflict };
   }
 
   const manager = createManagerRecord({
@@ -56,7 +69,102 @@ export const createManagerForOrganisation = (
   });
 
   return {
-    kind: "created",
+    kind: SUPERADMIN_RESULT_KINDS.created,
     manager,
+  };
+};
+
+export const updateOrganisation = (
+  organisationId: string,
+  payload: UpdateOrganisation,
+): UpdateOrganisationResult => {
+  const organisation = findOrganisationById(organisationId);
+
+  if (!organisation) {
+    return { kind: SUPERADMIN_RESULT_KINDS.organisationNotFound };
+  }
+
+  if (payload.name) {
+    const duplicateOrganisation = findOrganisationByNormalisedName(
+      payload.name,
+    );
+
+    if (duplicateOrganisation && duplicateOrganisation.id !== organisationId) {
+      return { kind: SUPERADMIN_RESULT_KINDS.organisationNameConflict };
+    }
+  }
+
+  const organisationUpdatePayload: OrganisationUpdateRecordPayload =
+    buildOrganisationUpdatePayload(payload);
+
+  const updatedOrganisation = updateOrganisationRecord(
+    organisationId,
+    organisationUpdatePayload,
+  );
+
+  if (!updatedOrganisation) {
+    return { kind: SUPERADMIN_RESULT_KINDS.organisationNotFound };
+  }
+
+  if (updatedOrganisation.is_active === false && payload.is_active === false) {
+    deactivateManagersForOrganisation(organisationId);
+  }
+
+  return {
+    kind: SUPERADMIN_RESULT_KINDS.updated,
+    organisation: updatedOrganisation,
+  };
+};
+
+export const updateManagerForOrganisation = (
+  organisationId: string,
+  managerId: string,
+  payload: UpdateManager,
+): UpdateManagerForOrganisationResult => {
+  const organisation = findOrganisationById(organisationId);
+
+  if (!organisation) {
+    return { kind: SUPERADMIN_RESULT_KINDS.organisationNotFound };
+  }
+
+  if (!organisation.is_active) {
+    return { kind: SUPERADMIN_RESULT_KINDS.organisationInactive };
+  }
+
+  const manager = findManagerByIdForOrganisation(organisationId, managerId);
+
+  if (!manager) {
+    return { kind: SUPERADMIN_RESULT_KINDS.managerNotFound };
+  }
+
+  const shouldCheckEmailConflict = shouldCheckManagerEmailConflict(
+    payload,
+    manager.is_active,
+  );
+
+  if (shouldCheckEmailConflict) {
+    const emailToCheck = payload.email ?? manager.email;
+    const duplicateManager = findActiveManagerByNormalisedEmail(emailToCheck);
+
+    if (duplicateManager && duplicateManager.id !== managerId) {
+      return { kind: SUPERADMIN_RESULT_KINDS.managerEmailConflict };
+    }
+  }
+
+  const managerUpdatePayload = buildManagerUpdatePayload(payload);
+
+  const updatedManager = updateManagerRecord(
+    organisationId,
+    managerId,
+    managerUpdatePayload,
+  );
+
+  if (!updatedManager) {
+    return { kind: SUPERADMIN_RESULT_KINDS.managerNotFound };
+  }
+
+  return {
+    kind: SUPERADMIN_RESULT_KINDS.updated,
+    manager: updatedManager,
   };
 };
