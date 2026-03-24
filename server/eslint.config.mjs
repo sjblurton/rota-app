@@ -1,7 +1,9 @@
 import js from "@eslint/js";
 import boundaries from "eslint-plugin-boundaries";
+import sonarjs from "eslint-plugin-sonarjs";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import unicorn from "eslint-plugin-unicorn";
+import vitest from "eslint-plugin-vitest";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
@@ -27,12 +29,11 @@ export default [
     ignores: ["src/**/*.test.ts"],
     rules: {
       "@typescript-eslint/no-floating-promises": "error",
-      "@typescript-eslint/no-misused-promises": [
-        "error",
-        { checksVoidReturn: false },
-      ],
+      "@typescript-eslint/no-misused-promises": ["error", { checksVoidReturn: false }],
       "@typescript-eslint/no-unnecessary-condition": "error",
       "@typescript-eslint/no-unnecessary-type-assertion": "error",
+      "@typescript-eslint/prefer-nullish-coalescing": "error",
+      "@typescript-eslint/prefer-optional-chain": "error",
       "@typescript-eslint/require-await": "error",
       "@typescript-eslint/return-await": ["error", "in-try-catch"],
       "@typescript-eslint/switch-exhaustiveness-check": "error",
@@ -41,6 +42,7 @@ export default [
   {
     files: ["src/**/*.{js,mjs,cjs,ts,mts,cts}"],
     plugins: {
+      sonarjs,
       unicorn,
       "simple-import-sort": simpleImportSort,
     },
@@ -48,7 +50,19 @@ export default [
       "simple-import-sort/imports": "error",
       "simple-import-sort/exports": "error",
       eqeqeq: ["error", "smart"],
+      "no-console": ["error", { allow: ["warn", "error"] }],
+      "no-unused-vars": "off",
       "no-duplicate-imports": "error",
+      "@typescript-eslint/no-explicit-any": "error",
+      "@typescript-eslint/no-unused-vars": [
+        "error",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          caughtErrorsIgnorePattern: "^_",
+        },
+      ],
+      "@typescript-eslint/consistent-type-definitions": ["error", "type"],
       "@typescript-eslint/consistent-type-imports": [
         "error",
         {
@@ -91,15 +105,22 @@ export default [
                 "../../index",
                 "../../index.ts",
               ],
-              message:
-                "Do not import from barrel files. Import from explicit module files.",
+              message: "Do not import from barrel files. Import from explicit module files.",
             },
           ],
         },
       ],
       complexity: ["error", 12],
+      "sonarjs/cognitive-complexity": ["error", 20],
       "unicorn/no-abusive-eslint-disable": "error",
       "unicorn/prefer-node-protocol": "error",
+    },
+  },
+  {
+    files: ["src/**/*.test.ts"],
+    plugins: { vitest },
+    rules: {
+      "vitest/no-focused-tests": "error",
     },
   },
   {
@@ -206,13 +227,11 @@ export default [
         {
           selector:
             "CallExpression[callee.property.name='datetime'][callee.object.type='CallExpression'][callee.object.callee.property.name='string'][callee.object.callee.object.name='z']",
-          message:
-            "z.string().datetime() is deprecated in Zod v4. Use z.iso.datetime() instead.",
+          message: "z.string().datetime() is deprecated in Zod v4. Use z.iso.datetime() instead.",
         },
         {
           selector: "CallExpression[callee.property.name='merge']",
-          message:
-            ".merge() is deprecated in Zod v4. Use .and() to combine schemas instead.",
+          message: ".merge() is deprecated in Zod v4. Use .and() to combine schemas instead.",
         },
         {
           selector:
@@ -234,14 +253,7 @@ export default [
               from: { type: "docs" },
               allow: {
                 to: {
-                  type: [
-                    "docs",
-                    "docs-schemas",
-                    "docs-internal",
-                    "module",
-                    "module-routes",
-                    "lib",
-                  ],
+                  type: ["docs", "docs-schemas", "docs-internal", "module", "module-routes", "lib"],
                 },
               },
             },
