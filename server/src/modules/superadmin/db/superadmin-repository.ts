@@ -157,11 +157,7 @@ export const updateManagerRecord = (
     return null;
   }
 
-  const existingManager = managers[managerIndex];
-
-  if (!existingManager) {
-    return null;
-  }
+  const existingManager = managers[managerIndex]!;
 
   const updatedManager: ManagerRecord = {
     id: existingManager.id,
@@ -176,20 +172,14 @@ export const updateManagerRecord = (
 
   managers[managerIndex] = updatedManager;
 
-  const managerRecord = managers[managerIndex];
-
-  if (!managerRecord) {
-    return null;
-  }
-
   return {
-    id: managerRecord.id,
-    created_at: managerRecord.created_at,
-    name: managerRecord.name,
-    phone_number: managerRecord.phone_number,
-    email: managerRecord.email,
-    is_active: managerRecord.is_active,
-    organisation_id: managerRecord.organisation_id,
+    id: updatedManager.id,
+    created_at: updatedManager.created_at,
+    name: updatedManager.name,
+    phone_number: updatedManager.phone_number,
+    email: updatedManager.email,
+    is_active: updatedManager.is_active,
+    organisation_id: updatedManager.organisation_id,
   };
 };
 

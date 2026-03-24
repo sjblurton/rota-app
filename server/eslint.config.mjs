@@ -31,6 +31,10 @@ export default [
         "error",
         { checksVoidReturn: false },
       ],
+      "@typescript-eslint/no-unnecessary-condition": "error",
+      "@typescript-eslint/no-unnecessary-type-assertion": "error",
+      "@typescript-eslint/require-await": "error",
+      "@typescript-eslint/return-await": ["error", "in-try-catch"],
       "@typescript-eslint/switch-exhaustiveness-check": "error",
     },
   },
@@ -43,6 +47,8 @@ export default [
     rules: {
       "simple-import-sort/imports": "error",
       "simple-import-sort/exports": "error",
+      eqeqeq: ["error", "smart"],
+      "no-duplicate-imports": "error",
       "@typescript-eslint/consistent-type-imports": [
         "error",
         {
@@ -93,6 +99,7 @@ export default [
       ],
       complexity: ["error", 12],
       "unicorn/no-abusive-eslint-disable": "error",
+      "unicorn/prefer-node-protocol": "error",
     },
   },
   {
