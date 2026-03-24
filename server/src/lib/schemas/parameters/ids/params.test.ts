@@ -15,22 +15,11 @@ const validUUID = randomUUID();
 
 describe("id parameter schemas", () => {
   it("accepts valid id params", () => {
-    expect(staffIdParamSchema.safeParse({ staff_id: validUUID }).success).toBe(
-      true,
-    );
-    expect(shiftIdParamSchema.safeParse({ shift_id: validUUID }).success).toBe(
-      true,
-    );
-    expect(swapIdParamSchema.safeParse({ swap_id: validUUID }).success).toBe(
-      true,
-    );
-    expect(
-      organisationIdParamSchema.safeParse({ organisation_id: validUUID })
-        .success,
-    ).toBe(true);
-    expect(
-      managerIdParamSchema.safeParse({ manager_id: validUUID }).success,
-    ).toBe(true);
+    expect(staffIdParamSchema.safeParse({ staff_id: validUUID }).success).toBe(true);
+    expect(shiftIdParamSchema.safeParse({ shift_id: validUUID }).success).toBe(true);
+    expect(swapIdParamSchema.safeParse({ swap_id: validUUID }).success).toBe(true);
+    expect(organisationIdParamSchema.safeParse({ organisation_id: validUUID }).success).toBe(true);
+    expect(managerIdParamSchema.safeParse({ manager_id: validUUID }).success).toBe(true);
     expect(
       organisationManagerIdsParamSchema.safeParse({
         organisation_id: validUUID,

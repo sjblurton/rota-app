@@ -8,30 +8,18 @@ const createIdParamSchema = <TFieldName extends string>(
     [fieldName]: z.uuid().describe(description),
   } as Record<TFieldName, z.ZodUUID>);
 
-export const staffIdParamSchema = createIdParamSchema(
-  "staff_id",
-  "ID of the staff member",
-);
+export const staffIdParamSchema = createIdParamSchema("staff_id", "ID of the staff member");
 
-export const shiftIdParamSchema = createIdParamSchema(
-  "shift_id",
-  "ID of the shift",
-);
+export const shiftIdParamSchema = createIdParamSchema("shift_id", "ID of the shift");
 
-export const swapIdParamSchema = createIdParamSchema(
-  "swap_id",
-  "ID of the swap request",
-);
+export const swapIdParamSchema = createIdParamSchema("swap_id", "ID of the swap request");
 
 export const organisationIdParamSchema = createIdParamSchema(
   "organisation_id",
   "ID of the organisation",
 );
 
-export const managerIdParamSchema = createIdParamSchema(
-  "manager_id",
-  "ID of the manager",
-);
+export const managerIdParamSchema = createIdParamSchema("manager_id", "ID of the manager");
 
 export const organisationManagerIdsParamSchema = z.object({
   organisation_id: z.uuid().describe("ID of the organisation"),

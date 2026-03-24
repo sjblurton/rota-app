@@ -20,9 +20,7 @@ export const swapRequestBodySchema = z.object({
 });
 
 export const swapTargetDecisionBodySchema = z.object({
-  decision: z
-    .enum(["accept", "reject"])
-    .describe("Target staff decision for the swap request"),
+  decision: z.enum(["accept", "reject"]).describe("Target staff decision for the swap request"),
 });
 
 export const swapManagerDecisionBodySchema = z.object({
@@ -43,9 +41,7 @@ export const updateStaffBodySchema = z
     name: nonEmptyTrimmedStringSchema.optional().describe("Updated staff name"),
     phone_number: phoneNumberSchema
       .optional()
-      .describe(
-        "Updated staff mobile number in international format (for example, +447123456789)",
-      ),
+      .describe("Updated staff mobile number in international format (for example, +447123456789)"),
   })
   .refine((payload) => hasAtLeastOneDefinedField(payload), {
     message: "At least one field must be provided to update staff",
@@ -57,14 +53,10 @@ export const createShiftBodySchema = z
     start_time: utcDateTimeSchema.describe(
       "Shift start datetime in ISO 8601 UTC format (trailing Z)",
     ),
-    end_time: utcDateTimeSchema.describe(
-      "Shift end datetime in ISO 8601 UTC format (trailing Z)",
-    ),
+    end_time: utcDateTimeSchema.describe("Shift end datetime in ISO 8601 UTC format (trailing Z)"),
   })
   .refine(
-    (payload) =>
-      toEpochMilliseconds(payload.start_time) <
-      toEpochMilliseconds(payload.end_time),
+    (payload) => toEpochMilliseconds(payload.start_time) < toEpochMilliseconds(payload.end_time),
     {
       message: "start_time must be before end_time",
     },
@@ -74,22 +66,14 @@ export const updateShiftBodySchema = z
   .object({
     start_time: utcDateTimeSchema
       .optional()
-      .describe(
-        "Updated shift start datetime in ISO 8601 UTC format (trailing Z)",
-      ),
+      .describe("Updated shift start datetime in ISO 8601 UTC format (trailing Z)"),
     end_time: utcDateTimeSchema
       .optional()
-      .describe(
-        "Updated shift end datetime in ISO 8601 UTC format (trailing Z)",
-      ),
+      .describe("Updated shift end datetime in ISO 8601 UTC format (trailing Z)"),
   })
   .refine((payload) => hasAtLeastOneDefinedField(payload), {
     message: "At least one field must be provided to update a shift",
   })
-  .refine(
-    (payload) =>
-      hasValidTimeRangeWhenProvided(payload.start_time, payload.end_time),
-    {
-      message: "start_time must be before end_time when both are provided",
-    },
-  );
+  .refine((payload) => hasValidTimeRangeWhenProvided(payload.start_time, payload.end_time), {
+    message: "start_time must be before end_time when both are provided",
+  });

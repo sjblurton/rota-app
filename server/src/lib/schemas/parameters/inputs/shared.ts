@@ -1,5 +1,4 @@
-export const toEpochMilliseconds = (isoUtcDateTime: string) =>
-  Date.parse(isoUtcDateTime);
+export const toEpochMilliseconds = (isoUtcDateTime: string) => Date.parse(isoUtcDateTime);
 
 export const hasAtLeastOneDefinedField = (payload: object) =>
   Object.values(payload).some((value) => value !== undefined);

@@ -37,21 +37,15 @@ describe("staffListQuerySchema", () => {
   });
 
   it("accepts valid pagination", () => {
-    expect(
-      staffListQuerySchema.safeParse({ page_number: 1, page_size: 10 }).success,
-    ).toBe(true);
+    expect(staffListQuerySchema.safeParse({ page_number: 1, page_size: 10 }).success).toBe(true);
   });
 
   it("rejects page_size over 100", () => {
-    expect(staffListQuerySchema.safeParse({ page_size: 101 }).success).toBe(
-      false,
-    );
+    expect(staffListQuerySchema.safeParse({ page_size: 101 }).success).toBe(false);
   });
 
   it("rejects page_number less than 1", () => {
-    expect(staffListQuerySchema.safeParse({ page_number: 0 }).success).toBe(
-      false,
-    );
+    expect(staffListQuerySchema.safeParse({ page_number: 0 }).success).toBe(false);
   });
 });
 
@@ -61,15 +55,11 @@ describe("shiftsListQuerySchema", () => {
   });
 
   it("accepts a valid status filter", () => {
-    expect(shiftsListQuerySchema.safeParse({ status: "pending" }).success).toBe(
-      true,
-    );
+    expect(shiftsListQuerySchema.safeParse({ status: "pending" }).success).toBe(true);
   });
 
   it("rejects an invalid status value", () => {
-    expect(shiftsListQuerySchema.safeParse({ status: "unknown" }).success).toBe(
-      false,
-    );
+    expect(shiftsListQuerySchema.safeParse({ status: "unknown" }).success).toBe(false);
   });
 });
 
@@ -79,15 +69,11 @@ describe("swapsListQuerySchema", () => {
   });
 
   it("accepts valid swap status filter", () => {
-    expect(swapsListQuerySchema.safeParse({ status: "approved" }).success).toBe(
-      true,
-    );
+    expect(swapsListQuerySchema.safeParse({ status: "approved" }).success).toBe(true);
   });
 
   it("rejects an invalid status value", () => {
-    expect(swapsListQuerySchema.safeParse({ status: "unknown" }).success).toBe(
-      false,
-    );
+    expect(swapsListQuerySchema.safeParse({ status: "unknown" }).success).toBe(false);
   });
 });
 
@@ -97,14 +83,10 @@ describe("auditLogsFilterQuerySchema", () => {
   });
 
   it("accepts a valid entity_type", () => {
-    expect(
-      auditLogsFilterQuerySchema.safeParse({ entity_type: "shift" }).success,
-    ).toBe(true);
+    expect(auditLogsFilterQuerySchema.safeParse({ entity_type: "shift" }).success).toBe(true);
   });
 
   it("rejects an invalid entity_type", () => {
-    expect(
-      auditLogsFilterQuerySchema.safeParse({ entity_type: "unknown" }).success,
-    ).toBe(false);
+    expect(auditLogsFilterQuerySchema.safeParse({ entity_type: "unknown" }).success).toBe(false);
   });
 });

@@ -19,9 +19,6 @@ export const updateOrganisationSchema = createOrganisationSchema
     is_active: z.boolean().optional(),
   })
   .partial()
-  .refine(
-    (payload) => Object.values(payload).some((value) => value !== undefined),
-    {
-      message: "At least one field must be provided to update organisation",
-    },
-  );
+  .refine((payload) => Object.values(payload).some((value) => value !== undefined), {
+    message: "At least one field must be provided to update organisation",
+  });

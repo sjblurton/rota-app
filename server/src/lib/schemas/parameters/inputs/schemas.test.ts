@@ -15,28 +15,19 @@ import {
 
 describe("shiftResponseBodySchema", () => {
   it("accepts confirmed", () => {
-    expect(
-      shiftResponseBodySchema.safeParse({ status: "confirmed" }).success,
-    ).toBe(true);
+    expect(shiftResponseBodySchema.safeParse({ status: "confirmed" }).success).toBe(true);
   });
   it("accepts declined", () => {
-    expect(
-      shiftResponseBodySchema.safeParse({ status: "declined" }).success,
-    ).toBe(true);
+    expect(shiftResponseBodySchema.safeParse({ status: "declined" }).success).toBe(true);
   });
   it("rejects invalid status", () => {
-    expect(
-      shiftResponseBodySchema.safeParse({ status: "pending" }).success,
-    ).toBe(false);
+    expect(shiftResponseBodySchema.safeParse({ status: "pending" }).success).toBe(false);
   });
 });
 
 describe("swapRequestBodySchema", () => {
   it("accepts valid target_staff_id", () => {
-    expect(
-      swapRequestBodySchema.safeParse({ target_staff_id: randomUUID() })
-        .success,
-    ).toBe(true);
+    expect(swapRequestBodySchema.safeParse({ target_staff_id: randomUUID() }).success).toBe(true);
   });
   it("rejects missing target_staff_id", () => {
     expect(swapRequestBodySchema.safeParse({}).success).toBe(false);
@@ -45,37 +36,25 @@ describe("swapRequestBodySchema", () => {
 
 describe("swapTargetDecisionBodySchema", () => {
   it("accepts accept", () => {
-    expect(
-      swapTargetDecisionBodySchema.safeParse({ decision: "accept" }).success,
-    ).toBe(true);
+    expect(swapTargetDecisionBodySchema.safeParse({ decision: "accept" }).success).toBe(true);
   });
   it("accepts reject", () => {
-    expect(
-      swapTargetDecisionBodySchema.safeParse({ decision: "reject" }).success,
-    ).toBe(true);
+    expect(swapTargetDecisionBodySchema.safeParse({ decision: "reject" }).success).toBe(true);
   });
   it("rejects invalid decision", () => {
-    expect(
-      swapTargetDecisionBodySchema.safeParse({ decision: "approve" }).success,
-    ).toBe(false);
+    expect(swapTargetDecisionBodySchema.safeParse({ decision: "approve" }).success).toBe(false);
   });
 });
 
 describe("swapManagerDecisionBodySchema", () => {
   it("accepts approve", () => {
-    expect(
-      swapManagerDecisionBodySchema.safeParse({ decision: "approve" }).success,
-    ).toBe(true);
+    expect(swapManagerDecisionBodySchema.safeParse({ decision: "approve" }).success).toBe(true);
   });
   it("accepts reject", () => {
-    expect(
-      swapManagerDecisionBodySchema.safeParse({ decision: "reject" }).success,
-    ).toBe(true);
+    expect(swapManagerDecisionBodySchema.safeParse({ decision: "reject" }).success).toBe(true);
   });
   it("rejects invalid decision", () => {
-    expect(
-      swapManagerDecisionBodySchema.safeParse({ decision: "accept" }).success,
-    ).toBe(false);
+    expect(swapManagerDecisionBodySchema.safeParse({ decision: "accept" }).success).toBe(false);
   });
 });
 
@@ -97,9 +76,7 @@ describe("createStaffBodySchema", () => {
     ).toBe(false);
   });
   it("rejects missing phone_number", () => {
-    expect(createStaffBodySchema.safeParse({ name: "Alice" }).success).toBe(
-      false,
-    );
+    expect(createStaffBodySchema.safeParse({ name: "Alice" }).success).toBe(false);
   });
 });
 
@@ -108,10 +85,7 @@ describe("updateStaffBodySchema", () => {
     expect(updateStaffBodySchema.safeParse({ name: "Bob" }).success).toBe(true);
   });
   it("accepts partial update with phone_number only", () => {
-    expect(
-      updateStaffBodySchema.safeParse({ phone_number: "+441234567890" })
-        .success,
-    ).toBe(true);
+    expect(updateStaffBodySchema.safeParse({ phone_number: "+441234567890" }).success).toBe(true);
   });
   it("rejects empty payload", () => {
     expect(updateStaffBodySchema.safeParse({}).success).toBe(false);
@@ -150,10 +124,9 @@ describe("createShiftBodySchema", () => {
 
 describe("updateShiftBodySchema", () => {
   it("accepts partial update with start_time only", () => {
-    expect(
-      updateShiftBodySchema.safeParse({ start_time: "2024-01-01T08:00:00Z" })
-        .success,
-    ).toBe(true);
+    expect(updateShiftBodySchema.safeParse({ start_time: "2024-01-01T08:00:00Z" }).success).toBe(
+      true,
+    );
   });
   it("accepts valid time range update", () => {
     expect(
