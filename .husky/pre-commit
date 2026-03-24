@@ -1,0 +1,6 @@
+#!/usr/bin/env sh
+set -e
+
+cd server
+npx lint-staged
+npm run lint:typescript
