@@ -1,4 +1,5 @@
 import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
+
 import {
   badRequestResponse,
   conflictResponse,
@@ -6,8 +7,8 @@ import {
   unauthorisedResponse,
 } from "../../../docs/responses";
 import { swapRequestOpenApiSchema } from "../../../docs/schemas";
-import { tokenParamSchema } from "../../../lib/schemas/parameters/token/params";
 import { swapTargetDecisionBodySchema } from "../../../lib/schemas/parameters/inputs/schemas";
+import { tokenParamSchema } from "../../../lib/schemas/parameters/token/params";
 
 const registry = new OpenAPIRegistry();
 

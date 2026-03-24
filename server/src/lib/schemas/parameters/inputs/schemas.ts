@@ -1,12 +1,13 @@
 import z from "zod";
+
 import { nonEmptyTrimmedStringSchema } from "../../strings/non-empty-trimmed-string";
+import { phoneNumberSchema } from "../../strings/phone-number";
 import { utcDateTimeSchema } from "../../time/dateTime";
 import {
   hasAtLeastOneDefinedField,
   hasValidTimeRangeWhenProvided,
   toEpochMilliseconds,
 } from "./shared";
-import { phoneNumberSchema } from "../../strings/phone-number";
 
 export const shiftResponseBodySchema = z.object({
   status: z

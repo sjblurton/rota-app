@@ -1,6 +1,7 @@
 import z from "zod";
-import { createdAtBaseSchema } from "./base";
+
 import { entityTypeEnum } from "../constants/entityTypes";
+import { createdAtBaseSchema } from "./base";
 
 export const auditLogsSchema = createdAtBaseSchema.extend({
   entity_type: entityTypeEnum,

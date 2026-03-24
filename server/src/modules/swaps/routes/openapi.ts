@@ -2,6 +2,7 @@ import {
   OpenApiGeneratorV3,
   OpenAPIRegistry,
 } from "@asteasolutions/zod-to-openapi";
+
 import { docsSchemasRegistry } from "../../../docs/schemas";
 import { swapsOpenApiRegistry } from "./docs";
 

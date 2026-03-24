@@ -1,10 +1,12 @@
 import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
+
 import {
   badRequestResponse,
   conflictResponse,
   notFoundResponse,
   unauthorisedResponse,
 } from "../../../docs/responses";
+import { SUPERADMIN_MESSAGES } from "../../../lib/constants/superadmin-messages";
 import {
   createOrganisationSchema,
   organisationSchema,
@@ -19,7 +21,6 @@ import {
   organisationIdParamSchema,
   organisationManagerIdsParamSchema,
 } from "../../../lib/schemas/parameters/ids/params";
-import { SUPERADMIN_MESSAGES } from "../../../lib/constants/superadmin-messages";
 
 export const superadminOpenApiRegistry = new OpenAPIRegistry();
 

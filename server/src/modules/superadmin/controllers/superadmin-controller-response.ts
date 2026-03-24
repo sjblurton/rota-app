@@ -1,12 +1,13 @@
-import { Response } from "express";
+import { type Response } from "express";
+
+import { SUPERADMIN_MESSAGES } from "../../../lib/constants/superadmin-messages";
+import { SUPERADMIN_RESULT_KINDS } from "../services/constants/superadmin-result-kinds";
 import type {
   CreateManagerForOrganisationResult,
   CreateOrganisationResult,
   UpdateManagerForOrganisationResult,
   UpdateOrganisationResult,
 } from "../services/types/superadmin-service-types";
-import { SUPERADMIN_MESSAGES } from "../../../lib/constants/superadmin-messages";
-import { SUPERADMIN_RESULT_KINDS } from "../services/constants/superadmin-result-kinds";
 
 export const sendCreateOrganisationResponse = (
   response: Response,

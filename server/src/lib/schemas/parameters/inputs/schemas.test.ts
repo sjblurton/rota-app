@@ -1,3 +1,5 @@
+import { randomUUID } from "node:crypto";
+
 import { describe, expect, it } from "vitest";
 
 import {
@@ -10,7 +12,6 @@ import {
   updateShiftBodySchema,
   updateStaffBodySchema,
 } from "./schemas";
-import { randomUUID } from "node:crypto";
 
 describe("shiftResponseBodySchema", () => {
   it("accepts confirmed", () => {

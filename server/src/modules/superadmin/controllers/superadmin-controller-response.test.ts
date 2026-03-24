@@ -1,5 +1,6 @@
-import { Response } from "express";
+import { type Response } from "express";
 import { describe, expect, it, vi } from "vitest";
+
 import { SUPERADMIN_MESSAGES } from "../../../lib/constants/superadmin-messages";
 import {
   sendCreateManagerForOrganisationResponse,

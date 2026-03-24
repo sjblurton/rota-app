@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { openApiDocument } from "./openapi";
 import { SUPERADMIN_MESSAGES } from "../lib/constants/superadmin-messages";
+import { openApiDocument } from "./openapi";
 
 describe("openApiDocument", () => {
   it("includes expected top-level metadata and key paths", () => {

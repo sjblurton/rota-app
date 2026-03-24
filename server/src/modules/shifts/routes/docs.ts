@@ -1,12 +1,13 @@
 import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
-import { tokenSchema } from "../../../lib/schemas/parameters/token/params";
-import { shiftResponseBodySchema } from "../../../lib/schemas/parameters/inputs/schemas";
+
 import {
   badRequestResponse,
   notFoundResponse,
   unauthorisedResponse,
 } from "../../../docs/responses";
 import { shiftOpenApiSchema } from "../../../docs/schemas";
+import { shiftResponseBodySchema } from "../../../lib/schemas/parameters/inputs/schemas";
+import { tokenSchema } from "../../../lib/schemas/parameters/token/params";
 
 const registry = new OpenAPIRegistry();
 

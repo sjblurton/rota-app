@@ -1,6 +1,8 @@
 import { randomUUID } from "node:crypto";
-import z from "zod";
-import { organisationSchema } from "../../../lib/schemas/entities/organisation";
+
+import type z from "zod";
+
+import { type organisationSchema } from "../../../lib/schemas/entities/organisation";
 
 type Organisation = z.infer<typeof organisationSchema>;
 

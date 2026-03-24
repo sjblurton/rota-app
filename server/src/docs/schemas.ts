@@ -1,9 +1,10 @@
 import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
-import z from "./internal/zod-openapi";
+
+import { auditLogsSchema } from "../lib/schemas/entities/auditLogs";
 import { shiftsSchema } from "../lib/schemas/entities/shifts";
 import { staffSchema } from "../lib/schemas/entities/staff";
 import { swapRequestSchema } from "../lib/schemas/entities/swapRequests";
-import { auditLogsSchema } from "../lib/schemas/entities/auditLogs";
+import z from "./internal/zod-openapi";
 
 const registry = new OpenAPIRegistry();
 

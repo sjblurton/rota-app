@@ -14,13 +14,14 @@ const repositoryMocks = vi.hoisted(() => ({
 
 vi.mock("../db/superadmin-repository", () => repositoryMocks);
 
+import { createHash } from "node:crypto";
+
 import {
   createManagerForOrganisation,
   createOrganisation,
   updateManagerForOrganisation,
   updateOrganisation,
 } from "./superadmin-service";
-import { createHash } from "node:crypto";
 
 describe("createOrganisation", () => {
   beforeEach(() => {

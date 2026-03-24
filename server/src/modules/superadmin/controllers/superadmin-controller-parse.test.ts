@@ -1,6 +1,8 @@
 import { randomUUID } from "node:crypto";
-import { Request, Response } from "express";
+
+import { type Request, type Response } from "express";
 import { describe, expect, it, vi } from "vitest";
+
 import {
   parseCreateManagerBody,
   parseCreateOrganisationBody,

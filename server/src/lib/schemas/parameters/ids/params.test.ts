@@ -1,14 +1,15 @@
+import { randomUUID } from "node:crypto";
+
 import { describe, expect, it } from "vitest";
 
 import {
   managerIdParamSchema,
-  organisationManagerIdsParamSchema,
   organisationIdParamSchema,
+  organisationManagerIdsParamSchema,
   shiftIdParamSchema,
   staffIdParamSchema,
   swapIdParamSchema,
 } from "./params";
-import { randomUUID } from "node:crypto";
 
 const validUUID = randomUUID();
 

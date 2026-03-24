@@ -1,6 +1,7 @@
 import z from "zod";
-import { organisationBaseSchema } from "./base";
+
 import { swapRequestStatusEnum } from "../constants/status";
+import { organisationBaseSchema } from "./base";
 
 export const swapRequestSchema = organisationBaseSchema.extend({
   original_shift_id: z.uuid(),

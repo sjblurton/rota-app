@@ -1,4 +1,6 @@
 import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
+import type z from "zod";
+
 import {
   badRequestResponse,
   conflictResponse,
@@ -6,19 +8,23 @@ import {
   unauthorisedResponse,
 } from "../../../docs/responses";
 import {
+  auditLogsOpenApiSchema,
   createPaginatedResponseSchema,
   shiftOpenApiSchema,
   staffOpenApiSchema,
   swapRequestOpenApiSchema,
-  auditLogsOpenApiSchema,
 } from "../../../docs/schemas";
-import z from "zod";
 import {
-  staffListQuerySchema,
-  shiftsListQuerySchema,
-  swapsListQuerySchema,
   auditLogsFilterQuerySchema,
+  shiftsListQuerySchema,
+  staffListQuerySchema,
+  swapsListQuerySchema,
 } from "../../../lib/schemas/parameters/filters/query";
+import {
+  shiftIdParamSchema,
+  staffIdParamSchema,
+  swapIdParamSchema,
+} from "../../../lib/schemas/parameters/ids/params";
 import {
   createShiftBodySchema,
   createStaffBodySchema,
@@ -26,11 +32,6 @@ import {
   updateShiftBodySchema,
   updateStaffBodySchema,
 } from "../../../lib/schemas/parameters/inputs/schemas";
-import {
-  shiftIdParamSchema,
-  staffIdParamSchema,
-  swapIdParamSchema,
-} from "../../../lib/schemas/parameters/ids/params";
 
 const registry = new OpenAPIRegistry();
 

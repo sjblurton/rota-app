@@ -1,9 +1,10 @@
+import { randomUUID } from "node:crypto";
+
 import express from "express";
 import request from "supertest";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 import { superadminRouter } from "./superadmin-router";
-import { randomUUID } from "node:crypto";
 
 const testApp = express();
 

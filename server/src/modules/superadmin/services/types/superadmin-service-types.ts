@@ -1,15 +1,16 @@
-import z from "zod";
+import type z from "zod";
+
 import {
-  createOrganisationSchema,
-  organisationSchema,
-  updateOrganisationSchema,
+  type createOrganisationSchema,
+  type organisationSchema,
+  type updateOrganisationSchema,
 } from "../../../../lib/schemas/entities/organisation";
 import {
-  createManagerSchema,
-  managerWithOrganisationSchema,
-  updateManagerSchema,
+  type createManagerSchema,
+  type managerWithOrganisationSchema,
+  type updateManagerSchema,
 } from "../../../../lib/schemas/entities/staff";
-import { SUPERADMIN_RESULT_KINDS } from "../constants/superadmin-result-kinds";
+import { type SUPERADMIN_RESULT_KINDS } from "../constants/superadmin-result-kinds";
 
 export type CreateOrganisation = z.infer<typeof createOrganisationSchema>;
 export type Organisation = z.infer<typeof organisationSchema>;

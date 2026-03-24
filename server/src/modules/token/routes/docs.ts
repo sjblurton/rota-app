@@ -1,11 +1,12 @@
 import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
-import { tokenSchema } from "../../../lib/schemas/parameters/token/params";
-import { swapRequestBodySchema } from "../../../lib/schemas/parameters/inputs/schemas";
+
 import {
   badRequestResponse,
   notFoundResponse,
   unauthorisedResponse,
 } from "../../../docs/responses";
+import { swapRequestBodySchema } from "../../../lib/schemas/parameters/inputs/schemas";
+import { tokenSchema } from "../../../lib/schemas/parameters/token/params";
 
 const registry = new OpenAPIRegistry();
 

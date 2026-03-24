@@ -1,5 +1,6 @@
 import { timingSafeEqual } from "node:crypto";
-import { RequestHandler } from "express";
+
+import { type RequestHandler } from "express";
 
 const isSuperadminKeyValid = (providedKey: string, expectedKey: string) => {
   const provided = Buffer.from(providedKey);

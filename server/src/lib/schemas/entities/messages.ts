@@ -1,7 +1,8 @@
 import z from "zod";
+
+import { messageTypeEnum } from "../constants/messageType";
 import { utcDateTimeNowDefaultSchema } from "../time/dateTime";
 import { organisationBaseSchema } from "./base";
-import { messageTypeEnum } from "../constants/messageType";
 
 export const messageSchema = organisationBaseSchema.extend({
   staff_id: z.uuid(),

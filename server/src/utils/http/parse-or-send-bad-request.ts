@@ -1,4 +1,4 @@
-import { Response } from "express";
+import { type Response } from "express";
 import z from "zod";
 
 export const parseOrSendBadRequest = <TSchema extends z.ZodType>(

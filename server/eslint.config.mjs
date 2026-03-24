@@ -1,5 +1,6 @@
 import js from "@eslint/js";
 import boundaries from "eslint-plugin-boundaries";
+import simpleImportSort from "eslint-plugin-simple-import-sort";
 import unicorn from "eslint-plugin-unicorn";
 import globals from "globals";
 import tseslint from "typescript-eslint";
@@ -12,8 +13,43 @@ export default [
   },
   ...tseslint.configs.recommended,
   {
-    files: ["src/**/*.{js,mjs,cjs,ts,mts,cts}"],
+    files: ["src/**/*.ts"],
+    ignores: ["src/**/*.test.ts"],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
+    },
+  },
+  {
+    files: ["src/**/*.ts"],
+    ignores: ["src/**/*.test.ts"],
     rules: {
+      "@typescript-eslint/no-floating-promises": "error",
+      "@typescript-eslint/no-misused-promises": [
+        "error",
+        { checksVoidReturn: false },
+      ],
+      "@typescript-eslint/switch-exhaustiveness-check": "error",
+    },
+  },
+  {
+    files: ["src/**/*.{js,mjs,cjs,ts,mts,cts}"],
+    plugins: {
+      unicorn,
+      "simple-import-sort": simpleImportSort,
+    },
+    rules: {
+      "simple-import-sort/imports": "error",
+      "simple-import-sort/exports": "error",
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        {
+          prefer: "type-imports",
+          fixStyle: "inline-type-imports",
+        },
+      ],
       "@typescript-eslint/naming-convention": [
         "error",
         {
@@ -36,6 +72,27 @@ export default [
           leadingUnderscore: "allow",
         },
       ],
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: [
+                "./index",
+                "./index.ts",
+                "../index",
+                "../index.ts",
+                "../../index",
+                "../../index.ts",
+              ],
+              message:
+                "Do not import from barrel files. Import from explicit module files.",
+            },
+          ],
+        },
+      ],
+      complexity: ["error", 12],
+      "unicorn/no-abusive-eslint-disable": "error",
     },
   },
   {
@@ -51,6 +108,7 @@ export default [
       ],
     },
   },
+
   {
     files: ["src/**/*.{js,mjs,cjs,ts,mts,cts}"],
     plugins: { boundaries },
