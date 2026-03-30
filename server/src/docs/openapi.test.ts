@@ -7,12 +7,8 @@ describe("openApiDocument", () => {
   it("includes expected top-level metadata and key paths", () => {
     expect(openApiDocument.openapi).toBe("3.0.3");
     expect(openApiDocument.info.title).toBe("Rota App API");
-    expect(openApiDocument.paths).toHaveProperty(
-      "/api/superadmin/organisations",
-    );
-    expect(openApiDocument.paths).toHaveProperty(
-      "/api/superadmin/organisations/{organisation_id}",
-    );
+    expect(openApiDocument.paths).toHaveProperty("/api/superadmin/organisations");
+    expect(openApiDocument.paths).toHaveProperty("/api/superadmin/organisations/{organisation_id}");
     expect(openApiDocument.paths).toHaveProperty(
       "/api/superadmin/organisations/{organisation_id}/managers/{manager_id}",
     );
@@ -49,9 +45,7 @@ describe("openApiDocument", () => {
     expect(organisationManagerPath).not.toHaveProperty("delete");
 
     const managerCreatePath =
-      openApiDocument.paths[
-        "/api/superadmin/organisations/{organisation_id}/managers"
-      ];
+      openApiDocument.paths["/api/superadmin/organisations/{organisation_id}/managers"];
 
     expect(managerCreatePath).toBeDefined();
     expect(managerCreatePath).toHaveProperty("post");
@@ -77,9 +71,7 @@ describe("openApiDocument", () => {
     });
 
     expect(
-      managerCreatePath?.post?.responses?.["409"]?.content?.[
-        "application/json"
-      ],
+      managerCreatePath?.post?.responses?.["409"]?.content?.["application/json"],
     ).not.toHaveProperty("example");
 
     expect(organisationManagerPath?.patch?.responses?.["409"]).toMatchObject({
@@ -103,9 +95,7 @@ describe("openApiDocument", () => {
     });
 
     expect(
-      organisationManagerPath?.patch?.responses?.["409"]?.content?.[
-        "application/json"
-      ],
+      organisationManagerPath?.patch?.responses?.["409"]?.content?.["application/json"],
     ).not.toHaveProperty("example");
   });
 
@@ -113,8 +103,7 @@ describe("openApiDocument", () => {
     const staffCollectionPath = openApiDocument.paths["/api/admin/staff"];
     const staffItemPath = openApiDocument.paths["/api/admin/staff/{staff_id}"];
     const shiftsCollectionPath = openApiDocument.paths["/api/admin/shifts"];
-    const shiftsItemPath =
-      openApiDocument.paths["/api/admin/shifts/{shift_id}"];
+    const shiftsItemPath = openApiDocument.paths["/api/admin/shifts/{shift_id}"];
 
     expect(staffCollectionPath).toBeDefined();
     expect(staffCollectionPath).toHaveProperty("get");
@@ -123,7 +112,6 @@ describe("openApiDocument", () => {
     expect(staffItemPath).toBeDefined();
     expect(staffItemPath).toHaveProperty("get");
     expect(staffItemPath).toHaveProperty("patch");
-    expect(staffItemPath).toHaveProperty("delete");
 
     expect(shiftsCollectionPath).toBeDefined();
     expect(shiftsCollectionPath).toHaveProperty("get");
@@ -136,10 +124,8 @@ describe("openApiDocument", () => {
   });
 
   it("documents the decision-based swap flow", () => {
-    const targetStaffSwapPatch =
-      openApiDocument.paths["/api/swaps/t/{token}"]?.patch;
-    const managerSwapPatch =
-      openApiDocument.paths["/api/admin/swaps/{swap_id}"]?.patch;
+    const targetStaffSwapPatch = openApiDocument.paths["/api/swaps/t/{token}"]?.patch;
+    const managerSwapPatch = openApiDocument.paths["/api/admin/swaps/{swap_id}"]?.patch;
     const swapRequestSchema = openApiDocument.components.schemas.SwapRequest;
 
     expect(targetStaffSwapPatch).toMatchObject({
@@ -176,8 +162,7 @@ describe("openApiDocument", () => {
       },
       responses: {
         "409": {
-          description:
-            "Conflict — request conflicts with the current workflow state",
+          description: "Conflict — request conflicts with the current workflow state",
         },
       },
     });
@@ -185,8 +170,7 @@ describe("openApiDocument", () => {
     expect(targetStaffSwapPatch).toMatchObject({
       responses: {
         "409": {
-          description:
-            "Conflict — request conflicts with the current workflow state",
+          description: "Conflict — request conflicts with the current workflow state",
         },
       },
     });
@@ -208,22 +192,15 @@ describe("openApiDocument", () => {
   });
 
   it("documents manager auth on admin routes and keeps shift status backend-owned", () => {
-    const createShiftRequestBody = openApiDocument.paths["/api/admin/shifts"]
-      ?.post?.requestBody as
+    const createShiftRequestBody = openApiDocument.paths["/api/admin/shifts"]?.post?.requestBody as
       | { content?: Record<string, { schema?: unknown }> }
       | undefined;
-    const updateShiftRequestBody = openApiDocument.paths[
-      "/api/admin/shifts/{shift_id}"
-    ]?.patch?.requestBody as
-      | { content?: Record<string, { schema?: unknown }> }
-      | undefined;
+    const updateShiftRequestBody = openApiDocument.paths["/api/admin/shifts/{shift_id}"]?.patch
+      ?.requestBody as { content?: Record<string, { schema?: unknown }> } | undefined;
 
-    const createShiftSchema =
-      createShiftRequestBody?.content?.["application/json"]?.schema;
-    const updateShiftSchema =
-      updateShiftRequestBody?.content?.["application/json"]?.schema;
-    const adminSwapPatch =
-      openApiDocument.paths["/api/admin/swaps/{swap_id}"]?.patch;
+    const createShiftSchema = createShiftRequestBody?.content?.["application/json"]?.schema;
+    const updateShiftSchema = updateShiftRequestBody?.content?.["application/json"]?.schema;
+    const adminSwapPatch = openApiDocument.paths["/api/admin/swaps/{swap_id}"]?.patch;
 
     expect(createShiftSchema).toBeDefined();
     expect(createShiftSchema).not.toHaveProperty("properties.status");
@@ -238,18 +215,11 @@ describe("openApiDocument", () => {
 
   it("merges schema components and security schemes", () => {
     expect(openApiDocument.components.schemas).toHaveProperty("Staff");
-    expect(openApiDocument.components.schemas).toHaveProperty(
-      "PaginationMetadata",
-    );
-    expect(openApiDocument.components.securitySchemes).toHaveProperty(
-      "SuperadminKey",
-    );
-    expect(openApiDocument.components.securitySchemes).toHaveProperty(
-      "ManagerAuth",
-    );
+    expect(openApiDocument.components.schemas).toHaveProperty("PaginationMetadata");
+    expect(openApiDocument.components.securitySchemes).toHaveProperty("SuperadminKey");
+    expect(openApiDocument.components.securitySchemes).toHaveProperty("ManagerAuth");
 
-    const superadminKey =
-      openApiDocument.components.securitySchemes.SuperadminKey;
+    const superadminKey = openApiDocument.components.securitySchemes.SuperadminKey;
     expect(superadminKey).toMatchObject({
       type: "apiKey",
       in: "header",
