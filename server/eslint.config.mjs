@@ -4,6 +4,8 @@ import sonarjs from "eslint-plugin-sonarjs";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import unicorn from "eslint-plugin-unicorn";
 import vitest from "eslint-plugin-vitest";
+import { boundariesDependencyRules } from "./eslint/boundaries/dependencies.mjs";
+import { boundariesElements } from "./eslint/boundaries/elements.mjs";
 import globals from "globals";
 import tseslint from "typescript-eslint";
 
@@ -136,6 +138,40 @@ export default [
       ],
     },
   },
+  {
+    files: ["src/server.ts"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["./modules/**"],
+              message:
+                "Do not import feature modules directly in server.ts. Use src/bootstrap/initialise-modules.ts.",
+            },
+          ],
+        },
+      ],
+    },
+  },
+  {
+    files: ["src/app.ts"],
+    rules: {
+      "no-restricted-imports": [
+        "error",
+        {
+          patterns: [
+            {
+              group: ["./modules/*/bootstrap/**"],
+              message:
+                "Do not import module bootstrap code in app.ts. Use src/bootstrap/initialise-modules.ts.",
+            },
+          ],
+        },
+      ],
+    },
+  },
 
   {
     files: ["src/**/*.{js,mjs,cjs,ts,mts,cts}"],
@@ -146,79 +182,7 @@ export default [
           extensions: [".js", ".mjs", ".cjs", ".ts", ".mts", ".cts", ".json"],
         },
       },
-      "boundaries/elements": [
-        {
-          type: "docs-schemas-internal",
-          pattern: "src/docs/internal/zod-openapi.ts",
-          mode: "full",
-        },
-        {
-          type: "docs-schemas",
-          pattern: "src/docs/schemas.ts",
-          mode: "full",
-        },
-        {
-          type: "docs-internal",
-          pattern: "src/docs/internal/**/*",
-          mode: "full",
-        },
-        {
-          type: "docs",
-          pattern: "src/docs/**/*",
-          mode: "full",
-        },
-        {
-          type: "lib",
-          pattern: "src/lib/**/*",
-          mode: "full",
-        },
-        {
-          type: "utils",
-          pattern: "src/utils/**/*",
-          mode: "full",
-        },
-        {
-          type: "module-db",
-          pattern: "src/modules/*/db/**/*",
-          capture: ["moduleName"],
-          mode: "full",
-        },
-        {
-          type: "module-services",
-          pattern: "src/modules/*/services/**/*",
-          capture: ["moduleName"],
-          mode: "full",
-        },
-        {
-          type: "module-controllers",
-          pattern: "src/modules/*/controllers/**/*",
-          capture: ["moduleName"],
-          mode: "full",
-        },
-        {
-          type: "module-router",
-          pattern: "src/modules/*/routes/*router.ts",
-          capture: ["moduleName"],
-          mode: "full",
-        },
-        {
-          type: "module-routes",
-          pattern: "src/modules/*/routes/**/*",
-          capture: ["moduleName"],
-          mode: "full",
-        },
-        {
-          type: "module",
-          pattern: "src/modules/*/**/*",
-          capture: ["moduleName"],
-          mode: "full",
-        },
-        {
-          type: "source",
-          pattern: "src/*.*",
-          mode: "full",
-        },
-      ],
+      "boundaries/elements": boundariesElements,
     },
     rules: {
       ...boundaries.configs.recommended.rules,
@@ -244,143 +208,7 @@ export default [
         "error",
         {
           default: "disallow",
-          rules: [
-            {
-              from: { type: "docs-schemas" },
-              allow: { to: { type: ["docs-schemas-internal", "lib"] } },
-            },
-            {
-              from: { type: "docs" },
-              allow: {
-                to: {
-                  type: ["docs", "docs-schemas", "docs-internal", "module", "module-routes", "lib"],
-                },
-              },
-            },
-            {
-              from: { type: "module-db" },
-              allow: [
-                {
-                  to: {
-                    type: "module-db",
-                    captured: { moduleName: "{{ from.captured.moduleName }}" },
-                  },
-                },
-                { to: { type: ["docs", "docs-schemas", "lib", "utils"] } },
-              ],
-            },
-            {
-              from: { type: "module-services" },
-              allow: [
-                {
-                  to: {
-                    type: "module-services",
-                    captured: { moduleName: "{{ from.captured.moduleName }}" },
-                  },
-                },
-                {
-                  to: {
-                    type: "module-db",
-                    captured: { moduleName: "{{ from.captured.moduleName }}" },
-                  },
-                },
-                { to: { type: ["docs", "docs-schemas", "lib", "utils"] } },
-              ],
-            },
-            {
-              from: { type: "module-controllers" },
-              allow: [
-                {
-                  to: {
-                    type: "module-controllers",
-                    captured: { moduleName: "{{ from.captured.moduleName }}" },
-                  },
-                },
-                {
-                  to: {
-                    type: "module-services",
-                    captured: { moduleName: "{{ from.captured.moduleName }}" },
-                  },
-                },
-                { to: { type: ["docs", "docs-schemas", "lib", "utils"] } },
-              ],
-            },
-            {
-              from: { type: "module-router" },
-              allow: [
-                {
-                  to: {
-                    type: "module-router",
-                    captured: { moduleName: "{{ from.captured.moduleName }}" },
-                  },
-                },
-                {
-                  to: {
-                    type: "module-controllers",
-                    captured: { moduleName: "{{ from.captured.moduleName }}" },
-                  },
-                },
-                {
-                  to: {
-                    type: "module-routes",
-                    captured: { moduleName: "{{ from.captured.moduleName }}" },
-                  },
-                },
-                { to: { type: ["docs", "docs-schemas", "lib", "utils"] } },
-              ],
-            },
-            {
-              from: { type: "module-routes" },
-              allow: [
-                {
-                  to: {
-                    type: "module-routes",
-                    captured: { moduleName: "{{ from.captured.moduleName }}" },
-                  },
-                },
-                {
-                  to: {
-                    type: "module-router",
-                    captured: { moduleName: "{{ from.captured.moduleName }}" },
-                  },
-                },
-                {
-                  to: {
-                    type: "module-controllers",
-                    captured: { moduleName: "{{ from.captured.moduleName }}" },
-                  },
-                },
-                { to: { type: ["docs", "docs-schemas", "lib", "utils"] } },
-              ],
-            },
-            {
-              from: { type: "module" },
-              allow: [
-                {
-                  to: {
-                    type: "module",
-                    captured: { moduleName: "{{ from.captured.moduleName }}" },
-                  },
-                },
-                { to: { type: ["docs", "docs-schemas", "lib", "utils"] } },
-              ],
-            },
-            {
-              from: { type: "lib" },
-              allow: { to: { type: "lib" } },
-            },
-            {
-              from: { type: "utils" },
-              allow: { to: { type: ["utils", "lib"] } },
-            },
-            {
-              from: { type: "source" },
-              allow: [
-                { to: { type: ["source", "docs", "lib", "utils"] } },
-                { to: { type: "module-router" } },
-              ],
-            },
-          ],
+          rules: boundariesDependencyRules,
         },
       ],
     },

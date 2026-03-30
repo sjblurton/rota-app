@@ -1,15 +1,9 @@
-import {
-  OpenApiGeneratorV3,
-  OpenAPIRegistry,
-} from "@asteasolutions/zod-to-openapi";
+import { OpenApiGeneratorV3, OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
 
 import { docsSchemasRegistry } from "../../../docs/schemas";
 import { shiftsOpenApiRegistry } from "./docs";
 
-const registry = new OpenAPIRegistry([
-  docsSchemasRegistry,
-  shiftsOpenApiRegistry,
-]);
+const registry = new OpenAPIRegistry([docsSchemasRegistry, shiftsOpenApiRegistry]);
 
 const generator = new OpenApiGeneratorV3(registry.definitions);
 

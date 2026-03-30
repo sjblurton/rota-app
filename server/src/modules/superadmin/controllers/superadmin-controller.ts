@@ -13,18 +13,15 @@ import {
   parseOrganisationManagerIdsParams,
   parseUpdateManagerBody,
   parseUpdateOrganisationBody,
-} from "./superadmin-controller-parse";
+} from "./utils/superadmin-controller-parse";
 import {
   sendCreateManagerForOrganisationResponse,
   sendCreateOrganisationResponse,
   sendUpdateManagerForOrganisationResponse,
   sendUpdateOrganisationResponse,
-} from "./superadmin-controller-response";
+} from "./utils/superadmin-controller-response";
 
-export const createOrganisationController = (
-  request: Request,
-  response: Response,
-) => {
+export const createOrganisationController = (request: Request, response: Response) => {
   const parsedBody = parseCreateOrganisationBody(request, response);
 
   if (!parsedBody) {
@@ -35,10 +32,7 @@ export const createOrganisationController = (
   sendCreateOrganisationResponse(response, organisation);
 };
 
-export const createManagerForOrganisationController = (
-  request: Request,
-  response: Response,
-) => {
+export const createManagerForOrganisationController = (request: Request, response: Response) => {
   const parsedParams = parseOrganisationIdParams(request, response);
 
   if (!parsedParams) {
@@ -51,18 +45,12 @@ export const createManagerForOrganisationController = (
     return;
   }
 
-  const result = createManagerForOrganisation(
-    parsedParams.organisation_id,
-    parsedBody,
-  );
+  const result = createManagerForOrganisation(parsedParams.organisation_id, parsedBody);
 
   sendCreateManagerForOrganisationResponse(response, result);
 };
 
-export const updateOrganisationController = (
-  request: Request,
-  response: Response,
-) => {
+export const updateOrganisationController = (request: Request, response: Response) => {
   const parsedParams = parseOrganisationIdParams(request, response);
 
   if (!parsedParams) {
@@ -80,10 +68,7 @@ export const updateOrganisationController = (
   sendUpdateOrganisationResponse(response, result);
 };
 
-export const updateManagerForOrganisationController = (
-  request: Request,
-  response: Response,
-) => {
+export const updateManagerForOrganisationController = (request: Request, response: Response) => {
   const parsedParams = parseOrganisationManagerIdsParams(request, response);
 
   if (!parsedParams) {

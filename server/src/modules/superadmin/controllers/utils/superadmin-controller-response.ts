@@ -1,22 +1,20 @@
 import { type Response } from "express";
 
-import { SUPERADMIN_MESSAGES } from "../../../lib/constants/superadmin-messages";
-import { SUPERADMIN_RESULT_KINDS } from "../services/constants/superadmin-result-kinds";
+import { SUPERADMIN_MESSAGES } from "../../../../lib/constants/superadmin-messages";
+import { SUPERADMIN_RESULT_KINDS } from "../../services/constants/superadmin-result-kinds";
 import type {
   CreateManagerForOrganisationResult,
   CreateOrganisationResult,
   UpdateManagerForOrganisationResult,
   UpdateOrganisationResult,
-} from "../services/types/superadmin-service-types";
+} from "../../services/types/superadmin-service-types";
 
 export const sendCreateOrganisationResponse = (
   response: Response,
   result: CreateOrganisationResult,
 ) => {
   if (!result) {
-    response
-      .status(409)
-      .json({ message: SUPERADMIN_MESSAGES.organisationAlreadyExists });
+    response.status(409).json({ message: SUPERADMIN_MESSAGES.organisationAlreadyExists });
     return;
   }
 
@@ -28,16 +26,12 @@ export const sendCreateManagerForOrganisationResponse = (
   result: CreateManagerForOrganisationResult,
 ) => {
   if (result.kind === SUPERADMIN_RESULT_KINDS.organisationNotFound) {
-    response
-      .status(404)
-      .json({ message: SUPERADMIN_MESSAGES.organisationNotFound });
+    response.status(404).json({ message: SUPERADMIN_MESSAGES.organisationNotFound });
     return;
   }
 
   if (result.kind === SUPERADMIN_RESULT_KINDS.organisationInactive) {
-    response
-      .status(409)
-      .json({ message: SUPERADMIN_MESSAGES.organisationInactive });
+    response.status(409).json({ message: SUPERADMIN_MESSAGES.organisationInactive });
     return;
   }
 
@@ -56,16 +50,12 @@ export const sendUpdateOrganisationResponse = (
   result: UpdateOrganisationResult,
 ) => {
   if (result.kind === SUPERADMIN_RESULT_KINDS.organisationNotFound) {
-    response
-      .status(404)
-      .json({ message: SUPERADMIN_MESSAGES.organisationNotFound });
+    response.status(404).json({ message: SUPERADMIN_MESSAGES.organisationNotFound });
     return;
   }
 
   if (result.kind === SUPERADMIN_RESULT_KINDS.organisationNameConflict) {
-    response
-      .status(409)
-      .json({ message: SUPERADMIN_MESSAGES.organisationAlreadyExists });
+    response.status(409).json({ message: SUPERADMIN_MESSAGES.organisationAlreadyExists });
     return;
   }
 
@@ -77,16 +67,12 @@ export const sendUpdateManagerForOrganisationResponse = (
   result: UpdateManagerForOrganisationResult,
 ) => {
   if (result.kind === SUPERADMIN_RESULT_KINDS.organisationNotFound) {
-    response
-      .status(404)
-      .json({ message: SUPERADMIN_MESSAGES.organisationNotFound });
+    response.status(404).json({ message: SUPERADMIN_MESSAGES.organisationNotFound });
     return;
   }
 
   if (result.kind === SUPERADMIN_RESULT_KINDS.organisationInactive) {
-    response
-      .status(409)
-      .json({ message: SUPERADMIN_MESSAGES.organisationInactive });
+    response.status(409).json({ message: SUPERADMIN_MESSAGES.organisationInactive });
     return;
   }
 

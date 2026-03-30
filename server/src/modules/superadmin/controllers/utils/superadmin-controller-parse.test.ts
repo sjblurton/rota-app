@@ -12,8 +12,7 @@ import {
   parseUpdateOrganisationBody,
 } from "./superadmin-controller-parse";
 
-const createRequest = (request: Partial<Request>) =>
-  request as unknown as Request;
+const createRequest = (request: Partial<Request>) => request as unknown as Request;
 
 const createResponse = () => {
   const response = {

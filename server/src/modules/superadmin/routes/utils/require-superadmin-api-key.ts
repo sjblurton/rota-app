@@ -13,17 +13,11 @@ const isSuperadminKeyValid = (providedKey: string, expectedKey: string) => {
   return timingSafeEqual(provided, expected);
 };
 
-export const requireSuperadminApiKey: RequestHandler = (
-  request,
-  response,
-  next,
-) => {
+export const requireSuperadminApiKey: RequestHandler = (request, response, next) => {
   const configuredKey = process.env["SUPERADMIN_API_KEY"];
 
   if (!configuredKey) {
-    response
-      .status(500)
-      .json({ message: "Superadmin API key is not configured" });
+    response.status(500).json({ message: "Superadmin API key is not configured" });
     return;
   }
 
