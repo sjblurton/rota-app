@@ -1,4 +1,4 @@
-import z from "zod";
+import { z } from "zod";
 
 import { messageTypeEnum } from "../constants/messageType";
 import { utcDateTimeNowDefaultSchema } from "../time/dateTime";

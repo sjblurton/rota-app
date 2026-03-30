@@ -1,6 +1,6 @@
 import { type Response } from "express";
 import { describe, expect, it, vi } from "vitest";
-import z from "zod";
+import { z } from "zod";
 
 import { parseOrSendBadRequest } from "./parse-or-send-bad-request";
 
@@ -40,12 +40,7 @@ describe("parseOrSendBadRequest", () => {
       name: z.string(),
     });
 
-    const result = parseOrSendBadRequest(
-      schema,
-      {},
-      response,
-      "Invalid payload",
-    );
+    const result = parseOrSendBadRequest(schema, {}, response, "Invalid payload");
 
     expect(result).toBeNull();
     expect(response.status).toHaveBeenCalledWith(400);
@@ -61,12 +56,7 @@ describe("parseOrSendBadRequest", () => {
       name: z.string().min(1),
     });
 
-    const result = parseOrSendBadRequest(
-      schema,
-      { name: "" },
-      response,
-      "Invalid payload",
-    );
+    const result = parseOrSendBadRequest(schema, { name: "" }, response, "Invalid payload");
 
     expect(result).toBeNull();
     expect(response.status).toHaveBeenCalledWith(400);

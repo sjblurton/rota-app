@@ -1,4 +1,4 @@
-import z from "zod";
+import { z } from "zod";
 
 import { shiftStatusEnum } from "../constants/status";
 import { utcDateTimeSchema } from "../time/dateTime";

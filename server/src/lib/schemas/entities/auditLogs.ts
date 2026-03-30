@@ -1,4 +1,4 @@
-import z from "zod";
+import { z } from "zod";
 
 import { entityTypeEnum } from "../constants/entityTypes";
 import { createdAtBaseSchema } from "./base";

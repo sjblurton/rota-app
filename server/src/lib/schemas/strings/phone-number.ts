@@ -1,4 +1,4 @@
-import z from "zod";
+import { z } from "zod";
 
 const INVALID_PHONE_NUMBER_ERROR =
   "Phone number must be in international format including country code (for example, +447123456789)";

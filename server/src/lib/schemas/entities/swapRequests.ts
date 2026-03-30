@@ -1,4 +1,4 @@
-import z from "zod";
+import { z } from "zod";
 
 import { swapRequestStatusEnum } from "../constants/status";
 import { organisationBaseSchema } from "./base";

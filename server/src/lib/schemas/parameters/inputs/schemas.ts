@@ -1,4 +1,4 @@
-import z from "zod";
+import { z } from "zod";
 
 import { nonEmptyTrimmedStringSchema } from "../../strings/non-empty-trimmed-string";
 import { phoneNumberSchema } from "../../strings/phone-number";
