@@ -64,6 +64,33 @@ describe("superadmin-controller orchestration", () => {
     expect(responseMapperMocks.sendCreateOrganisationResponse).not.toHaveBeenCalled();
   });
 
+  it("returns early when update organisation body parsing fails", () => {
+    parseMocks.parseOrganisationIdParams.mockReturnValue({ organisation_id: "id" });
+    parseMocks.parseUpdateOrganisationBody.mockReturnValue(null);
+    const request = createRequest({ params: {}, body: {} });
+    const response = createResponse();
+
+    updateOrganisationController(request, response);
+
+    expect(serviceMocks.updateOrganisation).not.toHaveBeenCalled();
+    expect(responseMapperMocks.sendUpdateOrganisationResponse).not.toHaveBeenCalled();
+  });
+
+  it("returns early when update manager body parsing fails", () => {
+    parseMocks.parseOrganisationManagerIdsParams.mockReturnValue({
+      organisation_id: "id",
+      manager_id: "mid",
+    });
+    parseMocks.parseUpdateManagerBody.mockReturnValue(null);
+    const request = createRequest({ params: {}, body: {} });
+    const response = createResponse();
+
+    updateManagerForOrganisationController(request, response);
+
+    expect(serviceMocks.updateManagerForOrganisation).not.toHaveBeenCalled();
+    expect(responseMapperMocks.sendUpdateManagerForOrganisationResponse).not.toHaveBeenCalled();
+  });
+
   it("creates organisation and delegates response mapping", () => {
     parseMocks.parseCreateOrganisationBody.mockReturnValue({
       name: "Acme Hospital",
