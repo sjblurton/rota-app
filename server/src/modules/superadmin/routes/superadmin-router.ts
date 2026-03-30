@@ -1,5 +1,6 @@
 import express from "express";
 
+import { requireSuperadminApiKey } from "../../../lib/auth/require-superadmin-api-key";
 import { seedSuperadminStore } from "../bootstrap/seed-superadmin-store";
 import {
   createManagerForOrganisationController,
@@ -7,7 +8,6 @@ import {
   updateManagerForOrganisationController,
   updateOrganisationController,
 } from "../controllers/superadmin-controller";
-import { requireSuperadminApiKey } from "./utils/require-superadmin-api-key";
 
 const superadminRouter = express.Router();
 

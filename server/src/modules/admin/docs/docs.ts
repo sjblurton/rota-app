@@ -85,8 +85,7 @@ registerAdminPath({
   method: "get",
   path: "/api/admin/staff",
   summary: "List staff members",
-  description:
-    "Returns all staff members in the organisation. Requires admin authentication.",
+  description: "Returns all staff members in the organisation. Requires admin authentication.",
   tags: adminTags,
   request: {
     query: staffListQuerySchema,
@@ -104,8 +103,7 @@ registerAdminPath({
   method: "post",
   path: "/api/admin/staff",
   summary: "Create staff member",
-  description:
-    "Creates a new staff member in the organisation. Requires admin authentication.",
+  description: "Creates a new staff member in the organisation. Requires admin authentication.",
   tags: adminTags,
   request: {
     body: {
@@ -128,17 +126,13 @@ registerAdminPath({
   method: "get",
   path: "/api/admin/staff/{staff_id}",
   summary: "Get staff member details",
-  description:
-    "Returns the details of a specific staff member. Requires admin authentication.",
+  description: "Returns the details of a specific staff member. Requires admin authentication.",
   tags: adminTags,
   request: {
     params: staffIdParamSchema,
   },
   responses: {
-    ...successResponse(
-      staffOpenApiSchema,
-      "Staff member details returned successfully",
-    ),
+    ...successResponse(staffOpenApiSchema, "Staff member details returned successfully"),
     ...adminErrorResponses,
   },
 });
@@ -147,8 +141,7 @@ registerAdminPath({
   method: "patch",
   path: "/api/admin/staff/{staff_id}",
   summary: "Update staff member",
-  description:
-    "Updates a staff member in the organisation. Requires admin authentication.",
+  description: "Updates a staff member in the organisation. Requires admin authentication.",
   tags: adminTags,
   request: {
     params: staffIdParamSchema,
@@ -169,29 +162,10 @@ registerAdminPath({
 });
 
 registerAdminPath({
-  method: "delete",
-  path: "/api/admin/staff/{staff_id}",
-  summary: "Delete staff member",
-  description:
-    "Deletes a staff member from the organisation. Requires admin authentication.",
-  tags: adminTags,
-  request: {
-    params: staffIdParamSchema,
-  },
-  responses: {
-    "204": {
-      description: "Staff member deleted successfully",
-    },
-    ...adminErrorResponses,
-  },
-});
-
-registerAdminPath({
   method: "get",
   path: "/api/admin/shifts",
   summary: "List shifts",
-  description:
-    "Returns all shifts in the organisation. Requires admin authentication.",
+  description: "Returns all shifts in the organisation. Requires admin authentication.",
   tags: adminTags,
   request: {
     query: shiftsListQuerySchema,
@@ -209,8 +183,7 @@ registerAdminPath({
   method: "post",
   path: "/api/admin/shifts",
   summary: "Create shift",
-  description:
-    "Creates a new shift in the organisation. Requires admin authentication.",
+  description: "Creates a new shift in the organisation. Requires admin authentication.",
   tags: adminTags,
   request: {
     body: {
@@ -233,17 +206,13 @@ registerAdminPath({
   method: "get",
   path: "/api/admin/shifts/{shift_id}",
   summary: "Get shift details",
-  description:
-    "Returns details for a specific shift. Requires admin authentication.",
+  description: "Returns details for a specific shift. Requires admin authentication.",
   tags: adminTags,
   request: {
     params: shiftIdParamSchema,
   },
   responses: {
-    ...successResponse(
-      shiftOpenApiSchema,
-      "Shift details returned successfully",
-    ),
+    ...successResponse(shiftOpenApiSchema, "Shift details returned successfully"),
     ...adminErrorResponses,
   },
 });
@@ -252,8 +221,7 @@ registerAdminPath({
   method: "patch",
   path: "/api/admin/shifts/{shift_id}",
   summary: "Update shift",
-  description:
-    "Updates a shift in the organisation. Requires admin authentication.",
+  description: "Updates a shift in the organisation. Requires admin authentication.",
   tags: adminTags,
   request: {
     params: shiftIdParamSchema,
@@ -277,8 +245,7 @@ registerAdminPath({
   method: "delete",
   path: "/api/admin/shifts/{shift_id}",
   summary: "Delete shift",
-  description:
-    "Deletes a shift from the organisation. Requires admin authentication.",
+  description: "Deletes a shift from the organisation. Requires admin authentication.",
   tags: adminTags,
   request: {
     params: shiftIdParamSchema,
@@ -314,8 +281,7 @@ registerAdminPath({
   method: "get",
   path: "/api/admin/swaps",
   summary: "List swap requests",
-  description:
-    "Returns all swap requests in the organisation. Requires admin authentication.",
+  description: "Returns all swap requests in the organisation. Requires admin authentication.",
   tags: adminTags,
   request: {
     query: swapsListQuerySchema,

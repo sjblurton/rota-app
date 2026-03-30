@@ -1,4 +1,4 @@
-import { adminOpenApiDocument } from "../modules/admin/routes/openapi";
+import { adminOpenApiDocument } from "../modules/admin/docs/openapi";
 import { shiftsOpenApiDocument } from "../modules/shifts/routes/openapi";
 import { superadminOpenApiDocument } from "../modules/superadmin/docs/openapi";
 import { swapsOpenApiDocument } from "../modules/swaps/routes/openapi";

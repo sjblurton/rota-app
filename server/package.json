@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "lint": "eslint .",
+    "lint": "eslint --fix .",
     "lint:typescript": "tsc --noEmit",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "test": "vitest",
