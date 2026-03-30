@@ -25,8 +25,8 @@ const responseMapperMocks = vi.hoisted(() => ({
 }));
 
 vi.mock("../services/superadmin-service", () => serviceMocks);
-vi.mock("./superadmin-controller-parse", () => parseMocks);
-vi.mock("./superadmin-controller-response", () => responseMapperMocks);
+vi.mock("./utils/superadmin-controller-parse", () => parseMocks);
+vi.mock("./utils/superadmin-controller-response", () => responseMapperMocks);
 
 import {
   createManagerForOrganisationController,
@@ -35,8 +35,7 @@ import {
   updateOrganisationController,
 } from "./superadmin-controller";
 
-const createRequest = (request: Partial<Request>) =>
-  request as unknown as Request;
+const createRequest = (request: Partial<Request>) => request as unknown as Request;
 
 const createResponse = () => {
   const response = {
@@ -62,9 +61,7 @@ describe("superadmin-controller orchestration", () => {
     createOrganisationController(request, response);
 
     expect(serviceMocks.createOrganisation).not.toHaveBeenCalled();
-    expect(
-      responseMapperMocks.sendCreateOrganisationResponse,
-    ).not.toHaveBeenCalled();
+    expect(responseMapperMocks.sendCreateOrganisationResponse).not.toHaveBeenCalled();
   });
 
   it("creates organisation and delegates response mapping", () => {
@@ -80,9 +77,7 @@ describe("superadmin-controller orchestration", () => {
     expect(serviceMocks.createOrganisation).toHaveBeenCalledWith({
       name: "Acme Hospital",
     });
-    expect(
-      responseMapperMocks.sendCreateOrganisationResponse,
-    ).toHaveBeenCalledWith(response, null);
+    expect(responseMapperMocks.sendCreateOrganisationResponse).toHaveBeenCalledWith(response, null);
   });
 
   it("returns early when create manager organisation id parsing fails", () => {
@@ -94,9 +89,7 @@ describe("superadmin-controller orchestration", () => {
 
     expect(parseMocks.parseCreateManagerBody).not.toHaveBeenCalled();
     expect(serviceMocks.createManagerForOrganisation).not.toHaveBeenCalled();
-    expect(
-      responseMapperMocks.sendCreateManagerForOrganisationResponse,
-    ).not.toHaveBeenCalled();
+    expect(responseMapperMocks.sendCreateManagerForOrganisationResponse).not.toHaveBeenCalled();
   });
 
   it("returns early when create manager body parsing fails", () => {
@@ -110,9 +103,7 @@ describe("superadmin-controller orchestration", () => {
     createManagerForOrganisationController(request, response);
 
     expect(serviceMocks.createManagerForOrganisation).not.toHaveBeenCalled();
-    expect(
-      responseMapperMocks.sendCreateManagerForOrganisationResponse,
-    ).not.toHaveBeenCalled();
+    expect(responseMapperMocks.sendCreateManagerForOrganisationResponse).not.toHaveBeenCalled();
   });
 
   it("creates manager and delegates response mapping", () => {
@@ -140,9 +131,10 @@ describe("superadmin-controller orchestration", () => {
       parsedParams.organisation_id,
       parsedBody,
     );
-    expect(
-      responseMapperMocks.sendCreateManagerForOrganisationResponse,
-    ).toHaveBeenCalledWith(response, serviceResult);
+    expect(responseMapperMocks.sendCreateManagerForOrganisationResponse).toHaveBeenCalledWith(
+      response,
+      serviceResult,
+    );
   });
 
   it("returns early when update organisation id parsing fails", () => {
@@ -154,9 +146,7 @@ describe("superadmin-controller orchestration", () => {
 
     expect(parseMocks.parseUpdateOrganisationBody).not.toHaveBeenCalled();
     expect(serviceMocks.updateOrganisation).not.toHaveBeenCalled();
-    expect(
-      responseMapperMocks.sendUpdateOrganisationResponse,
-    ).not.toHaveBeenCalled();
+    expect(responseMapperMocks.sendUpdateOrganisationResponse).not.toHaveBeenCalled();
   });
 
   it("updates organisation and delegates response mapping", () => {
@@ -179,9 +169,10 @@ describe("superadmin-controller orchestration", () => {
       parsedParams.organisation_id,
       parsedBody,
     );
-    expect(
-      responseMapperMocks.sendUpdateOrganisationResponse,
-    ).toHaveBeenCalledWith(response, serviceResult);
+    expect(responseMapperMocks.sendUpdateOrganisationResponse).toHaveBeenCalledWith(
+      response,
+      serviceResult,
+    );
   });
 
   it("returns early when update manager ids parsing fails", () => {
@@ -193,9 +184,7 @@ describe("superadmin-controller orchestration", () => {
 
     expect(parseMocks.parseUpdateManagerBody).not.toHaveBeenCalled();
     expect(serviceMocks.updateManagerForOrganisation).not.toHaveBeenCalled();
-    expect(
-      responseMapperMocks.sendUpdateManagerForOrganisationResponse,
-    ).not.toHaveBeenCalled();
+    expect(responseMapperMocks.sendUpdateManagerForOrganisationResponse).not.toHaveBeenCalled();
   });
 
   it("updates manager and delegates response mapping", () => {
@@ -220,8 +209,9 @@ describe("superadmin-controller orchestration", () => {
       parsedParams.manager_id,
       parsedBody,
     );
-    expect(
-      responseMapperMocks.sendUpdateManagerForOrganisationResponse,
-    ).toHaveBeenCalledWith(response, serviceResult);
+    expect(responseMapperMocks.sendUpdateManagerForOrganisationResponse).toHaveBeenCalledWith(
+      response,
+      serviceResult,
+    );
   });
 });
