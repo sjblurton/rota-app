@@ -27,3 +27,6 @@
 - Use snake_case for API field names in request, response, query, and path payloads.
 - Use camelCase for JavaScript and TypeScript variable, function, and parameter names.
 - Use British English spelling in repository-authored prose; keep external contract field names unchanged.
+- Do not create index.ts files for entry points or as barrel files.
+- Name modules and entry points explicitly by their content (e.g., seed-managers.ts, seed-utils.ts).
+- Always import directly from the explicit file path, not from a folder.

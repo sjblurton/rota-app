@@ -65,6 +65,18 @@ const docsToDocs = [
   },
 ];
 
+// Allow app to import from all global types and from routes
+const appToGlobalAndRoutes = {
+  from: { type: "app" },
+  allow: [...globalTypes.map((type) => ({ to: { type } })), { to: { type: "routes" } }],
+};
+
+// Allow test files in routes to import app
+const routesTestToApp = {
+  from: { type: "routes" },
+  allow: [{ to: { type: "app" } }],
+};
+
 // Internal docs types can only be used by docs/docs-schemas
 const internalDocsAccess = internalDocsTypes.map((type) => ({
   from: { type },
@@ -101,15 +113,49 @@ for (const fromType of appTypes) {
   }
 }
 
-// Allow source, app-bootstrap, and docs to import from any module-* type (any moduleName)
-const entryToModules = [
-  ...["source", "app-bootstrap", "docs"].flatMap((fromType) =>
-    moduleTypes.map((toType) => ({
-      from: { type: fromType },
-      allow: [{ to: { type: toType } }, { to: { type: toType, captured: { moduleName: "*" } } }],
-    })),
-  ),
-];
+// Allow source to import from routes
+const sourceToRoutes = {
+  from: { type: "source" },
+  allow: [{ to: { type: "routes" } }],
+};
+
+// Allow docs to use any module's routes (for OpenAPI docs, etc.)
+const docsToModuleRoutes = {
+  from: { type: "docs" },
+  allow: [
+    { to: { type: "module-routes" } },
+    {
+      to: { type: "module" },
+    },
+  ],
+};
+
+// Allow seed to import from itself (for utilities, fixtures, etc.)
+const seedToSeed = {
+  from: { type: "seed" },
+  allow: [{ to: { type: "seed" } }],
+};
+
+// Allow seed to import from module-router (for seeding via routers)
+const seedToModuleRouter = {
+  from: { type: "seed" },
+  allow: [{ to: { type: "module-router" } }],
+};
+
+// Allow routes to import from all global types (lib, utils, docs, docs-schemas), from any other file in routes, and from app entrypoint
+const routesToGlobal = {
+  from: { type: "routes" },
+  allow: [
+    ...globalTypes.map((type) => ({ to: { type } })),
+    { to: { type: "routes" } },
+    { to: { type: "app" } },
+  ],
+};
+// Allow routes to import from module-controllers (for route logic)
+const routesToModuleControllers = {
+  from: { type: "routes" },
+  allow: [{ to: { type: "module-controllers" } }],
+};
 
 // Export all rules
 export const boundariesDependencyRules = [
@@ -122,5 +168,12 @@ export const boundariesDependencyRules = [
   moduleRootToUtils,
   ...intraModuleRules,
   ...appSourceRules,
-  ...entryToModules,
+  sourceToRoutes,
+  docsToModuleRoutes,
+  seedToSeed,
+  seedToModuleRouter,
+  routesToGlobal,
+  routesToModuleControllers,
+  appToGlobalAndRoutes,
+  routesTestToApp,
 ];

@@ -96,6 +96,18 @@ export const boundariesElements = [
     capture: ["moduleName"],
     mode: "full",
   },
+  // Route files (global, importable from app)
+  {
+    type: "routes",
+    pattern: "src/routes/**/*",
+    mode: "full",
+  },
+  // App entrypoint (importable by tests)
+  {
+    type: "app",
+    pattern: "src/app.ts",
+    mode: "full",
+  },
   // Module catch-all (fallback, lowest priority)
   {
     type: "module",
@@ -103,11 +115,10 @@ export const boundariesElements = [
     capture: ["moduleName"],
     mode: "full",
   },
-
-  // === Top-level Source Files ===
+  // Seed files
   {
-    type: "source",
-    pattern: "src/*.*",
+    type: "seed",
+    pattern: "src/seed/**/*",
     mode: "full",
   },
 ];

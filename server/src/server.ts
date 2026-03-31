@@ -1,8 +1,8 @@
 import dotenv from "dotenv";
 
 import app from "./app";
-import { initialiseModules } from "./bootstrap/initialise-modules";
 import { logger } from "./lib/logger";
+import { initialiseModules } from "./seed/initialise-modules";
 
 dotenv.config({ path: ".env.local" });
 dotenv.config();
