@@ -1,24 +1,17 @@
 import { randomUUID } from "node:crypto";
 
-import type z from "zod";
-
-import { type organisationSchema } from "../../../lib/schemas/entities/organisation";
-
-type Organisation = z.infer<typeof organisationSchema>;
-
-type ManagerRecord = {
-  id: string;
-  created_at: string;
-  name: string;
-  phone_number: string;
-  email: string;
-  is_active: boolean;
-  password_hash: string;
-  organisation_id: string;
-};
+import { hashPassword } from "../services/utils/superadmin-service-utils";
+import type {
+  CreateManager,
+  DatabaseManager,
+  Organisation,
+  PublicManager,
+  UpdateManager,
+  UpdateOrganisation,
+} from "../types/superadmin-service-types";
 
 const organisations: Organisation[] = [];
-const managers: ManagerRecord[] = [];
+const managers: DatabaseManager[] = [];
 
 const nowUtc = () => new Date().toISOString();
 
@@ -29,8 +22,7 @@ export const resetSuperadminStore = () => {
 
 export const findOrganisationByNormalisedName = (name: string) =>
   organisations.find(
-    (organisation) =>
-      organisation.name.trim().toLowerCase() === name.trim().toLowerCase(),
+    (organisation) => organisation.name.trim().toLowerCase() === name.trim().toLowerCase(),
   );
 
 export const createOrganisationRecord = (name: string): Organisation => {
@@ -52,45 +44,31 @@ export const findOrganisationById = (organisationId: string) =>
   organisations.find((organisation) => organisation.id === organisationId);
 
 export const findManagerByNormalisedEmail = (email: string) =>
-  managers.find(
-    (manager) =>
-      manager.email.trim().toLowerCase() === email.trim().toLowerCase(),
-  );
+  managers.find((manager) => manager.email.trim().toLowerCase() === email.trim().toLowerCase());
 
 export const findActiveManagerByNormalisedEmail = (email: string) =>
   managers.find(
     (manager) =>
-      manager.is_active &&
-      manager.email.trim().toLowerCase() === email.trim().toLowerCase(),
+      manager.is_active && manager.email.trim().toLowerCase() === email.trim().toLowerCase(),
   );
 
 export const findManagerById = (managerId: string) =>
   managers.find((manager) => manager.id === managerId);
 
-export const findManagerByIdForOrganisation = (
-  organisationId: string,
-  managerId: string,
-) =>
+export const findManagerByIdForOrganisation = (organisationId: string, managerId: string) =>
   managers.find(
-    (manager) =>
-      manager.organisation_id === organisationId && manager.id === managerId,
+    (manager) => manager.organisation_id === organisationId && manager.id === managerId,
   );
 
-export const createManagerRecord = (payload: {
-  name: string;
-  phone_number: string;
-  email: string;
-  password_hash: string;
-  organisation_id: string;
-}): Omit<ManagerRecord, "password_hash"> => {
-  const managerRecord: ManagerRecord = {
+export const createManagerRecord = (payload: CreateManager): PublicManager => {
+  const managerRecord: DatabaseManager = {
     id: randomUUID(),
     created_at: nowUtc(),
     name: payload.name,
     phone_number: payload.phone_number,
     email: payload.email,
     is_active: true,
-    password_hash: payload.password_hash,
+    password_hash: hashPassword(payload.password),
     organisation_id: payload.organisation_id,
   };
 
@@ -109,7 +87,7 @@ export const createManagerRecord = (payload: {
 
 export const updateOrganisationRecord = (
   organisationId: string,
-  payload: { name?: string; is_active?: boolean },
+  payload: UpdateOrganisation,
 ): Organisation | null => {
   const organisationIndex = organisations.findIndex(
     (organisation) => organisation.id === organisationId,
@@ -140,17 +118,10 @@ export const updateOrganisationRecord = (
 export const updateManagerRecord = (
   organisationId: string,
   managerId: string,
-  payload: {
-    name?: string;
-    phone_number?: string;
-    email?: string;
-    is_active?: boolean;
-    password_hash?: string;
-  },
-): Omit<ManagerRecord, "password_hash"> | null => {
+  payload: UpdateManager,
+): PublicManager | null => {
   const managerIndex = managers.findIndex(
-    (manager) =>
-      manager.organisation_id === organisationId && manager.id === managerId,
+    (manager) => manager.organisation_id === organisationId && manager.id === managerId,
   );
 
   if (managerIndex === -1) {
@@ -159,7 +130,7 @@ export const updateManagerRecord = (
 
   const existingManager = managers[managerIndex]!;
 
-  const updatedManager: ManagerRecord = {
+  const updatedManager: DatabaseManager = {
     id: existingManager.id,
     created_at: existingManager.created_at,
     organisation_id: existingManager.organisation_id,
@@ -167,7 +138,10 @@ export const updateManagerRecord = (
     phone_number: payload.phone_number ?? existingManager.phone_number,
     email: payload.email ?? existingManager.email,
     is_active: payload.is_active ?? existingManager.is_active,
-    password_hash: payload.password_hash ?? existingManager.password_hash,
+    password_hash:
+      payload.password !== undefined
+        ? hashPassword(payload.password)
+        : existingManager.password_hash,
   };
 
   managers[managerIndex] = updatedManager;

@@ -7,7 +7,7 @@ import type {
   CreateOrganisationResult,
   UpdateManagerForOrganisationResult,
   UpdateOrganisationResult,
-} from "../../services/types/superadmin-service-types";
+} from "../../types/superadmin-service-types";
 
 export const sendCreateOrganisationResponse = (
   response: Response,

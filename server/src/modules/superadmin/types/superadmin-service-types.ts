@@ -1,38 +1,28 @@
 import type z from "zod";
 
 import {
+  type createManagerBodySchema,
+  type createManagerSchema,
+  type managerSchema,
+  type publicManagerSchema,
+  type updateManagerSchema,
+} from "../../../lib/schemas/entities/manager";
+import {
   type createOrganisationSchema,
   type organisationSchema,
   type updateOrganisationSchema,
-} from "../../../../lib/schemas/entities/organisation";
-import {
-  type createManagerSchema,
-  type managerWithOrganisationSchema,
-  type updateManagerSchema,
-} from "../../../../lib/schemas/entities/staff";
-import { type SUPERADMIN_RESULT_KINDS } from "../constants/superadmin-result-kinds";
+} from "../../../lib/schemas/entities/organisation";
+import { type SUPERADMIN_RESULT_KINDS } from "../services/constants/superadmin-result-kinds";
 
-export type CreateOrganisation = z.infer<typeof createOrganisationSchema>;
-export type Organisation = z.infer<typeof organisationSchema>;
+export type DatabaseManager = z.infer<typeof managerSchema>;
+export type PublicManager = z.infer<typeof publicManagerSchema>;
 export type CreateManager = z.infer<typeof createManagerSchema>;
-export type UpdateOrganisation = z.infer<typeof updateOrganisationSchema>;
+export type CreateManagerBody = z.infer<typeof createManagerBodySchema>;
 export type UpdateManager = z.infer<typeof updateManagerSchema>;
-export type ManagerWithOrganisation = z.infer<
-  typeof managerWithOrganisationSchema
->;
 
-export type OrganisationUpdateRecordPayload = {
-  name?: string;
-  is_active?: boolean;
-};
-
-export type ManagerUpdateRecordPayload = {
-  name?: string;
-  phone_number?: string;
-  email?: string;
-  is_active?: boolean;
-  password_hash?: string;
-};
+export type Organisation = z.infer<typeof organisationSchema>;
+export type CreateOrganisation = z.infer<typeof createOrganisationSchema>;
+export type UpdateOrganisation = z.infer<typeof updateOrganisationSchema>;
 
 export type CreateOrganisationResult = Organisation | null;
 
@@ -42,7 +32,7 @@ export type CreateManagerForOrganisationResult =
   | { kind: typeof SUPERADMIN_RESULT_KINDS.managerEmailConflict }
   | {
       kind: typeof SUPERADMIN_RESULT_KINDS.created;
-      manager: ManagerWithOrganisation;
+      manager: PublicManager;
     };
 
 export type UpdateOrganisationResult =
@@ -60,5 +50,5 @@ export type UpdateManagerForOrganisationResult =
   | { kind: typeof SUPERADMIN_RESULT_KINDS.managerEmailConflict }
   | {
       kind: typeof SUPERADMIN_RESULT_KINDS.updated;
-      manager: ManagerWithOrganisation;
+      manager: PublicManager;
     };

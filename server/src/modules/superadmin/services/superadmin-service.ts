@@ -9,28 +9,24 @@ import {
   updateManagerRecord,
   updateOrganisationRecord,
 } from "../db/superadmin-repository";
-import { SUPERADMIN_RESULT_KINDS } from "./constants/superadmin-result-kinds";
 import type {
-  CreateManager,
+  CreateManagerBody,
   CreateManagerForOrganisationResult,
   CreateOrganisation,
   CreateOrganisationResult,
-  OrganisationUpdateRecordPayload,
   UpdateManager,
   UpdateManagerForOrganisationResult,
   UpdateOrganisation,
   UpdateOrganisationResult,
-} from "./types/superadmin-service-types";
+} from "../types/superadmin-service-types";
+import { SUPERADMIN_RESULT_KINDS } from "./constants/superadmin-result-kinds";
 import {
   buildManagerUpdatePayload,
   buildOrganisationUpdatePayload,
-  hashPassword,
   shouldCheckManagerEmailConflict,
 } from "./utils/superadmin-service-utils";
 
-export const createOrganisation = (
-  payload: CreateOrganisation,
-): CreateOrganisationResult => {
+export const createOrganisation = (payload: CreateOrganisation): CreateOrganisationResult => {
   const duplicateOrganisation = findOrganisationByNormalisedName(payload.name);
 
   if (duplicateOrganisation) {
@@ -42,7 +38,7 @@ export const createOrganisation = (
 
 export const createManagerForOrganisation = (
   organisationId: string,
-  payload: CreateManager,
+  payload: CreateManagerBody,
 ): CreateManagerForOrganisationResult => {
   const organisation = findOrganisationById(organisationId);
 
@@ -64,7 +60,7 @@ export const createManagerForOrganisation = (
     name: payload.name,
     phone_number: payload.phone_number,
     email: payload.email,
-    password_hash: hashPassword(payload.password),
+    password: payload.password,
     organisation_id: organisationId,
   });
 
@@ -85,22 +81,16 @@ export const updateOrganisation = (
   }
 
   if (payload.name) {
-    const duplicateOrganisation = findOrganisationByNormalisedName(
-      payload.name,
-    );
+    const duplicateOrganisation = findOrganisationByNormalisedName(payload.name);
 
     if (duplicateOrganisation && duplicateOrganisation.id !== organisationId) {
       return { kind: SUPERADMIN_RESULT_KINDS.organisationNameConflict };
     }
   }
 
-  const organisationUpdatePayload: OrganisationUpdateRecordPayload =
-    buildOrganisationUpdatePayload(payload);
+  const organisationUpdatePayload: UpdateOrganisation = buildOrganisationUpdatePayload(payload);
 
-  const updatedOrganisation = updateOrganisationRecord(
-    organisationId,
-    organisationUpdatePayload,
-  );
+  const updatedOrganisation = updateOrganisationRecord(organisationId, organisationUpdatePayload);
 
   if (!updatedOrganisation) {
     return { kind: SUPERADMIN_RESULT_KINDS.organisationNotFound };
@@ -137,10 +127,7 @@ export const updateManagerForOrganisation = (
     return { kind: SUPERADMIN_RESULT_KINDS.managerNotFound };
   }
 
-  const shouldCheckEmailConflict = shouldCheckManagerEmailConflict(
-    payload,
-    manager.is_active,
-  );
+  const shouldCheckEmailConflict = shouldCheckManagerEmailConflict(payload, manager.is_active);
 
   if (shouldCheckEmailConflict) {
     const emailToCheck = payload.email ?? manager.email;
@@ -153,11 +140,7 @@ export const updateManagerForOrganisation = (
 
   const managerUpdatePayload = buildManagerUpdatePayload(payload);
 
-  const updatedManager = updateManagerRecord(
-    organisationId,
-    managerId,
-    managerUpdatePayload,
-  );
+  const updatedManager = updateManagerRecord(organisationId, managerId, managerUpdatePayload);
 
   if (!updatedManager) {
     return { kind: SUPERADMIN_RESULT_KINDS.managerNotFound };

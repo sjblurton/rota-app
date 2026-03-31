@@ -1,5 +1,5 @@
 import { logger } from "../../../../lib/logger";
-import { type CreateManagerForOrganisationResult } from "../../services/types/superadmin-service-types";
+import { type CreateManagerForOrganisationResult } from "../../types/superadmin-service-types";
 
 export const handleManagerCreationResult = (result: CreateManagerForOrganisationResult) => {
   if ("manager" in result) {

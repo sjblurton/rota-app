@@ -1,10 +1,10 @@
 import { type Request, type Response } from "express";
 
+import { createManagerSchema, updateManagerSchema } from "../../../../lib/schemas/entities/manager";
 import {
   createOrganisationSchema,
   updateOrganisationSchema,
 } from "../../../../lib/schemas/entities/organisation";
-import { createManagerSchema, updateManagerSchema } from "../../../../lib/schemas/entities/staff";
 import {
   organisationIdParamSchema,
   organisationManagerIdsParamSchema,

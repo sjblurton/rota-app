@@ -8,15 +8,15 @@ import {
 } from "../../../docs/responses";
 import { SUPERADMIN_MESSAGES } from "../../../lib/constants/superadmin-messages";
 import {
+  createManagerSchema,
+  publicManagerSchema,
+  updateManagerSchema,
+} from "../../../lib/schemas/entities/manager";
+import {
   createOrganisationSchema,
   organisationSchema,
   updateOrganisationSchema,
 } from "../../../lib/schemas/entities/organisation";
-import {
-  createManagerSchema,
-  managerWithOrganisationSchema,
-  updateManagerSchema,
-} from "../../../lib/schemas/entities/staff";
 import {
   organisationIdParamSchema,
   organisationManagerIdsParamSchema,
@@ -24,16 +24,12 @@ import {
 
 export const superadminOpenApiRegistry = new OpenAPIRegistry();
 
-superadminOpenApiRegistry.registerComponent(
-  "securitySchemes",
-  "SuperadminKey",
-  {
-    type: "apiKey",
-    in: "header",
-    name: "X-Superadmin-Key",
-    description: "Owner-only API key. Required for all superadmin endpoints.",
-  },
-);
+superadminOpenApiRegistry.registerComponent("securitySchemes", "SuperadminKey", {
+  type: "apiKey",
+  in: "header",
+  name: "X-Superadmin-Key",
+  description: "Owner-only API key. Required for all superadmin endpoints.",
+});
 
 const superadminTags: string[] = ["Superadmin"];
 
@@ -72,7 +68,7 @@ const updateOrganisationBodySchema = updateOrganisationSchema;
 
 const updateManagerBodySchema = updateManagerSchema;
 
-const managerResponseSchema = managerWithOrganisationSchema;
+const managerResponseSchema = publicManagerSchema;
 
 const organisationManagerIdsParamsSchema = organisationManagerIdsParamSchema;
 
@@ -120,8 +116,7 @@ superadminOpenApiRegistry.registerPath({
   method: "post",
   path: "/api/superadmin/organisations",
   summary: "Create an organisation",
-  description:
-    "Creates a new organisation. Restricted to the owner via `X-Superadmin-Key`.",
+  description: "Creates a new organisation. Restricted to the owner via `X-Superadmin-Key`.",
   tags: superadminTags,
   security: superadminSecurity,
   request: {
@@ -160,8 +155,7 @@ superadminOpenApiRegistry.registerPath({
   method: "patch",
   path: "/api/superadmin/organisations/{organisation_id}",
   summary: "Update an organisation",
-  description:
-    "Updates an existing organisation. Restricted to the owner via `X-Superadmin-Key`.",
+  description: "Updates an existing organisation. Restricted to the owner via `X-Superadmin-Key`.",
   tags: superadminTags,
   security: superadminSecurity,
   request: {
