@@ -1,9 +1,10 @@
 import { z } from "zod";
 
+import { emailSchema } from "../strings/email";
 import { staffSchema } from "./staff";
 
 export const managerSchema = staffSchema.extend({
-  email: z.email(),
+  email: emailSchema,
   is_active: z.boolean(),
   password_hash: z.hash("sha256", { enc: "base64" }),
   organisation_id: z.uuid(),
