@@ -46,6 +46,7 @@ export default [
     plugins: {
       sonarjs,
       unicorn,
+      // Use simple-import-sort for import order, Prettier for formatting
       "simple-import-sort": simpleImportSort,
     },
     rules: {
@@ -138,41 +139,6 @@ export default [
       ],
     },
   },
-  {
-    files: ["src/server.ts"],
-    rules: {
-      "no-restricted-imports": [
-        "error",
-        {
-          patterns: [
-            {
-              group: ["./modules/**"],
-              message:
-                "Do not import feature modules directly in server.ts. Use src/bootstrap/initialise-modules.ts.",
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    files: ["src/app.ts"],
-    rules: {
-      "no-restricted-imports": [
-        "error",
-        {
-          patterns: [
-            {
-              group: ["./modules/*/bootstrap/**"],
-              message:
-                "Do not import module bootstrap code in app.ts. Use src/bootstrap/initialise-modules.ts.",
-            },
-          ],
-        },
-      ],
-    },
-  },
-
   {
     files: ["src/**/*.{js,mjs,cjs,ts,mts,cts}"],
     plugins: { boundaries },
