@@ -3,7 +3,7 @@
 // ---------------------------------------------
 
 // Global types (can be used by all modules/app)
-const globalTypes = ["lib", "utils", "docs", "docs-schemas"];
+const globalTypes = ["lib", "utils", "docs", "docs-schemas", "types", "constants"];
 
 // Internal docs types (not global)
 const internalDocsTypes = ["docs-internal", "docs-schemas-internal"];

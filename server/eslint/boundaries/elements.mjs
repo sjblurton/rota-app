@@ -121,4 +121,16 @@ export const boundariesElements = [
     pattern: "src/seed/**/*",
     mode: "full",
   },
+  // Types (global, importable by all)
+  {
+    type: "types",
+    pattern: "src/types/**/*",
+    mode: "full",
+  },
+  // Constants (global, importable by all)
+  {
+    type: "constants",
+    pattern: "src/constants/**/*",
+    mode: "full",
+  },
 ];
