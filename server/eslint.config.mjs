@@ -123,6 +123,7 @@ export default [
     files: ["src/**/*.test.ts"],
     plugins: { vitest },
     rules: {
+      "@typescript-eslint/naming-convention": "off",
       "vitest/no-focused-tests": "error",
       "@typescript-eslint/no-explicit-any": "off",
     },
