@@ -16,11 +16,6 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "post-cta-init": "npx -y create-db@latest --user-agent tanstack/tsrouter",
-    "db:generate": "dotenv -e .env.local -- prisma generate",
-    "db:push": "dotenv -e .env.local -- prisma db push",
-    "db:migrate": "dotenv -e .env.local -- prisma migrate dev",
-    "db:studio": "dotenv -e .env.local -- prisma studio",
-    "db:seed": "dotenv -e .env.local -- prisma db seed",
     "lint:typescript": "tsc --noEmit"
   },
   "dependencies": {
@@ -28,8 +23,6 @@
     "@emotion/styled": "^11.14.1",
     "@fontsource/roboto": "^5.2.10",
     "@mui/material": "^7.3.9",
-    "@prisma/adapter-pg": "^7.4.2",
-    "@prisma/client": "^7.4.2",
     "@storybook/react-vite": "^10.2.15",
     "@tanstack/react-devtools": "latest",
     "@tanstack/react-query": "latest",
@@ -40,7 +33,6 @@
     "@tanstack/react-start": "latest",
     "@tanstack/router-plugin": "^1.132.0",
     "lucide-react": "^0.545.0",
-    "prisma": "^7.4.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "storybook": "^10.2.15",
