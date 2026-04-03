@@ -4,7 +4,7 @@ import pinoHttp from "pino-http";
 import swaggerUi from "swagger-ui-express";
 
 import { openApiDocument } from "./docs/openapi";
-import { logger } from "./libs/logger";
+import { logger } from "./libs/logger/logger";
 import { superadminRouter } from "./routes/superadmin/superadmin-router";
 
 const app = express();

@@ -5,7 +5,7 @@ import { defineConfig } from "prisma/config";
 import { requireEnv } from "./src/utils/env/requireEnv";
 import dotenv from "dotenv";
 
-dotenv.config({ path: process.env.NODE_ENV === "test" ? ".env.test" : ".env.local" });
+dotenv.config({ path: process.env.NODE_ENV === "test" ? ".env.test" : ".env.local", quiet: true });
 
 export default defineConfig({
   schema: "prisma/schema.prisma",
