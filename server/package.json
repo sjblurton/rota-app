@@ -1,5 +1,4 @@
 {
-  "type": "module",
   "scripts": {
     "lint:eslint": "eslint --fix .",
     "lint:typescript": "tsc --noEmit",
@@ -13,6 +12,7 @@
     "db:migrate": "prisma migrate dev --schema=prisma/schema.prisma",
     "db:generate": "prisma generate --schema=prisma/schema.prisma",
     "db:reset": "prisma migrate reset --schema=prisma/schema.prisma",
+    "db:reset:force": "prisma migrate reset --force --schema=prisma/schema.prisma && npm run db:seed",
     "db:studio": "prisma studio --config=./prisma.config.ts",
     "db:seed": "prisma db seed",
     "db:reset:seed": "npm run db:reset && npm run db:seed"
@@ -29,6 +29,7 @@
     "@prisma/client": "^7.6.0",
     "@supabase/supabase-js": "^2.99.3",
     "cors": "^2.8.6",
+    "execa": "^9.6.1",
     "express": "^5.2.1",
     "pg": "^8.20.0",
     "pino": "^10.3.1",
