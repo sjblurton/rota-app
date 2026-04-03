@@ -1,0 +1,35 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum PlanType {
+  free
+}
+
+enum OrganisationStatus {
+  active
+  inactive
+  invited
+}
+
+model Organisation {
+  id                   String   @id @default(uuid())
+  name                 String
+  plan                 PlanType @default(free)
+  sms_limit            Int      @default(100)
+  sms_used_this_month  Int      @default(0)
+  status               OrganisationStatus @default(invited)
+  stripe_customer_id   String?
+  created_at           DateTime @default(now())
+  updated_at           DateTime @updatedAt
+}

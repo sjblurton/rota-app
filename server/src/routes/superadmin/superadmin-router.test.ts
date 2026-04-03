@@ -2,6 +2,7 @@ import express from "express";
 import request from "supertest";
 import { describe, expect, it } from "vitest";
 
+import { requireEnv } from "../../utils/env/requireEnv";
 import { superadminRouter } from "./superadmin-router";
 
 describe("superadminRouter API key enforcement", () => {
@@ -24,11 +25,7 @@ describe("superadminRouter API key enforcement", () => {
   });
 
   it("accepts requests with the correct API key", async () => {
-    const apiKey = process.env.SUPERADMIN_API_KEY;
-
-    if (!apiKey) {
-      throw new Error("SUPERADMIN_API_KEY is not set in environment variables");
-    }
+    const apiKey = requireEnv("SUPERADMIN_API_KEY");
 
     const res = await request(app)
       .post("/api/superadmin/organisations")
