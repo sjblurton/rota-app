@@ -1,26 +1,10 @@
-import { execa } from "execa";
-import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 
 import { prisma } from "../../../libs/prisma/prisma";
 import { OrganisationsRepository } from "./organisations-repository";
 
-beforeAll(async () => {
-  await execa("npm", ["run", "db:reset:force"], {
-    cwd: process.cwd(),
-    stdio: "inherit",
-  });
-});
-
 beforeEach(async () => {
   await prisma.organisation.deleteMany();
-});
-
-afterAll(async () => {
-  await execa("npm", ["run", "db:reset:force"], {
-    cwd: process.cwd(),
-    stdio: "inherit",
-  });
-  await prisma.$disconnect();
 });
 
 describe("OrganisationsRepository (integration)", () => {
