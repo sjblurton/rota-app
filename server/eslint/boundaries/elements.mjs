@@ -51,4 +51,15 @@ export const boundariesElements = [
     pattern: "src/constants/**/*",
     mode: "full",
   },
+  // Prisma Generated client (global, importable by all)
+  {
+    type: "generated-prisma",
+    pattern: "src/generated/prisma/**/*",
+    mode: "full",
+  },
+  {
+    type: "prisma",
+    pattern: "src/libs/prisma/**/*",
+    mode: "full",
+  },
 ];

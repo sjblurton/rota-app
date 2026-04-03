@@ -179,4 +179,10 @@ export default [
       ],
     },
   },
+  {
+    files: ["src/generated/**/*"],
+    rules: {
+      "unicorn/no-abusive-eslint-disable": "off",
+    },
+  },
 ];

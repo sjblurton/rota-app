@@ -3,7 +3,13 @@
 // ---------------------------------------------
 
 // Global types (can be used by all modules/app)
-const globalTypes = ["libs", "utils", "docs", "types", "constants"];
+const globalTypes = ["libs", "utils", "docs", "types", "constants", "prisma"];
+
+// Allow libs to import from generated-prisma (for Prisma client)
+const libsToGeneratedPrisma = {
+  from: { type: "libs" },
+  allow: { to: { type: "generated-prisma" } },
+};
 
 // Allow all global types to use each other
 const globalToGlobal = globalTypes.map((type) => ({
@@ -58,6 +64,7 @@ const routesToGlobal = {
 export const boundariesDependencyRules = [
   ...globalToGlobal,
   modulesToGlobal,
+  libsToGeneratedPrisma,
   ...docsToDocs,
   moduleRootToUtils,
   routesToGlobal,
