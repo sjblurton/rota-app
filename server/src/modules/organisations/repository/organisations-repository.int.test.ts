@@ -60,6 +60,22 @@ describe("OrganisationsRepository (integration)", () => {
     expect(names).toContain("Org2");
   });
 
+  it("paginates organisations with limit and offset", async () => {
+    const repo = new OrganisationsRepository();
+    for (let i = 1; i <= 5; i++) {
+      await repo.createOrganisation({ name: `Org${i}` });
+    }
+    const page1 = await repo.getAllOrganisations({ limit: 2, offset: 0 });
+    expect(page1.length).toBe(2);
+    expect(page1[0].name).toBeDefined();
+    const page2 = await repo.getAllOrganisations({ limit: 2, offset: 2 });
+    expect(page2.length).toBe(2);
+    const page3 = await repo.getAllOrganisations({ limit: 2, offset: 4 });
+    expect(page3.length).toBe(1);
+    const allNames = [...page1, ...page2, ...page3].map((o) => o.name);
+    expect(new Set(allNames).size).toBe(5);
+  });
+
   it("updates an organisation", async () => {
     const repo = new OrganisationsRepository();
     const created = await repo.createOrganisation({ name: "ToUpdate" });

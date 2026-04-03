@@ -38,4 +38,24 @@ organisationsOpenApiRegistry.registerPath({
   },
 });
 
+organisationsOpenApiRegistry.registerPath({
+  method: "get",
+  path: "/api/superadmin/organisations",
+  summary: "Get all organisations",
+  description:
+    "Retrieves a list of all organisations. Restricted to the owner via `X-Superadmin-Key`.",
+  tags: superadminTags,
+  responses: {
+    "200": {
+      description: "List of organisations retrieved successfully",
+      content: {
+        "application/json": {
+          schema: organisationSchema.array(),
+        },
+      },
+    },
+    ...commonErrorResponses,
+  },
+});
+
 export { organisationsOpenApiRegistry };
