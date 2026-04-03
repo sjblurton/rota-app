@@ -1,9 +1,9 @@
 import express from "express";
 
+import { organisationsController } from "../../modules/organisations/controller/organisations-controller";
+
 const organisationsRouter = express.Router();
 
-organisationsRouter.post("/", (_req, res) => {
-  return res.status(200).send();
-});
+organisationsRouter.post("/", organisationsController.createOrganisation);
 
 export { organisationsRouter };

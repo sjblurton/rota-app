@@ -29,3 +29,5 @@ export class OrganisationsRepository {
     });
   }
 }
+
+export const organisationsRepository = new OrganisationsRepository();
