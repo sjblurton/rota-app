@@ -14,7 +14,7 @@ CREATE TABLE "Organisation" (
     "status" "OrganisationStatus" NOT NULL DEFAULT 'invited',
     "stripe_customer_id" TEXT,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updated_at" TIMESTAMP(3) NOT NULL,
+    "updated_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Organisation_pkey" PRIMARY KEY ("id")
 );
