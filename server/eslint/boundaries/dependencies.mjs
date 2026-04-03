@@ -5,6 +5,12 @@
 // Global types (can be used by all modules/app)
 const globalTypes = ["libs", "utils", "docs", "types", "constants", "prisma"];
 
+// Allow routes to import from module
+const routesToModuleControllers = {
+  from: { type: "routes" },
+  allow: { to: { type: "module-controllers" } },
+};
+
 // Allow libs to import from generated-prisma (for Prisma client)
 const libsToGeneratedPrisma = {
   from: { type: "libs" },
@@ -20,6 +26,12 @@ const globalToGlobal = globalTypes.map((type) => ({
 // Allow all modules to use all global types
 const modulesToGlobal = {
   from: { type: "module" },
+  allow: { to: { type: globalTypes } },
+};
+
+// Allow module controllers to use all global types
+const moduleControllersToGlobal = {
+  from: { type: "module-controllers" },
   allow: { to: { type: globalTypes } },
 };
 
@@ -43,13 +55,6 @@ const routesTestToApp = {
   allow: [{ to: { type: "app" } }],
 };
 
-// Allow module root to use its own utils (feature-private utils)
-const moduleRootToUtils = {
-  allow: [
-    { to: { type: "module-utils", captured: { moduleName: "{{ from.captured.moduleName }}" } } },
-  ],
-};
-
 // Allow routes to import from all global types (lib, utils, docs, docs-schemas), from any other file in routes, and from app entrypoint
 const routesToGlobal = {
   from: { type: "routes" },
@@ -63,18 +68,42 @@ const routesToGlobal = {
 // Allow files within the same module to import each other
 const moduleToSelf = {
   from: { type: "module", captured: { moduleName: "{{ from.captured.moduleName }}" } },
-  allow: [{ to: { type: "module", captured: { moduleName: "{{ from.captured.moduleName }}" } } }],
+  allow: [
+    { to: { type: "module", captured: { moduleName: "{{ from.captured.moduleName }}" } } },
+    {
+      to: {
+        type: "module-controllers",
+        captured: { moduleName: "{{ from.captured.moduleName }}" },
+      },
+    },
+  ],
+};
+
+// Allow module controllers to import from files in the same module
+const moduleControllersToSelf = {
+  from: { type: "module-controllers", captured: { moduleName: "{{ from.captured.moduleName }}" } },
+  allow: [
+    { to: { type: "module", captured: { moduleName: "{{ from.captured.moduleName }}" } } },
+    {
+      to: {
+        type: "module-controllers",
+        captured: { moduleName: "{{ from.captured.moduleName }}" },
+      },
+    },
+  ],
 };
 
 // Export all rules
 export const boundariesDependencyRules = [
   ...globalToGlobal,
   modulesToGlobal,
+  moduleControllersToGlobal,
   libsToGeneratedPrisma,
   moduleToSelf,
+  moduleControllersToSelf,
   ...docsToDocs,
-  moduleRootToUtils,
   routesToGlobal,
   appToGlobalAndRoutes,
   routesTestToApp,
+  routesToModuleControllers,
 ];

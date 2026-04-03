@@ -32,6 +32,13 @@ export const boundariesElements = [
     pattern: "src/app.ts",
     mode: "full",
   },
+  // Module controllers (importable by routes) — must come before the module catch-all
+  {
+    type: "module-controllers",
+    pattern: "src/modules/*/controller/**/*",
+    capture: ["moduleName"],
+    mode: "full",
+  },
   // Module catch-all
   {
     type: "module",
