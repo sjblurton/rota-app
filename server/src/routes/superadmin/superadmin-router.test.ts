@@ -10,13 +10,13 @@ describe("superadminRouter API key enforcement", () => {
   app.use("/api/superadmin", superadminRouter);
 
   it("rejects requests without the API key", async () => {
-    const res = await request(app).get("/api/superadmin/organisations").send();
+    const res = await request(app).post("/api/superadmin/organisations").send();
     expect(res.status).toBe(401);
   });
 
   it("rejects requests with an incorrect API key", async () => {
     const res = await request(app)
-      .get("/api/superadmin/organisations")
+      .post("/api/superadmin/organisations")
       .set("X-Superadmin-Key", "invalid-key")
       .send();
 
@@ -31,7 +31,7 @@ describe("superadminRouter API key enforcement", () => {
     }
 
     const res = await request(app)
-      .get("/api/superadmin/organisations")
+      .post("/api/superadmin/organisations")
       .set("X-Superadmin-Key", apiKey)
       .send();
 

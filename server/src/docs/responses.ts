@@ -1,63 +1,84 @@
-import { errorResponseSchema } from "./schemas";
+import { extendZodWithOpenApi, type ResponseConfig } from "@asteasolutions/zod-to-openapi";
+import { z } from "zod";
 
-export const unauthorisedResponse = {
+extendZodWithOpenApi(z);
+
+const errorResponseSchema = z.object({
+  message: z.string().describe("Error message"),
+  details: z.string().optional(),
+});
+
+const unauthorisedResponse: ResponseConfig = {
   description: "Unauthorised — token is missing, expired, or invalid",
   content: {
     "application/json": {
       schema: errorResponseSchema,
       examples: {
-        missing: {
-          summary: "Token missing",
-          value: { message: "Token is required" },
-        },
-        expired: {
-          summary: "Token expired",
-          value: { message: "Token has expired" },
-        },
-        invalid: {
-          summary: "Token invalid",
-          value: { message: "Token is invalid" },
+        unauthorised: {
+          summary: "Example unauthorised response",
+          value: {
+            message: "Unauthorised",
+          },
         },
       },
     },
   },
 } as const;
 
-export const badRequestResponse = {
+const badRequestResponse: ResponseConfig = {
   description: "Bad request — invalid or missing parameters",
   content: {
     "application/json": {
       schema: errorResponseSchema,
-      example: {
-        message: "Invalid request parameters",
-        error_details:
-          "name: Invalid input: expected string, received undefined",
+      examples: {
+        badRequest: {
+          summary: "Example bad request response",
+          value: {
+            message: "Bad Request",
+          },
+        },
       },
     },
   },
 } as const;
 
-export const notFoundResponse = {
+const notFoundResponse: ResponseConfig = {
   description: "Not found — the requested resource does not exist",
   content: {
     "application/json": {
       schema: errorResponseSchema,
-      example: {
-        message: "Resource not found",
+      examples: {
+        notFound: {
+          summary: "Example not found response",
+          value: {
+            message: "Not Found",
+          },
+        },
       },
     },
   },
 } as const;
 
-export const conflictResponse = {
+const conflictResponse: ResponseConfig = {
   description: "Conflict — request conflicts with the current workflow state",
   content: {
     "application/json": {
       schema: errorResponseSchema,
-      example: {
-        message:
-          "Swap request is no longer in a state that allows this decision",
+      examples: {
+        conflict: {
+          summary: "Example conflict response",
+          value: {
+            message: "Conflict",
+          },
+        },
       },
     },
   },
+} as const;
+
+export const commonErrorResponses: Record<string, ResponseConfig> = {
+  "400": badRequestResponse,
+  "401": unauthorisedResponse,
+  "404": notFoundResponse,
+  "409": conflictResponse,
 } as const;

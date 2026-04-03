@@ -1,16 +1,13 @@
 import dotenv from "dotenv";
 
 import app from "./app";
-import { logger } from "./lib/logger";
-import { initialiseModules } from "./seed/initialise-modules";
+import { logger } from "./libs/logger";
 
 dotenv.config({ path: ".env.local" });
 dotenv.config();
 
 const PORT = process.env["PORT"] ?? 3000;
 const ENV = process.env["NODE_ENV"] ?? "development";
-
-initialiseModules();
 
 app.listen(PORT, () => {
   if (ENV === "development") {

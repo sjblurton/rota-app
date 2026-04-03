@@ -15,11 +15,11 @@ describe("HttpErrorByCode", () => {
     expect(err.message).toBe(expected.message);
   });
 
-  it("overrides default message if provided", () => {
+  it("sets detail if provided", () => {
     const code: HttpErrorCodes = "forbidden";
-    const customMsg = "Custom forbidden message";
-    const err = new HttpErrorByCode(code, customMsg);
-    expect(err.message).toBe(customMsg);
+    const customDetail = "Custom forbidden detail";
+    const err = new HttpErrorByCode(code, customDetail);
+    expect(err.detail).toBe(customDetail);
     expect(err.status).toBe(HTTP_ERRORS.forbidden.status);
     expect(err.code).toBe(code);
   });
