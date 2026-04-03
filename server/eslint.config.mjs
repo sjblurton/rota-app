@@ -124,6 +124,7 @@ export default [
     plugins: { vitest },
     rules: {
       "vitest/no-focused-tests": "error",
+      "@typescript-eslint/no-explicit-any": "off",
     },
   },
   {
