@@ -3,11 +3,10 @@ import dotenv from "dotenv";
 import app from "./app";
 import { logger } from "./libs/logger";
 
-dotenv.config({ path: ".env.local" });
-dotenv.config();
-
-const PORT = process.env["PORT"] ?? 3000;
 const ENV = process.env["NODE_ENV"] ?? "development";
+const PORT = process.env["PORT"] ?? 3000;
+
+dotenv.config({ path: ENV === "test" ? ".env.test" : ".env.local" });
 
 app.listen(PORT, () => {
   if (ENV === "development") {
