@@ -60,11 +60,18 @@ const routesToGlobal = {
   ],
 };
 
+// Allow files within the same module to import each other
+const moduleToSelf = {
+  from: { type: "module", captured: { moduleName: "{{ from.captured.moduleName }}" } },
+  allow: [{ to: { type: "module", captured: { moduleName: "{{ from.captured.moduleName }}" } } }],
+};
+
 // Export all rules
 export const boundariesDependencyRules = [
   ...globalToGlobal,
   modulesToGlobal,
   libsToGeneratedPrisma,
+  moduleToSelf,
   ...docsToDocs,
   moduleRootToUtils,
   routesToGlobal,
