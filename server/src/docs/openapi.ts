@@ -24,6 +24,7 @@ export const openApiDocument: JsonObject = {
   paths: {
     ...superadminOpenApiDocument.paths,
   },
+  security: superadminOpenApiDocument.security,
   components: {
     schemas: {
       ...superadminOpenApiDocument.components?.schemas,
