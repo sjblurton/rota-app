@@ -19,7 +19,7 @@ Understand and follow the layout in [server/README.md](README.md#source-structur
 | Folder           | Purpose                                                             |
 | ---------------- | ------------------------------------------------------------------- |
 | `src/app.ts`     | Express middleware and route mounting                               |
-| `src/server.ts`  | Startup entry point with health checks                              |
+| `src/server.ts`  | Startup entry point with startup checks                             |
 | `src/constants/` | Shared constants (HTTP errors, status codes, plan types)            |
 | `src/docs/`      | OpenAPI documentation layer; never business logic                   |
 | `src/generated/` | Prisma-generated code; do not edit                                  |
@@ -31,10 +31,10 @@ Understand and follow the layout in [server/README.md](README.md#source-structur
 
 **Key Rules:**
 
-- Schemas live in `libs/schemas/`; never define schemas inside docs or modules (except tests).
-- Each module in `modules/{feature}/` is feature-complete with controller, services, repository.
+- Shared/domain schemas live in `libs/schemas/`; do not define reusable validation or domain schemas inside `docs/` or `modules/` (except tests). `docs/` may define OpenAPI-only schemas (for example, documented error responses) when they are not shared application schemas.
+- Each module in `modules/{feature}/` is feature-complete with controller, service, repository.
 - Routes in `routes/{feature}/` mount module handlers using eslint-enforced boundaries.
-- OpenAPI documentation is in `docs/` and references shared schemas.
+- OpenAPI documentation is in `docs/` and should reference shared schemas where possible; keep only documentation-specific schema definitions in `docs/`.
 
 ## TypeScript
 

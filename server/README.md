@@ -18,7 +18,7 @@ Express REST API for the Rota application.
 ```text
 src/
 ├── app.ts                    # Express app setup (middleware, routes)
-├── server.ts                 # Entry point (startup, health checks)
+├── server.ts                 # Entry point (startup, DB connectivity check)
 ├── constants/                # Shared constants (HTTP errors, status codes, plan types)
 ├── docs/                     # OpenAPI documentation layer
 │   ├── errors/               # Error response schemas
@@ -71,7 +71,7 @@ Enforced by `eslint-plugin-boundaries` with deny-by-default. **Global types** (`
 | --------------------- | --------------------------------------------------------------------------------- |
 | `modules/{feature}`   | Sibling files within same module, any global type (`libs`, `utils`, `docs`, etc.) |
 | `routes/{feature}`    | Module controllers in same route, any global type, other routes, `app.ts`         |
-| `docs/`               | Other `docs/` files, any global type, modules (for orchestration)                 |
+| `docs/`               | Other `docs/` files, any global type                                              |
 | `libs/`               | Other `libs/`, `generated/prisma` (Prisma client), global types                   |
 | `utils/`              | Other `utils/`, `libs/`, global types                                             |
 | `constants/`          | Other `constants/`, `libs/`, `utils/`                                             |
@@ -104,14 +104,14 @@ npm run test:int       # Run integration tests
 - Fast, isolated tests for services, utilities, and pure functions
 - Run against `node` environment only
 - No database access
-- Example: `src/libs/logger/logger.test.ts`
+- Example: `src/schemas/datetime.test.ts`
 
 **Integration Tests** (`*.int.test.ts`)
 
 - Slow, full-stack tests for HTTP endpoints and database interactions
 - Run sequentially (not in parallel) to ensure database consistency
 - Database is **completely reset** before and after test run
-- Example: `src/routes/organisations/organisations-router.int.test.ts`
+- Example naming pattern: `src/routes/**/some-route.int.test.ts`
 
 ### Database Setup for Integration Tests
 
@@ -119,9 +119,8 @@ Integration test flow:
 
 1. **Global setup** (`test/global-int-setup.ts`) runs before all tests:
    - Executes `npm run db:reset:force` which:
-     - Drops and recreates test database
-     - Runs all migrations (`prisma migrate deploy`)
-     - Seeds database (`prisma db seed`)
+     - Runs `prisma migrate reset --force` to reset the test database and reapply migrations
+     - Runs `npm run db:seed` to seed the database
 
 2. **Tests run** sequentially against fresh database
 
