@@ -14,6 +14,10 @@ export const openApiDocument: JsonObject = {
       url: "http://localhost:3000",
       description: "Local development server",
     },
+    {
+      url: "https://rota-app-e45i.onrender.com",
+      description: "Staging server",
+    },
   ],
   tags: [
     {

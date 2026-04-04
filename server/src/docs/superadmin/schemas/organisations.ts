@@ -19,6 +19,7 @@ organisationsOpenApiRegistry.registerPath({
   summary: "Create an organisation",
   description: "Creates a new organisation. Restricted to the owner via `X-Superadmin-Key`.",
   tags: superadminTags,
+  security: [{ SuperadminKey: [] }],
   request: {
     body: {
       required: true,
@@ -52,6 +53,7 @@ organisationsOpenApiRegistry.registerPath({
   description:
     "Retrieves a list of all organisations. Restricted to the owner via `X-Superadmin-Key`.",
   tags: superadminTags,
+  security: [{ SuperadminKey: [] }],
   request: {
     query: organisationsPaginationQuerySchema,
   },
