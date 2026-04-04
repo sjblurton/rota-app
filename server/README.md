@@ -59,9 +59,9 @@ src/
 
 - Each feature module lives entirely within `modules/{feature}/`.
 - Module-level tests live alongside code with `*.int.test.ts` suffix.
-- Shared schemas live in `libs/schemas/`, never inside docs or route files.
+- Shared domain/request/response schemas live in `libs/schemas/`; OpenAPI-only schemas and registries may live under `docs/`.
 - Routes mount modules via `routes/{module}/`.
-- Docs register OpenAPI for the API layer, not inside modules.
+- Docs own OpenAPI registration and other documentation-only API descriptions, rather than defining them inside feature modules.
 
 ## Architectural Boundaries
 
