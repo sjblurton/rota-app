@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography'
 
 export const Route = createFileRoute('/')({ component: App })
 
-function App() {
+export function App() {
   return (
     <>
       <CssBaseline />
