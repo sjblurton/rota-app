@@ -2,7 +2,26 @@
 
 Monorepo containing the Rota client and server applications.
 
-## Date and Time Policy
+## Quick Links
+
+- **API Documentation:**
+  - Local: http://localhost:3000/api/v1/docs/
+  - Staging: https://rota-app-e45i.onrender.com/api/v1/docs/
+- [Server README](server/README.md) — Backend setup and API guide
+- [Client README](client/README.md) — Frontend setup guide
+
+## Getting Started
+
+```bash
+# Install all dependencies
+npm install --workspaces
+
+# Run local development (client and server in separate terminals)
+cd client && npm run dev
+cd server && npm run dev
+```
+
+## Conventions
 
 - Backend API timestamps are ISO 8601 UTC datetimes with a trailing Z suffix.
 - Date-time validation is centralised in `server/src/lib/schemas/dateTime.ts` and reused across server schemas.

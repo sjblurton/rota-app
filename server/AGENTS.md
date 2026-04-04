@@ -12,6 +12,30 @@
 - Group modules by feature first, then by role.
 - Avoid circular dependencies.
 
+## Source Structure
+
+Understand and follow the layout in [server/README.md](README.md#source-structure):
+
+| Folder           | Purpose                                                             |
+| ---------------- | ------------------------------------------------------------------- |
+| `src/app.ts`     | Express middleware and route mounting                               |
+| `src/server.ts`  | Startup entry point with health checks                              |
+| `src/constants/` | Shared constants (HTTP errors, status codes, plan types)            |
+| `src/docs/`      | OpenAPI documentation layer; never business logic                   |
+| `src/generated/` | Prisma-generated code; do not edit                                  |
+| `src/libs/`      | Shared domain libraries (auth, logging, database, schemas)          |
+| `src/modules/`   | Feature modules, each isolated and feature-complete                 |
+| `src/routes/`    | Route mounting layer mapping to modules                             |
+| `src/types/`     | TypeScript types derived via `z.infer<>`; never duplicate type defs |
+| `src/utils/`     | Stateless helpers (validation, environment, HTTP)                   |
+
+**Key Rules:**
+
+- Schemas live in `libs/schemas/`; never define schemas inside docs or modules (except tests).
+- Each module in `modules/{feature}/` is feature-complete with controller, service, repository.
+- Routes in `routes/{feature}/` mount module handlers using eslint-enforced boundaries.
+- OpenAPI documentation is in `docs/` and references shared schemas.
+
 ## TypeScript
 
 - Use strict type checking.
@@ -30,13 +54,13 @@
 - Validate incoming data with `validateAndParse(schema, data)` from `utils/validation/` at the controller boundary — not inside services.
 - Throw `new HttpErrorByCode('bad_request', detail?)` for HTTP errors; available codes are in `constants/http-errors.ts`.
 - Use ISO 8601 UTC datetimes with trailing Z for API request and response timestamps.
-- Reuse shared date-time schemas from `server/src/libs/schemas/time/dateTime.ts` instead of redefining date validators.
+- Reuse shared date-time schemas from `src/libs/schemas/time/dateTime.ts` instead of redefining date validators.
 - Convert timestamps to local time only in the client display layer.
 - Use snake_case for API field names in request, response, query, and path payloads.
 - Use camelCase for JavaScript and TypeScript variable, function, and parameter names.
-- Use kebab-case for API file names under `server/src/modules/**` and `server/src/docs/**`.
+- Use kebab-case for API file names under `src/modules/**` and `src/docs/**`.
 - Use British English spelling in repository-authored prose; keep external contract field names unchanged.
-- Keep shared request, query, and body Zod schemas in `server/src/libs/schemas/**`, not inside docs files.
+- Keep shared request, query, and body Zod schemas in `src/libs/schemas/**`, never inside docs or modules.
 - Derive TypeScript types via `z.infer<>` in `src/types/*.ts`; never duplicate type definitions.
 
 ## Services and Controllers
@@ -47,11 +71,17 @@
 
 ## Testing and Reliability
 
+See [Testing section in README](README.md#testing) for full details on test setup and database reset workflow.
+
+**Guidelines:**
+
 - Add or update tests for every behavioural change.
-- Write unit tests for services and utilities; suffix files `*.test.ts`.
-- Write integration tests for HTTP endpoints and controller behaviour; suffix files `*.int.test.ts`.
+- Write unit tests (`*.test.ts`) for services and utilities; run fast, no database.
+- Write integration tests (`*.int.test.ts`) for HTTP endpoints and database interactions.
+- Integration tests run sequentially; database is completely **reset before and after** each test run via `npm run db:reset:force`.
 - Keep tests deterministic and isolate dependencies with test doubles.
 - Maintain minimum 90% coverage (lines, functions, branches, statements); enforced by `npm run test:coverage`.
+- Never assume test isolation via transactions; rely on global database reset instead.
 
 ## Deprecations and Migrations
 
