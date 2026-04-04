@@ -14,6 +14,22 @@ describe("openApiDocument", () => {
 
     expect(orgranisationPath).toBeDefined();
     expect(orgranisationPath).toHaveProperty("post");
+    expect(orgranisationPath).toHaveProperty("get");
+  });
+
+  it("documents pagination query parameters for get organisations", () => {
+    const organisationsPath = openApiDocument.paths["/api/superadmin/organisations"];
+    const getOperation = organisationsPath.get;
+
+    expect(getOperation).toBeDefined();
+
+    const parameterNames = (getOperation.parameters ?? []).map(
+      (parameter: { name: string }) => parameter.name,
+    );
+
+    expect(parameterNames).toEqual(
+      expect.arrayContaining(["limit", "offset", "order_by_key", "direction"]),
+    );
   });
 
   it("merges schema components and security schemes", () => {
