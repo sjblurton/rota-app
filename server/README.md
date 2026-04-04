@@ -42,10 +42,8 @@ src/
 ├── modules/                  # Feature modules (isolated, one per feature)
 │   └── organisations/        # Organisations feature
 │       ├── controller/
-│       ├── service/
-│       ├── repository/
-│       ├── handler/
-│       └── *.int.test.ts
+│       ├── services/
+│       └── repository/
 ├── routes/                   # Route mounting layer
 │   ├── organisations/
 │   └── superadmin/
