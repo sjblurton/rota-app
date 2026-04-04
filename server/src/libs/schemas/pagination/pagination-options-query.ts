@@ -3,7 +3,7 @@ import { z } from "zod";
 
 extendZodWithOpenApi(z);
 
-export function createPaginationOptionsQuerySchema<
+function createPaginationOptionsQuerySchema<
   const TOrderByKeys extends readonly [string, ...string[]],
 >(orderByKeys: TOrderByKeys) {
   return z.object({
@@ -13,3 +13,11 @@ export function createPaginationOptionsQuerySchema<
     direction: z.enum(["asc", "desc"]).optional(),
   });
 }
+
+export const organisationsPaginationQuerySchema = createPaginationOptionsQuerySchema([
+  "created_at",
+  "updated_at",
+  "name",
+  "status",
+  "plan",
+] as const);

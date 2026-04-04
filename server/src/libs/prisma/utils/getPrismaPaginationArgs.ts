@@ -1,13 +1,15 @@
-import type { PaginationOptions } from "../../../types/paginationOptions";
+import type { OrganisationsPaginationQuery } from "../../../types/organisation";
 
 const DEFAULT_ORDER_BY_KEY = "created_at" as const;
+
+type GetPrismaPaginationArgsInput = OrganisationsPaginationQuery;
 
 export function getPrismaPaginationArgs({
   limit = 20,
   offset = 0,
-  orderByKey = DEFAULT_ORDER_BY_KEY,
+  order_by_key: orderByKey = DEFAULT_ORDER_BY_KEY,
   direction = "desc",
-}: PaginationOptions) {
+}: GetPrismaPaginationArgsInput) {
   return {
     skip: offset,
     take: limit,

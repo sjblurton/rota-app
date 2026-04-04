@@ -1,25 +1,21 @@
 import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
 
+import { PATHS } from "../../../constants/paths";
 import {
   createOrganisationSchema,
   organisationSchema,
 } from "../../../libs/schemas/entities/organisation";
-import { createPaginationOptionsQuerySchema } from "../../../libs/schemas/pagination/pagination-options-query";
-import { commonErrorResponses } from "../../responses";
+import { organisationsPaginationQuerySchema } from "../../../libs/schemas/pagination/pagination-options-query";
+import { commonErrorResponses } from "../../errors/responses";
 import { superadminTags } from "../constants/superadmin-tags";
 
 const organisationsOpenApiRegistry = new OpenAPIRegistry();
-const organisationsPaginationQuerySchema = createPaginationOptionsQuerySchema([
-  "created_at",
-  "updated_at",
-  "name",
-  "status",
-  "plan",
-] as const);
+
+const organisationsPath = `${PATHS.apiBaseV1}${PATHS.superadmin}${PATHS.organisations}`;
 
 organisationsOpenApiRegistry.registerPath({
   method: "post",
-  path: "/api/superadmin/organisations",
+  path: organisationsPath,
   summary: "Create an organisation",
   description: "Creates a new organisation. Restricted to the owner via `X-Superadmin-Key`.",
   tags: superadminTags,
@@ -42,13 +38,16 @@ organisationsOpenApiRegistry.registerPath({
         },
       },
     },
-    ...commonErrorResponses,
+    "400": commonErrorResponses.badRequestResponse,
+    "401": commonErrorResponses.unauthorisedResponse,
+    "409": commonErrorResponses.conflictResponse,
+    "403": commonErrorResponses.forbiddenResponse,
   },
 });
 
 organisationsOpenApiRegistry.registerPath({
   method: "get",
-  path: "/api/superadmin/organisations",
+  path: organisationsPath,
   summary: "Get all organisations",
   description:
     "Retrieves a list of all organisations. Restricted to the owner via `X-Superadmin-Key`.",
@@ -65,7 +64,9 @@ organisationsOpenApiRegistry.registerPath({
         },
       },
     },
-    ...commonErrorResponses,
+    "400": commonErrorResponses.badRequestResponse,
+    "401": commonErrorResponses.unauthorisedResponse,
+    "403": commonErrorResponses.forbiddenResponse,
   },
 });
 

@@ -59,6 +59,23 @@ const notFoundResponse: ResponseConfig = {
   },
 } as const;
 
+const forbiddenResponse: ResponseConfig = {
+  description: "Forbidden — the client does not have access rights to the content",
+  content: {
+    "application/json": {
+      schema: errorResponseSchema,
+      examples: {
+        forbidden: {
+          summary: "Example forbidden response",
+          value: {
+            message: "Forbidden",
+          },
+        },
+      },
+    },
+  },
+} as const;
+
 const conflictResponse: ResponseConfig = {
   description: "Conflict — request conflicts with the current workflow state",
   content: {
@@ -76,9 +93,10 @@ const conflictResponse: ResponseConfig = {
   },
 } as const;
 
-export const commonErrorResponses: Record<string, ResponseConfig> = {
-  "400": badRequestResponse,
-  "401": unauthorisedResponse,
-  "404": notFoundResponse,
-  "409": conflictResponse,
+export const commonErrorResponses = {
+  badRequestResponse,
+  unauthorisedResponse,
+  notFoundResponse,
+  conflictResponse,
+  forbiddenResponse,
 } as const;

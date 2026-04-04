@@ -1,7 +1,10 @@
 import { prisma } from "../../../libs/prisma/prisma";
 import { getPrismaPaginationArgs } from "../../../libs/prisma/utils/getPrismaPaginationArgs";
-import type { CreateOrganisationInput, Organisation } from "../../../types/organisation";
-import type { PaginationOptions } from "../../../types/paginationOptions";
+import type {
+  CreateOrganisationInput,
+  Organisation,
+  OrganisationsPaginationQuery,
+} from "../../../types/organisation";
 
 export class OrganisationsRepository {
   private prisma = prisma;
@@ -14,7 +17,7 @@ export class OrganisationsRepository {
     return this.prisma.organisation.findUnique({ where: { id } });
   }
 
-  async getAllOrganisations(args: PaginationOptions = {}) {
+  async getAllOrganisations(args: OrganisationsPaginationQuery = {}) {
     return this.prisma.organisation.findMany(getPrismaPaginationArgs(args));
   }
 
@@ -22,7 +25,7 @@ export class OrganisationsRepository {
     return this.prisma.organisation.update({ where: { id }, data });
   }
 
-  async getOrganisationByName(name: string, paginationArgs: PaginationOptions = {}) {
+  async getOrganisationByName(name: string, paginationArgs: OrganisationsPaginationQuery = {}) {
     return this.prisma.organisation.findMany({
       where: { name },
       ...getPrismaPaginationArgs(paginationArgs),

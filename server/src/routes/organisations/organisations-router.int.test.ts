@@ -70,3 +70,53 @@ describe("POST /organisations", () => {
     expect(found?.name).toBe("Persisted Org");
   });
 });
+
+describe("GET /organisations", () => {
+  it("returns 200 with an empty array when no organisations exist", async () => {
+    const res = await request(app).get("/organisations");
+
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual([]);
+  });
+
+  it("returns 200 with organisations", async () => {
+    await prisma.organisation.createMany({
+      data: [{ name: "Alpha Org" }, { name: "Beta Org" }],
+    });
+
+    const res = await request(app).get("/organisations");
+
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body).toHaveLength(2);
+    expect(res.body.map((organisation: { name: string }) => organisation.name)).toEqual(
+      expect.arrayContaining(["Alpha Org", "Beta Org"]),
+    );
+  });
+
+  it("applies pagination and sorting query parameters", async () => {
+    await prisma.organisation.createMany({
+      data: [{ name: "Charlie Org" }, { name: "Alpha Org" }, { name: "Bravo Org" }],
+    });
+
+    const res = await request(app).get("/organisations").query({
+      limit: 2,
+      offset: 1,
+      order_by_key: "name",
+      direction: "asc",
+    });
+
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveLength(2);
+    expect(res.body.map((organisation: { name: string }) => organisation.name)).toEqual([
+      "Bravo Org",
+      "Charlie Org",
+    ]);
+  });
+
+  it("returns 400 for invalid direction query", async () => {
+    const res = await request(app).get("/organisations").query({ direction: "up" });
+
+    expect(res.status).toBe(400);
+  });
+});
