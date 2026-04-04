@@ -32,7 +32,7 @@ Understand and follow the layout in [server/README.md](README.md#source-structur
 **Key Rules:**
 
 - Schemas live in `libs/schemas/`; never define schemas inside docs or modules (except tests).
-- Each module in `modules/{feature}/` is feature-complete with controller, service, repository.
+- Each module in `modules/{feature}/` is feature-complete with controller, services, repository.
 - Routes in `routes/{feature}/` mount module handlers using eslint-enforced boundaries.
 - OpenAPI documentation is in `docs/` and references shared schemas.
 
