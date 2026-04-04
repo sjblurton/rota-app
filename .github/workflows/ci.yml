@@ -50,6 +50,12 @@ jobs:
   server:
     name: Server Checks
     runs-on: ubuntu-latest
+    environment: test
+
+    env:
+      NODE_ENV: test
+      DATABASE_URL: postgresql://postgres:pass123@localhost:5432/rota_test?schema=public
+      SUPERADMIN_API_KEY: test-secret-key
 
     services:
       postgres:
@@ -58,9 +64,6 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: pass123
           POSTGRES_DB: rota_test
-          NODE_ENV: test
-          DATABASE_URL: postgres://postgres:pass123@localhost:5432/rota_test
-          SUPERADMIN_API_KEY: test-secret-key
 
         ports:
           - 5432:5432
