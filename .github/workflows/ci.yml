@@ -54,6 +54,13 @@ jobs:
     services:
       postgres:
         image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: pass123
+          POSTGRES_DB: rota_test
+          NODE_ENV: test
+          DATABASE_URL: postgres://postgres:pass123@localhost:5432/rota_test
+          SUPERADMIN_API_KEY: test-secret-key
 
         ports:
           - 5432:5432
@@ -80,21 +87,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-
-      - name: Load test environment
-        run: |
-          set -a
-          source .env.test
-          set +a
-
-          {
-            echo "NODE_ENV=$NODE_ENV"
-            echo "DATABASE_URL=$DATABASE_URL"
-            echo "SUPERADMIN_API_KEY=$SUPERADMIN_API_KEY"
-            echo "POSTGRES_USER=$POSTGRES_USER"
-            echo "POSTGRES_PASSWORD=$POSTGRES_PASSWORD"
-            echo "POSTGRES_DB=$POSTGRES_DB"
-          } >> "$GITHUB_ENV"
 
       - name: Generate Prisma client
         run: npm run db:generate
