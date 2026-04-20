@@ -216,8 +216,8 @@ These are configured in:
 - PostgreSQL 16+
 - `.env.local` file with:
 
-  ```test
-  DATABASE_URL=postgresql://user:password@localhost:5432/rota
+  ```text
+  DATABASE_URL=db-url-for-local-development
   SUPERADMIN_API_KEY=your-secret-key
   NODE_ENV=development
   ```
