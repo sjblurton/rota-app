@@ -12,12 +12,7 @@ export default defineConfig({
         branches: 90,
         statements: 90,
       },
-      exclude: [
-        "src/server.ts",
-        "src/app.ts",
-        "**/*.d.ts",
-        "**/node_modules/**",
-      ],
+      exclude: ["src/server.ts", "src/app.ts", "**/*.d.ts", "**/node_modules/**"],
     },
   },
 });

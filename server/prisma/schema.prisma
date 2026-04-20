@@ -4,8 +4,8 @@
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
 generator client {
-  provider = "prisma-client"
-  output   = "../src/generated/prisma"
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
   moduleFormat = "cjs"
 }
 
@@ -20,17 +20,71 @@ enum PlanType {
 enum OrganisationStatus {
   active
   inactive
-  invited
 }
 
 model Organisation {
-  id                   String   @id @default(uuid())
-  name                 String
-  plan                 PlanType @default(free)
-  sms_limit            Int      @default(100)
-  sms_used_this_month  Int      @default(0)
-  status               OrganisationStatus @default(invited)
-  stripe_customer_id   String?
-  created_at           DateTime @default(now())
-  updated_at           DateTime @updatedAt
+  id                  String             @id @default(uuid())
+  name                String
+  plan                PlanType           @default(free)
+  sms_limit           Int                @default(100)
+  sms_used_this_month Int                @default(0)
+  status              OrganisationStatus @default(active)
+  stripe_customer_id  String?
+  created_at          DateTime           @default(now())
+  updated_at          DateTime           @updatedAt
+  users               User[]
+  invites             Invite[]
+}
+
+enum UserRole {
+  admin
+  staff
+}
+
+enum UserStatus {
+  active
+  inactive
+  invited
+}
+
+model User {
+  id               String     @id @default(uuid())
+  email            String     @unique
+  supabase_user_id String
+  role             UserRole   @default(staff)
+  status           UserStatus @default(invited)
+  organisation_id  String
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  organisation Organisation @relation(fields: [organisation_id], references: [id])
+
+  invited_invites  Invite[] @relation("InvitedBy")
+  accepted_invites Invite[] @relation("AcceptedBy")
+}
+
+enum InviteStatus {
+  invited
+  accepted
+  declined
+}
+
+model Invite {
+  id              String       @id @default(uuid())
+  organisation_id String
+  email           String
+  role            UserRole     @default(staff)
+  status          InviteStatus @default(invited)
+  created_at      DateTime     @default(now())
+  updated_at      DateTime     @updatedAt
+  expires_at      DateTime     @default(dbgenerated("CURRENT_TIMESTAMP + INTERVAL '7 days'"))
+  invited_by_id   String?
+  accepted_by_id  String?
+
+  organisation Organisation @relation(fields: [organisation_id], references: [id])
+  invited_by   User?        @relation("InvitedBy", fields: [invited_by_id], references: [id])
+  accepted_by  User?        @relation("AcceptedBy", fields: [accepted_by_id], references: [id])
+
+  @@unique([organisation_id, email])
 }
