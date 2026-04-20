@@ -1,8 +1,12 @@
 import { OpenApiGeneratorV3, OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
 
-import { organisationsOpenApiRegistry } from "./schemas/organisations";
+import { superadminInvitesOpenApiRegistry } from "./schemas/openapi.invites";
+import { organisationsOpenApiRegistry } from "./schemas/openapi.organisations";
 
-const registry = new OpenAPIRegistry([organisationsOpenApiRegistry]);
+const registry = new OpenAPIRegistry([
+  organisationsOpenApiRegistry,
+  superadminInvitesOpenApiRegistry,
+]);
 
 const generator = new OpenApiGeneratorV3(registry.definitions);
 

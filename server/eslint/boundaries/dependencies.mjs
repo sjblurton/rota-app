@@ -35,11 +35,11 @@ const moduleControllersToGlobal = {
   allow: { to: { type: globalTypes } },
 };
 
-// Allow docs to allow all other docs files (for cross-file references in docs)
+// Allow docs to allow all other global types (e.g. to use zod schemas from libs/schemas)
 const docsToDocs = [
   {
     from: { type: "docs" },
-    allow: { to: { type: ["docs"] } },
+    allow: { to: { type: globalTypes } },
   },
 ];
 
