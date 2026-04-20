@@ -145,3 +145,16 @@ Your job is to design API changes before implementation.
 - Missing endpoints or flows
 - Edge cases and risks
 - Suggested conventions and linting rules
+
+## Repository/Database Access Guidance (2026 update)
+
+- All repository/database access code must live in `server/src/libs/repository/{entity}/{entity}-repository.ts`.
+- Feature modules (in `server/src/modules/{feature}`) must import repositories from `libs/repository`, not from other modules.
+- Boundaries rules are updated to allow modules to import from `libs/repository`.
+- When designing new features, always place reusable DB logic in `libs/repository`.
+- Do not duplicate repository logic in multiple modules—centralise in `libs/repository`.
+- Example import:
+  ```ts
+  import { organisationsRepository } from "../../../libs/repository/organisations/organisations-repository";
+  ```
+- This ensures clean separation, reusability, and boundaries compliance.

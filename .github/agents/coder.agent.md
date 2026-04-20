@@ -64,9 +64,13 @@ Your job is to make focused backend changes that keep runtime behaviour, shared 
 - Ensure documentation reflects actual intended API behaviours.
 - README files must reflect the OpenAPI spec and current API design.
 
-## Output Format
+## Repository/Database Access Guidance (2026 update)
 
-- What changed
-- Files touched
-- Validation run
-- Remaining risks or follow-ups
+- All repository/database access code now lives in `server/src/libs/repository/{entity}/{entity}-repository.ts`.
+- Feature modules must import repositories from `libs/repository`, not from other modules.
+- Do not duplicate repository logic—always use the shared repository.
+- Example import:
+  ```ts
+  import { organisationsRepository } from "../../../libs/repository/organisations/organisations-repository";
+  ```
+- This ensures boundaries compliance and code reuse.
