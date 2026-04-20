@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 
-import { prisma } from "../../../libs/prisma/prisma";
+import { prisma } from "../../prisma/prisma";
 import { OrganisationsRepository } from "./organisations-repository";
 
 beforeEach(async () => {

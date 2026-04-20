@@ -1,8 +1,8 @@
+import { organisationsRepository } from "../../../libs/repository/organisations/organisations-repository";
 import type {
   CreateOrganisationInput,
   OrganisationsPaginationQuery,
 } from "../../../types/organisation";
-import { organisationsRepository } from "../repository/organisations-repository";
 
 class OrganisationsService {
   private readonly repository = organisationsRepository;

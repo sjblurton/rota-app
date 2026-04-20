@@ -1,10 +1,10 @@
-import { prisma } from "../../../libs/prisma/prisma";
-import { getPrismaPaginationArgs } from "../../../libs/prisma/utils/getPrismaPaginationArgs";
 import type {
   CreateOrganisationInput,
   Organisation,
   OrganisationsPaginationQuery,
 } from "../../../types/organisation";
+import { prisma } from "../../prisma/prisma";
+import { getPrismaPaginationArgs } from "../../prisma/utils/getPrismaPaginationArgs";
 
 export class OrganisationsRepository {
   private prisma = prisma;
