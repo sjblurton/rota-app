@@ -2,6 +2,7 @@ import express from "express";
 import request from "supertest";
 import { beforeEach, describe, expect, it } from "vitest";
 
+import { COMMON_STATUS_NAMES } from "../../constants/status";
 import { prisma } from "../../libs/prisma/prisma";
 import { organisationsRouter } from "./organisations-router";
 
@@ -24,7 +25,7 @@ describe("POST /organisations", () => {
       plan: "free",
       sms_limit: 100,
       sms_used_this_month: 0,
-      status: "invited",
+      status: COMMON_STATUS_NAMES.ACTIVE,
       stripe_customer_id: null,
     });
 

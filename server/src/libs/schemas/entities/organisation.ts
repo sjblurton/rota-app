@@ -8,7 +8,7 @@ import { baseWithTimestampsSchema } from "./base";
 
 extendZodWithOpenApi(z);
 
-const organisationStatusEnum = z.enum(Object.values(COMMON_STATUS_NAMES));
+const organisationStatusEnum = z.enum([COMMON_STATUS_NAMES.ACTIVE, COMMON_STATUS_NAMES.INACTIVE]);
 const planTypeEnum = z.enum(Object.values(PLAN_TYPES)).default(PLAN_TYPES.FREE);
 
 export const organisationSchema = baseWithTimestampsSchema
@@ -17,7 +17,7 @@ export const organisationSchema = baseWithTimestampsSchema
     plan: planTypeEnum,
     sms_limit: z.number().int().nonnegative().default(100),
     sms_used_this_month: z.number().int().nonnegative().default(0),
-    status: organisationStatusEnum.default(COMMON_STATUS_NAMES.INVITED),
+    status: organisationStatusEnum.default(COMMON_STATUS_NAMES.ACTIVE),
     stripe_customer_id: z.string().nullable().default(null),
   })
   .openapi({
