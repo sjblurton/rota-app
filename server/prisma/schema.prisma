@@ -67,7 +67,8 @@ model User {
 enum InviteStatus {
   invited
   accepted
-  declined
+  revoked
+  expired
 }
 
 model Invite {

@@ -1,0 +1,54 @@
+import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
+
+import { PATHS } from "../../../constants/paths";
+import { createInviteSchema, inviteSchema } from "../../../libs/schemas/entities/invite";
+import { commonErrorResponses } from "../../errors/responses";
+import { superadminTags } from "../constants/superadmin-tags";
+
+const superadminInvitesOpenApiRegistry = new OpenAPIRegistry();
+
+const inviteUserPath = `${PATHS.apiBaseV1}${PATHS.superadmin}${PATHS.organisations}/{organisation_id}/invites`;
+
+superadminInvitesOpenApiRegistry.registerPath({
+  method: "post",
+  path: inviteUserPath,
+  parameters: [
+    {
+      name: "organisation_id",
+      in: "path",
+      required: true,
+      schema: {
+        type: "string",
+        format: "uuid",
+      },
+    },
+  ],
+  summary: "Invite a user to an organisation (Superadmin)",
+  description:
+    "Invites a user to an organisation by email. Restricted to superadmin via `X-Superadmin-Key`. If the user already exists, an invite will not be sent.",
+  tags: superadminTags,
+  security: [{ SuperadminKey: [] }],
+  request: {
+    body: {
+      required: true,
+      content: {
+        "application/json": {
+          schema: createInviteSchema,
+        },
+      },
+    },
+  },
+  responses: {
+    "201": {
+      description: "User invited successfully",
+      content: {
+        "application/json": {
+          schema: inviteSchema,
+        },
+      },
+    },
+    ...commonErrorResponses,
+  },
+});
+
+export { superadminInvitesOpenApiRegistry };

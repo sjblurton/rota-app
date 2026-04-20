@@ -33,6 +33,7 @@ You are the Orchestrator Agent for this repository.
 
 - Architect and coder agents must always report back to the orchestrator agent after completing their tasks, or if they encounter blockers or require review/approval.
 - No agent should proceed to the next step without explicit instruction from the orchestrator.
+- When a plan is approved by the human reviewer, the orchestrator agent will automatically pass the plan and instructions to the coder agent for implementation.
 
 ## Principles
 
