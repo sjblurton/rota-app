@@ -153,7 +153,7 @@ describe("phoneNumberSchema", () => {
       const result = phoneNumberSchema.safeParse("+0123456789");
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe(
+        expect(result.error?.issues[0]?.message).toBe(
           "Phone number must be in international format including country code (for example, +447123456789)",
         );
       }
@@ -163,7 +163,7 @@ describe("phoneNumberSchema", () => {
       const result = phoneNumberSchema.safeParse("447911123456");
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toBe(
+        expect(result.error?.issues?.[0]?.message).toBe(
           "Phone number must be in international format including country code (for example, +447123456789)",
         );
       }

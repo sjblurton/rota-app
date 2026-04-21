@@ -9,7 +9,7 @@ beforeEach(async () => {
 
 describe("OrganisationsRepository (integration)", () => {
   it("should be running in test environment", () => {
-    expect(process.env.NODE_ENV).toBe("test");
+    expect(process.env["NODE_ENV"]).toBe("test");
   });
 
   it("creates an organisation in the DB", async () => {
@@ -51,7 +51,7 @@ describe("OrganisationsRepository (integration)", () => {
     }
     const page1 = await repo.getAllOrganisations({ limit: 2, offset: 0 });
     expect(page1.length).toBe(2);
-    expect(page1[0].name).toBeDefined();
+    expect(page1[0]?.name).toBeDefined();
     const page2 = await repo.getAllOrganisations({ limit: 2, offset: 2 });
     expect(page2.length).toBe(2);
     const page3 = await repo.getAllOrganisations({ limit: 2, offset: 4 });
@@ -75,6 +75,6 @@ describe("OrganisationsRepository (integration)", () => {
     const found = await repo.getOrganisationByName("UniqueName");
     expect(Array.isArray(found)).toBe(true);
     expect(found.length).toBeGreaterThanOrEqual(1);
-    expect(found[0].name).toBe("UniqueName");
+    expect(found[0]?.name).toBe("UniqueName");
   });
 });
