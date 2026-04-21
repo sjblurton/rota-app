@@ -6,7 +6,6 @@ export default mergeConfig(
   baseConfig,
   defineConfig({
     test: {
-      globalSetup: "./test/global-int-setup.ts",
       fileParallelism: false,
     },
   }),
