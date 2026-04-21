@@ -15,6 +15,13 @@
 
 ## Build and Test
 
+## Testing Framework
+
+- All backend and shared tests use **Vitest** (not Jest).
+- Always import test functions and mocks from vitest:
+  - import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
+- Do not use jest imports or globals.
+- Update or create tests to follow this convention.
 - Client checks: cd client && npm run lint && npm run lint:typescript && npm run test
 - Server checks: cd server && npm run lint && npm run lint:typescript && npm run test
 
