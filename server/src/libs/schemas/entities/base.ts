@@ -1,8 +1,6 @@
 import { extendZodWithOpenApi } from "@asteasolutions/zod-to-openapi";
 import { z } from "zod";
 
-import { utcDateTimeNowDefaultSchema } from "../time/dateTime";
-
 extendZodWithOpenApi(z);
 
 export const baseSchema = z.object({
@@ -10,6 +8,6 @@ export const baseSchema = z.object({
 });
 
 export const baseWithTimestampsSchema = baseSchema.extend({
-  created_at: utcDateTimeNowDefaultSchema,
-  updated_at: utcDateTimeNowDefaultSchema,
+  created_at: z.date().default(() => new Date()),
+  updated_at: z.date().default(() => new Date()),
 });

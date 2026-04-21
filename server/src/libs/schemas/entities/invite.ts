@@ -21,10 +21,10 @@ export const inviteSchema = baseWithTimestampsSchema
   })
   .openapi({
     example: {
-      id: "inv-123e4567-e89b-12d3-a456-426614174000",
+      id: "123e4567-e89b-12d3-a456-426614174000",
       email: "new.user@example.com",
       organisation_id: "123e4567-e89b-12d3-a456-426614174000",
-      invited_by_user_id: "user-123e4567-e89b-12d3-a456-426614174000",
+      invited_by_user_id: "123e4567-e89b-12d3-a456-426614174000",
       status: "invited",
       created_at: "2026-04-20T10:00:00Z",
       updated_at: "2026-04-20T10:00:00Z",
@@ -34,11 +34,9 @@ export const inviteSchema = baseWithTimestampsSchema
 export const createInviteSchema = inviteSchema
   .pick({
     email: true,
-    organisation_id: true,
   })
   .openapi({
     example: {
       email: "new.user@example.com",
-      organisation_id: "123e4567-e89b-12d3-a456-426614174000",
     },
   });

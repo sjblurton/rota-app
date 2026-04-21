@@ -24,7 +24,6 @@ cd server && npm run dev
 ## Conventions
 
 - Backend API timestamps are ISO 8601 UTC datetimes with a trailing Z suffix.
-- Date-time validation is centralised in `server/src/libs/schemas/time/dateTime.ts` and reused across server schemas.
 - Local timezone rendering is a client concern only.
 
 ## Naming Conventions

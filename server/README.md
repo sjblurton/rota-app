@@ -20,14 +20,12 @@ src/
 ├── app.ts                    # Express app setup (middleware, routes)
 ├── server.ts                 # Entry point (startup, DB connectivity check)
 ├── constants/                # Shared constants (HTTP errors, status codes, plan types)
+├── controllers/              # HTTP controllers, grouped by feature (e.g. organisations/)
+│   └── {feature}/            # Controller files for each feature
 ├── docs/                     # OpenAPI documentation layer
 │   ├── errors/               # Error response schemas
-│   ├── openapi.ts            # Merges all module OpenAPI documents
-│   ├── responses.ts          # Shared HTTP response schemas
+│   ├── openapi.ts            # Merges all OpenAPI docs
 │   └── superadmin/           # Superadmin API documentation
-│       ├── openapi.ts        # Superadmin OpenAPI registry
-│       ├── constants/
-│       └── schemas/          # Endpoint schemas (organisations, etc.)
 ├── generated/                # Prisma generated client (prisma/ input)
 ├── libs/                     # Shared domain libraries
 │   ├── auth/                 # Authentication middleware
@@ -39,26 +37,33 @@ src/
 │       ├── strings/          # String validation schemas
 │       └── time/             # Date-time validators (ISO 8601 UTC)
 │           └── dateTime.ts   # Shared datetime schema
-├── modules/                  # Feature modules (isolated, one per feature)
-│   └── organisations/        # Organisations feature
-│       ├── controller/
-│       ├── services/
-│       └── repository/
+├── repositories/             # Data access layer, grouped by feature
+│   └── {feature}/            # Repository files for each feature
 ├── routes/                   # Route mounting layer
 │   ├── organisations/
 │   └── superadmin/
+├── services/                 # Business logic layer, grouped by feature
+│   └── {feature}/            # Service files for each feature
 ├── types/                    # Type definitions (derived via z.infer<>)
 │   └── *.ts
 └── utils/                    # Stateless helpers (validation, env, http)
-    ├── env/                  # Environment variable reading
-    ├── http/                 # HTTP helpers (status codes, headers)
-    └── validation/           # Schema validation utilities
+  ├── env/                  # Environment variable reading
+  ├── http/                 # HTTP helpers (status codes, headers)
+  └── validation/           # Schema validation utilities
 ```
 
 **Key Principles:**
 
-- Each feature module lives entirely within `modules/{feature}/`.
-- Module-level tests live alongside code with `*.int.test.ts` suffix.
+- Each feature's repositories are only imported by services of the same feature (enforced by eslint-plugin-boundaries).
+- Services can import other services for business logic composition.
+- Controllers can use any service.
+- No more `modules/` folder; features are grouped under `controllers/`, `repositories/`, and `services/`.
+
+## Time Handling
+
+- All backend times are handled as JavaScript `Date` objects and validated/stored as ISO 8601 UTC strings with trailing `Z`.
+- The backend does not convert to local time; the frontend is responsible for any local time formatting or conversion.
+- See `libs/schemas/time/dateTime.ts` for the shared Zod datetime schema.
 - Shared domain/request/response schemas live in `libs/schemas/`; OpenAPI-only schemas and registries may live under `docs/`.
 - Routes mount modules via `routes/{module}/`.
 - Docs own OpenAPI registration and other documentation-only API descriptions, rather than defining them inside feature modules.
@@ -67,23 +72,18 @@ src/
 
 Enforced by `eslint-plugin-boundaries` with deny-by-default. **Global types** (`libs`, `utils`, `docs`, `types`, `constants`) may be imported by any module.
 
-| From                  | May import                                                                        |
-| --------------------- | --------------------------------------------------------------------------------- |
-| `modules/{feature}`   | Sibling files within same module, any global type (`libs`, `utils`, `docs`, etc.) |
-| `routes/{feature}`    | Module controllers in same route, any global type, other routes, `app.ts`         |
-| `docs/`               | Other `docs/` files, any global type                                              |
-| `libs/`               | Other `libs/`, `generated/prisma` (Prisma client), global types                   |
-| `utils/`              | Other `utils/`, `libs/`, global types                                             |
-| `constants/`          | Other `constants/`, `libs/`, `utils/`                                             |
-| `types/`              | Other `types/`, global types                                                      |
-| `app.ts`, `server.ts` | Any global type, `routes/`, `docs/` (bootstrap layer)                             |
-
-**Key constraints:**
-
-- Cross-module imports are blocked (e.g., `modules/organisations/` ↛ `modules/shifts/`).
-- Schemas live in `libs/schemas/` and must be imported into docs or modules, never duplicated.
-- Test files (`.int.test.ts`) within modules/routes may import from `app.ts` for test setup.
-- Prisma client is generated; never edit `generated/`. Consume via `libs/prisma/`.
+| From                     | May import                                                            |
+| ------------------------ | --------------------------------------------------------------------- |
+| `controllers/{feature}`  | Any service, any global type                                          |
+| `services/{feature}`     | Sibling services, same-feature repositories, any global type          |
+| `repositories/{feature}` | Only used by same-feature services, any global type                   |
+| `routes/{feature}`       | Controllers for same feature, any global type, other routes, `app.ts` |
+| `docs/`                  | Other `docs/` files, any global type                                  |
+| `libs/`                  | Other `libs/`, `generated/prisma` (Prisma client), global types       |
+| `utils/`                 | Other `utils/`, `libs/`, global types                                 |
+| `constants/`             | Other `constants/`, `libs/`, `utils/`                                 |
+| `types/`                 | Other `types/`, global types                                          |
+| `app.ts`, `server.ts`    | Any global type, `routes/`, `docs/` (bootstrap layer)                 |
 
 ## Commands
 
@@ -97,56 +97,37 @@ npm run test:int       # Run integration tests
 
 ## Testing
 
-### Test Types
+All tests are unit tests (`*.test.ts`).
 
-**Unit Tests** (`*.test.ts`)
+- No tests access the database; all dependencies are mocked.
+- Tests cover services, controllers, repositories, and utilities in isolation.
+- Example: `src/libs/logger/logger.test.ts`
 
-- Fast, isolated tests for services, utilities, and pure functions
-- Run against `node` environment only
-- No database access
-- Example: `src/schemas/datetime.test.ts`
-
-**Integration Tests** (`*.int.test.ts`)
-
-- Slow, full-stack tests for HTTP endpoints and database interactions
-- Run sequentially (not in parallel) to ensure database consistency
-- Database is **completely reset** before and after test run
-- Example naming pattern: `src/routes/**/some-route.int.test.ts`
-
-### Database Setup for Integration Tests
-
-Integration test flow:
-
-1. **Global setup** (`test/global-int-setup.ts`) runs before all tests:
-   - Executes `npm run db:reset:force` which:
-     - Runs `prisma migrate reset --force` to reset the test database and reapply migrations
-     - Runs `npm run db:seed` to seed the database
-
-2. **Tests run** sequentially against fresh database
-
-3. **Global teardown** runs after all tests:
-   - Executes `npm run db:reset:force` again for cleanup
-
-**Important:** Each test run starts with a clean database. Do not rely on test isolation via separate transactions; rely on the global reset instead.
-
-### Running Tests
+To run all tests:
 
 ```bash
-# Run all unit tests (fast, no DB)
 npm run test
+```
 
-# Run all integration tests (slow, uses DB)
-npm run test:int
+To run a specific test file:
 
-# Run tests with coverage report
-npm run test:coverage
-
-# Run specific test file
+```bash
 npm run test -- src/libs/logger/logger.test.ts
+```
 
-# Watch mode (unit tests only)
+To run tests with coverage report:
+
+```bash
+npm run test:coverage
+```
+
+To run in watch mode:
+
+```bash
 npm run test -- --watch
 ```
+
+**Note:** End-to-end tests (with real HTTP and DB) may be added in the future.
 
 ### Coverage Requirements
 
@@ -171,26 +152,6 @@ import { logger } from "./logger";
 describe("logger", () => {
   it("logs messages", () => {
     expect(logger).toBeDefined();
-  });
-});
-```
-
-**Integration Test Example:**
-
-```typescript
-// src/routes/organisations/organisations-router.int.test.ts
-import { describe, it, expect } from "vitest";
-import request from "supertest";
-import { app } from "../../app";
-
-describe("GET /api/v1/superadmin/organisations", () => {
-  it("returns 200 with organisations list", async () => {
-    const response = await request(app)
-      .get("/api/v1/superadmin/organisations")
-      .set("X-Superadmin-Key", process.env.SUPERADMIN_API_KEY!);
-
-    expect(response.status).toBe(200);
-    expect(Array.isArray(response.body)).toBe(true);
   });
 });
 ```
@@ -278,13 +239,6 @@ Query parameters:
 - `offset` — page offset (default: 0)
 - `order_by_key` — sort by: `created_at`, `updated_at`, `name`, `status`, or `plan`
 - `order` — sort direction: `asc` or `desc` (default: `desc`)
-
-## Date and Time Contract
-
-- API request and response timestamps use ISO 8601 UTC datetimes with a trailing Z suffix.
-- Shared date-time validation lives in `src/libs/schemas/time/dateTime.ts` and should be reused rather than redefining date schemas.
-- Timezone conversion for display happens in the client only.
-- Server-side comparisons should use parsed instants, not lexicographic string comparison.
 
 ## Naming Conventions
 

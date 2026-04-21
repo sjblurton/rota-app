@@ -1,62 +1,33 @@
-// ---------------------------------------------
-// Boundaries Dependency Rules (clean, DRY, and maintainable)
-// ---------------------------------------------
+const globalTypes = ["libs", "utils", "docs", "types", "constants"];
 
-// Global types (can be used by all modules/app)
-const globalTypes = ["libs", "utils", "docs", "types", "constants", "prisma"];
-
-// Allow routes to import from module
-const routesToModuleControllers = {
-  from: { type: "routes" },
-  allow: { to: { type: "module-controllers" } },
-};
-
-// Allow libs to import from generated-prisma (for Prisma client)
-const libsToGeneratedPrisma = {
-  from: { type: "libs" },
+const libsCanImportGeneratedPrisma = {
+  from: [{ type: "libs" }, { type: "services" }, { type: "repositories" }],
   allow: { to: { type: "generated-prisma" } },
 };
 
-// Allow all global types to use each other
-const globalToGlobal = globalTypes.map((type) => ({
+const globalTypesCanImportEachOther = globalTypes.map((type) => ({
   from: { type },
   allow: { to: { type: globalTypes } },
 }));
 
-// Allow all modules to use all global types
-const modulesToGlobal = {
-  from: { type: "module" },
-  allow: { to: { type: globalTypes } },
-};
-
-// Allow module controllers to use all global types
-const moduleControllersToGlobal = {
-  from: { type: "module-controllers" },
-  allow: { to: { type: globalTypes } },
-};
-
-// Allow docs to allow all other global types (e.g. to use zod schemas from libs/schemas)
-const docsToDocs = [
+const docsCanImportGlobalTypes = [
   {
     from: { type: "docs" },
     allow: { to: { type: globalTypes } },
   },
 ];
 
-// Allow app to import from all global types and from routes
-const appToGlobalAndRoutes = {
+const appCanImportGlobalTypesAndRoutes = {
   from: { type: "app" },
   allow: [...globalTypes.map((type) => ({ to: { type } })), { to: { type: "routes" } }],
 };
 
-// Allow test files in routes to import app
-const routesTestToApp = {
+const routesCanImportApp = {
   from: { type: "routes" },
   allow: [{ to: { type: "app" } }],
 };
 
-// Allow routes to import from all global types (lib, utils, docs, docs-schemas), from any other file in routes, and from app entrypoint
-const routesToGlobal = {
+const routesCanImportGlobalTypesAndRoutesAndApp = {
   from: { type: "routes" },
   allow: [
     ...globalTypes.map((type) => ({ to: { type } })),
@@ -65,45 +36,56 @@ const routesToGlobal = {
   ],
 };
 
-// Allow files within the same module to import each other
-const moduleToSelf = {
-  from: { type: "module", captured: { moduleName: "{{ from.captured.moduleName }}" } },
-  allow: [
-    { to: { type: "module", captured: { moduleName: "{{ from.captured.moduleName }}" } } },
-    {
-      to: {
-        type: "module-controllers",
-        captured: { moduleName: "{{ from.captured.moduleName }}" },
-      },
-    },
-  ],
+const controllersCanImportGlobalTypes = {
+  from: { type: "controllers" },
+  allow: [...globalTypes.map((type) => ({ to: { type } })), { to: { type: "controllers" } }],
 };
 
-// Allow module controllers to import from files in the same module
-const moduleControllersToSelf = {
-  from: { type: "module-controllers", captured: { moduleName: "{{ from.captured.moduleName }}" } },
-  allow: [
-    { to: { type: "module", captured: { moduleName: "{{ from.captured.moduleName }}" } } },
-    {
-      to: {
-        type: "module-controllers",
-        captured: { moduleName: "{{ from.captured.moduleName }}" },
-      },
-    },
-  ],
+const routesToControllers = {
+  from: { type: "routes" },
+  allow: [{ to: { type: "controllers" } }],
+};
+
+const controllersToServices = {
+  from: { type: "controllers" },
+  allow: [{ to: { type: "services" } }],
+};
+
+const servicesToGlobal = {
+  from: { type: "services" },
+  allow: [...globalTypes.map((type) => ({ to: { type } }))],
+};
+
+const repositoriesCanImportGlobalTypes = {
+  from: [{ type: "repositories" }],
+  allow: [...globalTypes.map((type) => ({ to: { type } })), { to: { type: "repositories" } }],
+};
+
+const servicesCanImportGlobalTypes = {
+  from: [{ type: "services" }],
+  allow: [...globalTypes.map((type) => ({ to: { type } })), { to: { type: "services" } }],
+};
+
+const servicesToSameModuleRepositories = {
+  from: { type: "services" },
+  allow: {
+    to: { type: "repositories", captured: { moduleName: "{{from.captured.moduleName}}" } },
+  },
 };
 
 // Export all rules
 export const boundariesDependencyRules = [
-  ...globalToGlobal,
-  modulesToGlobal,
-  moduleControllersToGlobal,
-  libsToGeneratedPrisma,
-  moduleToSelf,
-  moduleControllersToSelf,
-  ...docsToDocs,
-  routesToGlobal,
-  appToGlobalAndRoutes,
-  routesTestToApp,
-  routesToModuleControllers,
+  ...globalTypesCanImportEachOther,
+  libsCanImportGeneratedPrisma,
+  ...docsCanImportGlobalTypes,
+  appCanImportGlobalTypesAndRoutes,
+  routesCanImportApp,
+  routesCanImportGlobalTypesAndRoutesAndApp,
+  controllersCanImportGlobalTypes,
+  routesToControllers,
+  controllersToServices,
+  servicesToSameModuleRepositories,
+  servicesToGlobal,
+  repositoriesCanImportGlobalTypes,
+  servicesCanImportGlobalTypes,
 ];

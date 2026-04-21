@@ -18,7 +18,6 @@ export default [
   ...tseslint.configs.recommended,
   {
     files: ["src/**/*.ts"],
-    ignores: ["src/**/*.test.ts"],
     languageOptions: {
       parserOptions: {
         projectService: true,
@@ -46,7 +45,6 @@ export default [
     plugins: {
       sonarjs,
       unicorn,
-      // Use simple-import-sort for import order, Prettier for formatting
       "simple-import-sort": simpleImportSort,
     },
     rules: {

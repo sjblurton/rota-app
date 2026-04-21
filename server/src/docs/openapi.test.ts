@@ -7,13 +7,13 @@ const organisationsPath = `${PATHS.apiBaseV1}${PATHS.superadmin}${PATHS.organisa
 
 describe("openApiDocument", () => {
   it("includes expected top-level metadata and key paths", () => {
-    expect(openApiDocument.openapi).toBe("3.0.3");
-    expect(openApiDocument.info.title).toBe("Rota App API");
-    expect(openApiDocument.paths).toHaveProperty(organisationsPath);
+    expect(openApiDocument["openapi"]).toBe("3.0.3");
+    expect(openApiDocument["info"].title).toBe("Rota App API");
+    expect(openApiDocument["paths"]).toHaveProperty(organisationsPath);
   });
 
   it("documents superadmin organisation routes", () => {
-    const organisationPathItem = openApiDocument.paths[organisationsPath];
+    const organisationPathItem = openApiDocument["paths"][organisationsPath];
 
     expect(organisationPathItem).toBeDefined();
     expect(organisationPathItem).toHaveProperty("post");
@@ -21,7 +21,7 @@ describe("openApiDocument", () => {
   });
 
   it("documents pagination query parameters for get organisations", () => {
-    const organisationPathItem = openApiDocument.paths[organisationsPath];
+    const organisationPathItem = openApiDocument["paths"][organisationsPath];
     const getOperation = organisationPathItem.get;
 
     expect(getOperation).toBeDefined();
@@ -36,15 +36,15 @@ describe("openApiDocument", () => {
   });
 
   it("merges schema components and security schemes", () => {
-    expect(openApiDocument.components.securitySchemes).toHaveProperty("SuperadminKey");
+    expect(openApiDocument["components"].securitySchemes).toHaveProperty("SuperadminKey");
 
-    const superadminKey = openApiDocument.components.securitySchemes.SuperadminKey;
+    const superadminKey = openApiDocument["components"].securitySchemes.SuperadminKey;
     expect(superadminKey).toMatchObject({
       type: "apiKey",
       in: "header",
       name: "X-Superadmin-Key",
     });
 
-    expect(openApiDocument.security).toEqual([{ SuperadminKey: [] }]);
+    expect(openApiDocument["security"]).toEqual([{ SuperadminKey: [] }]);
   });
 });

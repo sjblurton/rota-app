@@ -19,6 +19,14 @@ app.use(`${PATHS.apiBaseV1}${PATHS.superadmin}`, superadminRouter);
 
 app.use(`${PATHS.apiBaseV1}${PATHS.docs}`, swaggerUi.serve, swaggerUi.setup(openApiDocument));
 
+app.use((req, res) => {
+  res.status(404).json({
+    code: "not_found",
+    message: "Route not found",
+    detail: `No route found for ${req.method} ${req.originalUrl}`,
+  });
+});
+
 app.use(
   (err: unknown, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
     logger.error(err);
