@@ -8,6 +8,6 @@ describe('index route', () => {
   it('mounts and shows the app title', () => {
     render(<App />)
 
-    expect(screen.getByText('Rota App')).toBeTruthy()
+    expect(screen.findByText('Rota App')).toBeTruthy()
   })
 })
