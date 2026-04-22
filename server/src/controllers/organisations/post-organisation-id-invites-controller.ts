@@ -1,6 +1,6 @@
 import z from "zod";
 
-import { createInviteSchema } from "../../libs/schemas/entities/invite";
+import { createInviteBodySchema } from "../../libs/schemas/entities/invite";
 import {
   getOrganisationByIdService,
   type GetOrganisationByIdServiceType,
@@ -22,11 +22,11 @@ export const postOrganisationIdInvitesController = async ({
     request.params,
   );
 
-  const parsedBody = validateAndParse(createInviteSchema, request.body);
+  const parsedBody = validateAndParse(createInviteBodySchema, request.body);
 
   await getOrganisationById({ id: organisationId });
 
-  response.status(200).json({
+  response.status(201).json({
     id: "inv-123e4567-e89b-12d3-a456-426614174000",
     email: parsedBody.email,
     organisation_id: organisationId,
@@ -34,5 +34,7 @@ export const postOrganisationIdInvitesController = async ({
     status: "invited",
     created_at: "2026-04-20T10:00:00Z",
     updated_at: "2026-04-20T10:00:00Z",
+    expires_at: "2026-05-20T10:00:00Z",
+    preferred_contact_method: "email",
   });
 };

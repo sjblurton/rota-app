@@ -1,7 +1,7 @@
 import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
 
 import { PATHS } from "../../../constants/paths";
-import { createInviteSchema, inviteSchema } from "../../../libs/schemas/entities/invite";
+import { createInviteBodySchema, inviteSchema } from "../../../libs/schemas/entities/invite";
 import { commonErrorResponses } from "../../errors/responses";
 import { superadminTags } from "../constants/superadmin-tags";
 
@@ -15,6 +15,7 @@ superadminInvitesOpenApiRegistry.registerPath({
   parameters: [
     {
       name: "organisation_id",
+      example: "00000000-0000-0000-0000-000000000000",
       in: "path",
       required: true,
       schema: {
@@ -33,7 +34,7 @@ superadminInvitesOpenApiRegistry.registerPath({
       required: true,
       content: {
         "application/json": {
-          schema: createInviteSchema,
+          schema: createInviteBodySchema,
         },
       },
     },
