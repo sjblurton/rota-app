@@ -1,0 +1,17 @@
+{
+  "name": "rota-app",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev:client": "npm --prefix client run dev",
+    "dev:server": "npm --prefix server run dev",
+    "dev": "concurrently --names 'CLIENT,SERVER' --prefix-colors 'cyan,magenta' \"npm run dev:client\" \"npm run dev:server\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
