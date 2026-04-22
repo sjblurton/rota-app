@@ -1,19 +1,20 @@
-import { type PrismaClient } from "../../generated/prisma/client";
-import { prisma } from "../../libs/prisma/prisma";
 import { organisationSchema } from "../../libs/schemas/entities/organisation";
-import { getAllOrganisationsRepository } from "../../repositories/organisations/get-all-organisations-repository";
+import {
+  type GetAllOrganisationsRepository,
+  getAllOrganisationsRepository,
+} from "../../repositories/organisations/get-all-organisations-repository";
 import { type OrganisationsPaginationQuery } from "../../types/organisation";
 
 type GetAllOrganisationsServiceInput = {
   paginationQuery?: OrganisationsPaginationQuery;
-  organisationRepo?: PrismaClient["organisation"];
+  getAllOrganisations?: GetAllOrganisationsRepository;
 };
 
 export const getAllOrganisationsService = async ({
   paginationQuery = {},
-  organisationRepo = prisma.organisation,
+  getAllOrganisations = getAllOrganisationsRepository,
 }: GetAllOrganisationsServiceInput) => {
-  const raw = await getAllOrganisationsRepository({ paginationQuery, organisationRepo });
+  const raw = await getAllOrganisations({ paginationQuery });
 
   return organisationSchema.array().parseAsync(raw);
 };

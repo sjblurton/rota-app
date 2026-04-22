@@ -1,19 +1,20 @@
-import type { PrismaClient } from "../../generated/prisma/client";
-import { prisma } from "../../libs/prisma/prisma";
 import { organisationSchema } from "../../libs/schemas/entities/organisation";
-import { createOrganisationRepository } from "../../repositories/organisations/create-organisation-repository";
+import {
+  type CreateOrganisationRepository,
+  createOrganisationRepository,
+} from "../../repositories/organisations/create-organisation-repository";
 import { type CreateOrganisationInput } from "../../types/organisation";
 
 type CreateOrganisationServiceInput = {
   data: CreateOrganisationInput;
-  organisationRepo?: PrismaClient["organisation"];
+  createOrganisation?: CreateOrganisationRepository;
 };
 
 export const createOrganisationService = async ({
   data,
-  organisationRepo = prisma.organisation,
+  createOrganisation = createOrganisationRepository,
 }: CreateOrganisationServiceInput) => {
-  const raw = await createOrganisationRepository({ data, organisationRepo });
+  const raw = await createOrganisation({ data });
   return organisationSchema.parseAsync(raw);
 };
 

@@ -1,12 +1,17 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { type CreateInviteBody } from "../../types/invites";
 import { HttpErrorByCode } from "../../utils/http/HttpErrorByCode";
 import { postOrganisationIdInvitesController } from "./post-organisation-id-invites-controller";
 
 const validParams = { organisation_id: "123e4567-e89b-12d3-a456-426614174000" };
-const validBody = { email: "test@example.com" };
+const validBody: CreateInviteBody = {
+  email: "test@example.com",
+  role: "admin",
+  preferred_contact_method: "email",
+};
 
-const mockRequest = (params = validParams, body = validBody) => ({ params, body }) as any;
+const mockRequest = (params = validParams, body = validBody) => ({ params, body });
 const mockResponse = () => {
   const res: any = {};
   res.status = vi.fn().mockReturnValue(res);
@@ -28,7 +33,7 @@ describe("postOrganisationIdInvitesController", () => {
   it("validates params and body, calls getOrganisationById, and responds with invite", async () => {
     await postOrganisationIdInvitesController({ request, response, getOrganisationById });
     expect(getOrganisationById).toHaveBeenCalledWith({ id: validParams.organisation_id });
-    expect(response.status).toHaveBeenCalledWith(200);
+    expect(response.status).toHaveBeenCalledWith(201);
     expect(response.json).toHaveBeenCalledWith(
       expect.objectContaining({
         email: validBody.email,
@@ -46,7 +51,11 @@ describe("postOrganisationIdInvitesController", () => {
   });
 
   it("throws if body is invalid", async () => {
-    request = mockRequest(validParams, { email: "not-an-email" });
+    request = mockRequest(validParams, {
+      email: "not-an-email",
+      preferred_contact_method: "email",
+      role: "admin",
+    });
     await expect(
       postOrganisationIdInvitesController({ request, response, getOrganisationById }),
     ).rejects.toThrow(HttpErrorByCode);
