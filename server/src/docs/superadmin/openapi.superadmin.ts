@@ -1,7 +1,7 @@
 import { OpenApiGeneratorV3, OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
 
-import { superadminInvitesOpenApiRegistry } from "./schemas/openapi.invites";
-import { organisationsOpenApiRegistry } from "./schemas/openapi.organisations";
+import { superadminInvitesOpenApiRegistry } from "./invites/schemas/openapi.post-invites";
+import { organisationsOpenApiRegistry } from "./organisations/schemas/openapi.post-organisations";
 
 const registry = new OpenAPIRegistry([
   organisationsOpenApiRegistry,
@@ -18,6 +18,5 @@ export const superadminOpenApiDocument = generator.generateDocument({
     description:
       "Owner-only API for provisioning organisations and managers in the Rota application",
   },
-
   security: [{ SuperadminKey: [] }],
 });

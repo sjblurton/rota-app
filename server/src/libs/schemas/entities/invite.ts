@@ -68,9 +68,9 @@ export const updateInviteStatusSchema = inviteSchema
     updated_at: true,
     id: true,
   })
+  .partial()
   .openapi({
     example: {
-      email: "new.user@example.com",
       status: "accepted",
     },
   });
