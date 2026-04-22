@@ -21,8 +21,8 @@ export const inviteSchema = baseWithTimestampsSchema
   .extend({
     email: z.email(),
     organisation_id: z.uuid(),
-    invited_by_user_id: z.uuid().nullable(),
-    accepted_by_user_id: z.uuid().nullable(),
+    invited_by_user_id: z.uuid().nullable().optional(),
+    accepted_by_user_id: z.uuid().nullable().optional(),
     role: userRoleEnum.default(ROLES.STAFF),
     status: inviteStatusEnum.default(COMMON_STATUS_NAMES.INVITED),
     expires_at: z.date(),
