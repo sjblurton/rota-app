@@ -54,6 +54,7 @@ model User {
   role             UserRole   @default(staff)
   status           UserStatus @default(invited)
   organisation_id  String
+  name             String
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -71,17 +72,22 @@ enum InviteStatus {
   expired
 }
 
+enum InviteContactMethod {
+  email
+}
+
 model Invite {
-  id              String       @id @default(uuid())
-  organisation_id String
-  email           String
-  role            UserRole     @default(staff)
-  status          InviteStatus @default(invited)
-  created_at      DateTime     @default(now())
-  updated_at      DateTime     @updatedAt
-  expires_at      DateTime     @default(dbgenerated("CURRENT_TIMESTAMP + INTERVAL '7 days'"))
-  invited_by_id   String?
-  accepted_by_id  String?
+  id                       String              @id @default(uuid())
+  organisation_id          String
+  email                    String
+  preferred_contact_method InviteContactMethod @default(email)
+  role                     UserRole            @default(staff)
+  status                   InviteStatus        @default(invited)
+  created_at               DateTime            @default(now())
+  updated_at               DateTime            @updatedAt
+  expires_at               DateTime            @default(dbgenerated("CURRENT_TIMESTAMP + INTERVAL '7 days'"))
+  invited_by_id            String?
+  accepted_by_id           String?
 
   organisation Organisation @relation(fields: [organisation_id], references: [id])
   invited_by   User?        @relation("InvitedBy", fields: [invited_by_id], references: [id])
