@@ -10,6 +10,17 @@ const registry = new OpenAPIRegistry([
   organisationsOpenApiRegistry,
 ]);
 
+registry.registerComponent("securitySchemes", "BearerAuth", {
+  type: "http",
+  scheme: "bearer",
+  bearerFormat: "JWT",
+});
+registry.registerComponent("securitySchemes", "SuperadminKey", {
+  type: "apiKey",
+  in: "header",
+  name: "x-superadmin-key",
+});
+
 const generator = new OpenApiGeneratorV3(registry.definitions);
 
 export const openApiDocument = generator.generateDocument({
