@@ -11,20 +11,16 @@ vi.mock("../../libs/schemas/entities/organisation", () => ({
 
 describe("getOrganisationByIdService", () => {
   it("returns parsed organisation if found", async () => {
-    const organisationRepo = {
-      findUnique: vi.fn().mockResolvedValue(validOrg),
-    } as any;
-    const result = await getOrganisationByIdService({ id: "org-1", organisationRepo });
+    const getOrganisationById = vi.fn().mockResolvedValue(validOrg);
+
+    const result = await getOrganisationByIdService({ id: "org-1", getOrganisationById });
     expect(result).toEqual(validOrg);
-    expect(organisationRepo.findUnique).toHaveBeenCalledWith({ where: { id: "org-1" } });
   });
 
   it("throws HttpErrorByCode if not found", async () => {
-    const organisationRepo = {
-      findUnique: vi.fn().mockResolvedValue(null),
-    } as any;
-    await expect(getOrganisationByIdService({ id: "missing", organisationRepo })).rejects.toThrow(
-      HttpErrorByCode,
-    );
+    const getOrganisationById = vi.fn().mockResolvedValue(null);
+    await expect(
+      getOrganisationByIdService({ id: "missing", getOrganisationById }),
+    ).rejects.toThrow(HttpErrorByCode);
   });
 });

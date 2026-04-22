@@ -15,6 +15,6 @@ export function getPrismaPaginationArgs({
     take: limit,
     orderBy: {
       [orderByKey]: direction,
-    } as Record<string, "asc" | "desc">,
+    },
   };
 }
