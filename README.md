@@ -6,7 +6,6 @@ Monorepo containing the Rota client and server applications.
 
 - **API Documentation:**
   - Local: http://localhost:3000/api/v1/docs/
-  - Staging: https://rota-app-e45i.onrender.com/api/v1/docs/
 - [Server README](server/README.md) — Backend setup and API guide
 - [Client README](client/README.md) — Frontend setup guide
 

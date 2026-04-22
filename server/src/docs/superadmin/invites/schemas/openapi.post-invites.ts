@@ -1,9 +1,9 @@
 import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
 
-import { PATHS } from "../../../constants/paths";
-import { createInviteBodySchema, inviteSchema } from "../../../libs/schemas/entities/invite";
-import { commonErrorResponses } from "../../errors/responses";
-import { superadminTags } from "../constants/superadmin-tags";
+import { PATHS } from "../../../../constants/paths";
+import { createInviteBodySchema, inviteSchema } from "../../../../libs/schemas/entities/invite";
+import { commonErrorResponses } from "../../../errors/responses";
+import { superadminTags } from "../../constants/superadmin-tags";
 
 const superadminInvitesOpenApiRegistry = new OpenAPIRegistry();
 
@@ -48,7 +48,10 @@ superadminInvitesOpenApiRegistry.registerPath({
         },
       },
     },
-    ...commonErrorResponses,
+    "400": commonErrorResponses.badRequestResponse,
+    "401": commonErrorResponses.unauthorisedResponse,
+    "409": commonErrorResponses.conflictResponse,
+    "403": commonErrorResponses.forbiddenResponse,
   },
 });
 

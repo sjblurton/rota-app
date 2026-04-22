@@ -1,8 +1,29 @@
-import { type JsonObject } from "swagger-ui-express";
+import { OpenApiGeneratorV3, OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
 
-import { superadminOpenApiDocument } from "./superadmin/openapi";
+import { invitesOpenApiRegistry } from "./invites/schemas/openapi.patch-invites";
+import { superadminInvitesOpenApiRegistry } from "./superadmin/invites/schemas/openapi.post-invites";
+import { organisationsOpenApiRegistry } from "./superadmin/organisations/schemas/openapi.post-organisations";
 
-export const openApiDocument: JsonObject = {
+const registry = new OpenAPIRegistry([
+  invitesOpenApiRegistry,
+  superadminInvitesOpenApiRegistry,
+  organisationsOpenApiRegistry,
+]);
+
+registry.registerComponent("securitySchemes", "BearerAuth", {
+  type: "http",
+  scheme: "bearer",
+  bearerFormat: "JWT",
+});
+registry.registerComponent("securitySchemes", "SuperadminKey", {
+  type: "apiKey",
+  in: "header",
+  name: "x-superadmin-key",
+});
+
+const generator = new OpenApiGeneratorV3(registry.definitions);
+
+export const openApiDocument = generator.generateDocument({
   openapi: "3.0.3",
   info: {
     title: "Rota App API",
@@ -14,31 +35,6 @@ export const openApiDocument: JsonObject = {
       url: "http://localhost:3000",
       description: "Local development server",
     },
-    {
-      url: "https://rota-app-e45i.onrender.com",
-      description: "Staging server",
-    },
   ],
-  tags: [
-    {
-      name: "Superadmin",
-      description: "Owner-only provisioning routes",
-    },
-  ],
-  paths: {
-    ...superadminOpenApiDocument.paths,
-  },
-  security: superadminOpenApiDocument.security,
-  components: {
-    schemas: {
-      ...superadminOpenApiDocument.components?.schemas,
-    },
-    securitySchemes: {
-      SuperadminKey: {
-        type: "apiKey",
-        in: "header",
-        name: "X-Superadmin-Key",
-      },
-    },
-  },
-} as const;
+  security: [{ SuperadminKey: [] }, { BearerAuth: [] }],
+});
