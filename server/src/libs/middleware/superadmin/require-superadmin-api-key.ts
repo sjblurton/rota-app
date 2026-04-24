@@ -2,7 +2,7 @@ import { timingSafeEqual } from "node:crypto";
 
 import { type RequestHandler } from "express";
 
-import { HttpErrorByCode } from "../../utils/http/HttpErrorByCode";
+import { HttpErrorByCode } from "../../../utils/http/HttpErrorByCode";
 
 const isSuperadminKeyValid = (providedKey: string, expectedKey: string) => {
   const provided = Buffer.from(providedKey);
