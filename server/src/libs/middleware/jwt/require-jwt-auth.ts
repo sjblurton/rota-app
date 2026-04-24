@@ -4,7 +4,7 @@ import { type SupabaseUser } from "../../../types/supabase_user";
 import { HttpErrorByCode } from "../../../utils/http/HttpErrorByCode";
 import { supabase } from "../../auth/supabase";
 
-export const requireAuth: RequestHandler = async (request, _response, next) => {
+export const requireJwtAuth: RequestHandler = async (request, _response, next) => {
   const auth = request.headers.authorization;
   if (!auth?.startsWith("Bearer ")) {
     throw new HttpErrorByCode("unauthorised", "Missing token");
