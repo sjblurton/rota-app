@@ -62,15 +62,14 @@ export const createInviteBodySchema = createInviteSchema
     },
   });
 
-export const updateInviteStatusSchema = inviteSchema
-  .omit({
-    created_at: true,
-    updated_at: true,
-    id: true,
+export const acceptInviteBodySchema = z
+  .object({
+    status: z.literal("accepted"),
   })
-  .partial()
   .openapi({
-    example: {
-      status: "accepted",
-    },
+    example: { status: "accepted" },
   });
+
+export const updateInviteSchema = inviteSchema.partial().extend({
+  id: z.uuid(),
+});
