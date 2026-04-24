@@ -6,19 +6,22 @@ import {
   organisationSchema,
 } from "../../../../libs/schemas/entities/organisation";
 import { organisationsPaginationQuerySchema } from "../../../../libs/schemas/pagination/pagination-options-query";
+import { ORGANISATIONS_TAG } from "../../../constants/tags";
 import { commonErrorResponses } from "../../../errors/responses";
-import { superadminTags } from "../../constants/superadmin-tags";
+import { SUPERADMIN_TAG } from "../../constants/superadmin-tags";
 
 const organisationsOpenApiRegistry = new OpenAPIRegistry();
 
 const organisationsPath = `${PATHS.apiBaseV1}${PATHS.superadmin}${PATHS.organisations}`;
+
+const TAGS = [SUPERADMIN_TAG, ORGANISATIONS_TAG];
 
 organisationsOpenApiRegistry.registerPath({
   method: "post",
   path: organisationsPath,
   summary: "Create an organisation",
   description: "Creates a new organisation. Restricted to the owner via `X-Superadmin-Key`.",
-  tags: superadminTags,
+  tags: TAGS,
   security: [{ SuperadminKey: [] }],
   request: {
     body: {
@@ -52,7 +55,7 @@ organisationsOpenApiRegistry.registerPath({
   summary: "Get all organisations",
   description:
     "Retrieves a list of all organisations. Restricted to the owner via `X-Superadmin-Key`.",
-  tags: superadminTags,
+  tags: TAGS,
   security: [{ SuperadminKey: [] }],
   request: {
     query: organisationsPaginationQuerySchema,
