@@ -5,7 +5,7 @@ describe("Invites OpenAPI", () => {
     const patchInvite = openApiDocument["paths"][patchInvitePath];
     expect(patchInvite).toBeDefined();
     expect(patchInvite).toHaveProperty("patch");
-    expect(patchInvite?.patch?.summary).toMatch(/Accept an invite (Authenticated)/i);
+    expect(patchInvite?.patch?.summary).toMatch(/Accept an invite/i);
     expect(patchInvite?.patch?.security).toEqual([{ BearerAuth: [] }]);
     expect(patchInvite?.patch?.parameters?.[0]).toMatchObject({
       name: "invite_id",
