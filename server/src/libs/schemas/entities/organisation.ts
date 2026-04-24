@@ -5,6 +5,7 @@ import { PLAN_TYPES } from "../../../constants/plan-type";
 import { COMMON_STATUS_NAMES } from "../../../constants/status";
 import { nonEmptyTrimmedStringSchema } from "../strings/non-empty-trimmed-string";
 import { baseWithTimestampsSchema } from "./base";
+import { userSchema } from "./user";
 
 extendZodWithOpenApi(z);
 
@@ -19,6 +20,7 @@ export const organisationSchema = baseWithTimestampsSchema
     sms_used_this_month: z.number().int().nonnegative().default(0),
     status: organisationStatusEnum.default(COMMON_STATUS_NAMES.ACTIVE),
     stripe_customer_id: z.string().nullable().default(null),
+    users: userSchema.nullable().array().optional().default([]),
   })
   .openapi({
     example: {
@@ -29,6 +31,7 @@ export const organisationSchema = baseWithTimestampsSchema
       sms_used_this_month: 20,
       status: "active",
       stripe_customer_id: "cus_1234567890abcdef",
+      users: [],
       created_at: "2024-01-01T00:00:00Z",
       updated_at: "2024-01-15T12:34:56Z",
     },
@@ -43,3 +46,8 @@ export const createOrganisationSchema = organisationSchema
       name: "Acme Corporation",
     },
   });
+
+export const updateOrganisationStatusSchema = organisationSchema.omit({
+  id: true,
+  users: true,
+});

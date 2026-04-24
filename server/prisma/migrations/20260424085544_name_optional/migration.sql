@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "Invite" ALTER COLUMN "expires_at" SET DEFAULT CURRENT_TIMESTAMP + INTERVAL '7 days';
+
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "name" DROP NOT NULL;

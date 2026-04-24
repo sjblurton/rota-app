@@ -54,7 +54,7 @@ model User {
   role             UserRole   @default(staff)
   status           UserStatus @default(invited)
   organisation_id  String
-  name             String
+  name             String?
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt

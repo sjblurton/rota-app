@@ -1,1 +1,1 @@
-export const superadminTags: string[] = ["Superadmin"];
+export const SUPERADMIN_TAG = "Superadmin" as const;
