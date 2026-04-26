@@ -20,14 +20,8 @@ export const patchInvitesController = async ({
   const params = z.object({ invite_id: z.uuid() }).safeParse(request.params);
   const body = acceptInviteBodySchema.safeParse(request.body);
   const user = request.superbaseUser;
-  // DEBUG: Log user value
-  // eslint-disable-next-line no-console
-  console.log("[patchInvitesController] user:", user);
 
   if (!user) {
-    // DEBUG: Log before throwing
-    // eslint-disable-next-line no-console
-    console.log("[patchInvitesController] Throwing unauthorised error");
     throw new HttpErrorByCode("unauthorised", "Authentication required");
   }
 
