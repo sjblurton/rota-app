@@ -16,6 +16,7 @@ export default defineConfig({
         "src/server.ts",
         "src/app.ts",
         "**/*.d.ts",
+        "src/repositories/**",
         "**/node_modules/**",
         "src/generated/**",
       ],
