@@ -4,22 +4,27 @@ import {
   createInviteRepository,
 } from "../../repositories/invites/create-invite-repository";
 import { type CreateInvite } from "../../types/invites";
-import { inviteUserByEmailService } from "./invite-user-by-email-service";
+import {
+  type InviteUserByEmailService,
+  inviteUserByEmailService,
+} from "./invite-user-by-email-service";
 
 type CreateInviteServiceInput = {
   data: CreateInvite;
   createInvite?: CreateInviteRepository;
+  inviteUserByEmail?: InviteUserByEmailService;
 };
 
 export const createInviteService = async ({
   data,
   createInvite = createInviteRepository,
+  inviteUserByEmail = inviteUserByEmailService,
 }: CreateInviteServiceInput) => {
   const raw = await createInvite({ data });
 
   const parsedInvite = await inviteSchema.parseAsync(raw);
 
-  await inviteUserByEmailService({ data: parsedInvite });
+  await inviteUserByEmail({ data: parsedInvite });
 
   return parsedInvite;
 };
