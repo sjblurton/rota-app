@@ -4,7 +4,6 @@ import { PATHS } from "../../../../constants/paths";
 import { createInviteBodySchema, inviteSchema } from "../../../../libs/schemas/entities/invite";
 import { INVITES_TAG } from "../../../constants/tags";
 import { commonErrorResponses } from "../../../errors/responses";
-import { SUPERADMIN_TAG } from "../../constants/superadmin-tags";
 
 const superadminInvitesOpenApiRegistry = new OpenAPIRegistry();
 
@@ -28,7 +27,7 @@ superadminInvitesOpenApiRegistry.registerPath({
   summary: "Invite a user to an organisation (Superadmin)",
   description:
     "Invites a user to an organisation by email. Restricted to superadmin via `X-Superadmin-Key`. If the user already exists, an invite will not be sent.",
-  tags: [SUPERADMIN_TAG, INVITES_TAG],
+  tags: [INVITES_TAG],
   security: [{ SuperadminKey: [] }],
   request: {
     body: {
