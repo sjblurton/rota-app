@@ -46,8 +46,3 @@ export const createOrganisationSchema = organisationSchema
       name: "Acme Corporation",
     },
   });
-
-export const updateOrganisationStatusSchema = organisationSchema.omit({
-  id: true,
-  users: true,
-});

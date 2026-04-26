@@ -27,3 +27,5 @@ export const inviteUserByEmailService = async ({ data }: InviteUserByEmailServic
   }
   return;
 };
+
+export type InviteUserByEmailService = typeof inviteUserByEmailService;

@@ -8,7 +8,7 @@ import { baseWithTimestampsSchema, userRoleEnum } from "./base";
 
 extendZodWithOpenApi(z);
 
-export const inviteStatusEnum = z.enum([
+const inviteStatusEnum = z.enum([
   COMMON_STATUS_NAMES.INVITED,
   COMMON_STATUS_NAMES.ACCEPTED,
   COMMON_STATUS_NAMES.REVOKED,

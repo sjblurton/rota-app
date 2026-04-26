@@ -1,7 +1,7 @@
-const patchInvitePath = `${PATHS.apiBaseV1}${PATHS.invites}/{invite_id}`;
+const patchInvitePath = `${PATHS.apiBaseV1}${PATHS.admin}${PATHS.invites}/{invite_id}`;
 
 describe("Invites OpenAPI", () => {
-  it("documents PATCH /api/v1/invites/{invite_id} path", () => {
+  it("documents PATCH /api/v1/admin/invites/{invite_id} path", () => {
     const patchInvite = openApiDocument["paths"][patchInvitePath];
     expect(patchInvite).toBeDefined();
     expect(patchInvite).toHaveProperty("patch");

@@ -1,5 +1,3 @@
-import "express-serve-static-core";
-
 import type { SupabaseUser } from "./supabase_user";
 
 declare module "express-serve-static-core" {

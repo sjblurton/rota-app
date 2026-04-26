@@ -1,15 +1,15 @@
 import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
 import z from "zod";
 
-import { PATHS } from "../../../constants/paths";
-import { acceptInviteBodySchema, inviteSchema } from "../../../libs/schemas/entities/invite";
-import { userSchema } from "../../../libs/schemas/entities/user";
-import { INVITES_TAG } from "../../constants/tags";
-import { commonErrorResponses } from "../../errors/responses";
+import { PATHS } from "../../../../constants/paths";
+import { acceptInviteBodySchema, inviteSchema } from "../../../../libs/schemas/entities/invite";
+import { userSchema } from "../../../../libs/schemas/entities/user";
+import { INVITES_TAG } from "../../../constants/tags";
+import { commonErrorResponses } from "../../../errors/responses";
 
 const invitesOpenApiRegistry = new OpenAPIRegistry();
 
-const patchInvitePath = `${PATHS.apiBaseV1}${PATHS.invites}/{invite_id}`;
+const patchInvitePath = `${PATHS.apiBaseV1}${PATHS.admin}${PATHS.invites}/{invite_id}`;
 
 invitesOpenApiRegistry.registerPath({
   method: "patch",

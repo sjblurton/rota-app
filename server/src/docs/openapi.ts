@@ -1,6 +1,6 @@
 import { OpenApiGeneratorV3, OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
 
-import { invitesOpenApiRegistry } from "./invites/schemas/openapi.patch-invites";
+import { invitesOpenApiRegistry } from "./admin/invites/schemas/openapi.patch-invites";
 import { superadminInvitesOpenApiRegistry } from "./superadmin/invites/schemas/openapi.post-invites";
 import { organisationsOpenApiRegistry } from "./superadmin/organisations/schemas/openapi.post-organisations";
 

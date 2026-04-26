@@ -8,13 +8,12 @@ import {
 import { organisationsPaginationQuerySchema } from "../../../../libs/schemas/pagination/pagination-options-query";
 import { ORGANISATIONS_TAG } from "../../../constants/tags";
 import { commonErrorResponses } from "../../../errors/responses";
-import { SUPERADMIN_TAG } from "../../constants/superadmin-tags";
 
 const organisationsOpenApiRegistry = new OpenAPIRegistry();
 
 const organisationsPath = `${PATHS.apiBaseV1}${PATHS.superadmin}${PATHS.organisations}`;
 
-const TAGS = [SUPERADMIN_TAG, ORGANISATIONS_TAG];
+const TAGS = [ORGANISATIONS_TAG];
 
 organisationsOpenApiRegistry.registerPath({
   method: "post",

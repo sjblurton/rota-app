@@ -6,6 +6,7 @@ import swaggerUi from "swagger-ui-express";
 import { PATHS } from "./constants/paths";
 import { openApiDocument } from "./docs/openapi";
 import { logger } from "./libs/logger/logger";
+import { adminRouter } from "./routes/admin/admin-router";
 import { superadminRouter } from "./routes/superadmin/superadmin-router";
 import { HttpErrorByCode } from "./utils/http/HttpErrorByCode";
 
@@ -18,6 +19,8 @@ app.use(express.json());
 app.use(`${PATHS.apiBaseV1}${PATHS.superadmin}`, superadminRouter);
 
 app.use(`${PATHS.apiBaseV1}${PATHS.docs}`, swaggerUi.serve, swaggerUi.setup(openApiDocument));
+
+app.use(`${PATHS.apiBaseV1}${PATHS.admin}`, adminRouter);
 
 app.use((req, res) => {
   res.status(404).json({
