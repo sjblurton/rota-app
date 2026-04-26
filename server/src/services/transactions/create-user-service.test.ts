@@ -1,3 +1,5 @@
+import { afterEach } from "node:test";
+
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { updateInviteSchema } from "../../libs/schemas/entities/invite";
@@ -20,11 +22,19 @@ const validInviteData: UpdateInvite = {
   status: "accepted",
 };
 
+const fixedDate = new Date("2026-04-26T17:07:44.808Z");
+
 describe("createUserService", () => {
   let acceptInvite: any;
 
   beforeEach(() => {
+    vi.useFakeTimers();
+    vi.setSystemTime(fixedDate);
     acceptInvite = vi.fn().mockResolvedValue({ user: "created" });
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
   });
 
   it("parses data, calls acceptInvite, and returns user", async () => {
