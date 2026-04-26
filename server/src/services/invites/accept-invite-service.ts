@@ -62,3 +62,5 @@ export const acceptInviteService = async ({
 
   return results;
 };
+
+export type AcceptInviteService = typeof acceptInviteService;
