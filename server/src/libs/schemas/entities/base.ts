@@ -5,7 +5,7 @@ import { ROLES } from "../../../constants/roles";
 
 extendZodWithOpenApi(z);
 
-export const baseSchema = z.object({
+const baseSchema = z.object({
   id: z.uuid(),
 });
 
