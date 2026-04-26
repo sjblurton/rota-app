@@ -1,16 +1,33 @@
 import z from "zod";
 
 import { acceptInviteBodySchema } from "../../libs/schemas/entities/invite";
-import { acceptInviteService } from "../../services/invites/accept-invite-service";
+import {
+  type AcceptInviteService,
+  acceptInviteService,
+} from "../../services/invites/accept-invite-service";
 import { type ExpressHandlerContext } from "../../types/http";
 import { HttpErrorByCode } from "../../utils/http/HttpErrorByCode";
 
-export const patchInvitesController = async ({ request, response }: ExpressHandlerContext) => {
-  const params = z.object({ id: z.uuid() }).safeParse(request.params);
+type PatchInvitesControllerInput = {
+  acceptInvite?: AcceptInviteService;
+} & ExpressHandlerContext;
+
+export const patchInvitesController = async ({
+  request,
+  response,
+  acceptInvite = acceptInviteService,
+}: PatchInvitesControllerInput) => {
+  const params = z.object({ invite_id: z.uuid() }).safeParse(request.params);
   const body = acceptInviteBodySchema.safeParse(request.body);
   const user = request.superbaseUser;
+  // DEBUG: Log user value
+  // eslint-disable-next-line no-console
+  console.log("[patchInvitesController] user:", user);
 
   if (!user) {
+    // DEBUG: Log before throwing
+    // eslint-disable-next-line no-console
+    console.log("[patchInvitesController] Throwing unauthorised error");
     throw new HttpErrorByCode("unauthorised", "Authentication required");
   }
 
@@ -25,9 +42,9 @@ export const patchInvitesController = async ({ request, response }: ExpressHandl
     );
   }
 
-  const results = await acceptInviteService({
+  const results = await acceptInvite({
     supabaseUserId: user.id,
-    inviteId: params.data.id,
+    inviteId: params.data.invite_id,
     body: body.data,
   });
 
