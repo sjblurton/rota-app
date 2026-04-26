@@ -23,3 +23,5 @@ export const createInviteService = async ({
 
   return parsedInvite;
 };
+
+export type CreateInviteService = typeof createInviteService;

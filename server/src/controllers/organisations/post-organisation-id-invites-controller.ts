@@ -2,6 +2,10 @@ import z from "zod";
 
 import { createInviteBodySchema } from "../../libs/schemas/entities/invite";
 import {
+  type CreateInviteService,
+  createInviteService,
+} from "../../services/invites/create-invite-service";
+import {
   getOrganisationByIdService,
   type GetOrganisationByIdServiceType,
 } from "../../services/organisations/get-organisation-by-id-service";
@@ -10,12 +14,14 @@ import { validateAndParse } from "../../utils/validation/validate-and-parse";
 
 type PostOrganisationsIdInvitesInput = ExpressHandlerContext & {
   getOrganisationById?: GetOrganisationByIdServiceType;
+  createInvite?: CreateInviteService;
 };
 
 export const postOrganisationIdInvitesController = async ({
   request,
   response,
   getOrganisationById = getOrganisationByIdService,
+  createInvite = createInviteService,
 }: PostOrganisationsIdInvitesInput) => {
   const { organisation_id: organisationId } = validateAndParse(
     z.object({ organisation_id: z.uuid() }),
@@ -26,15 +32,12 @@ export const postOrganisationIdInvitesController = async ({
 
   await getOrganisationById({ id: organisationId });
 
-  response.status(201).json({
-    id: "inv-123e4567-e89b-12d3-a456-426614174000",
-    email: parsedBody.email,
-    organisation_id: organisationId,
-    invited_by_user_id: "user-123e4567-e89b-12d3-a456-426614174000",
-    status: "invited",
-    created_at: "2026-04-20T10:00:00Z",
-    updated_at: "2026-04-20T10:00:00Z",
-    expires_at: "2026-05-20T10:00:00Z",
-    preferred_contact_method: "email",
+  const invite = await createInvite({
+    data: {
+      organisation_id: organisationId,
+      ...parsedBody,
+    },
   });
+
+  response.status(201).json(invite);
 };
