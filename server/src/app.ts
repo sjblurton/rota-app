@@ -1,3 +1,4 @@
+import { AuthError } from "@supabase/supabase-js";
 import cors from "cors";
 import express from "express";
 import pinoHttp from "pino-http";
@@ -40,6 +41,13 @@ app.use(
         detail: err.detail,
       });
       return;
+    }
+    if (err instanceof AuthError) {
+      res.status(err.status ?? 500).json({
+        code: err.code ?? "supabase_auth_error",
+        message: "Superbase authentication error",
+        detail: err.message,
+      });
     }
     res.status(500).json({
       code: "internal_server_error",
