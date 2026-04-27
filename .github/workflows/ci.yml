@@ -7,41 +7,35 @@ on:
     branches: [main]
 
 jobs:
-  unit:
+  client:
     runs-on: ubuntu-latest
     environment: test
     env:
-      DATABASE_URL: postgresql://postgres:pass123@localhost:5432/rota_dev
-      SUPABASE_URL: dummy-supabase-url.supabase.co
-      SUPABASE_SERVICE_ROLE_KEY: dummy-service-role-key
-      SUPERADMIN_API_KEY: test-secret-key
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      SUPERADMIN_API_KEY: ${{ secrets.SUPERADMIN_API_KEY }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm ci --workspace server
-      - run: npm run db:generate --workspace server
-      - run: npm run test --workspace server
+      - run: npm ci --workspace client
 
-  coverage:
-    runs-on: ubuntu-latest
-    environment: test
-    env:
-      DATABASE_URL: postgresql://postgres:pass123@localhost:5432/rota_dev
-      SUPABASE_URL: dummy-supabase-url.supabase.co
-      SUPABASE_SERVICE_ROLE_KEY: dummy-service-role-key
-      SUPERADMIN_API_KEY: test-secret-key
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-      - run: npm ci --workspace server
-      - run: npm run db:generate --workspace server
-      - run: npm run test:coverage --workspace server
+      - name: Test
+        run: npm run test --workspace client
 
-  e2e:
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run lint:typescript
+
+      - name: Test
+        run: npm run test
+
+      - name: Build
+        run: npm run build
+  server:
     runs-on: ubuntu-latest
     environment: test
     services:
@@ -63,8 +57,6 @@ jobs:
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       SUPERADMIN_API_KEY: ${{ secrets.SUPERADMIN_API_KEY }}
-      APP_URL: http://localhost:3001
-      NODE_ENV: test
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -72,5 +64,15 @@ jobs:
           node-version: 22
       - run: npm ci --workspace server
       - run: npm run db:generate --workspace server
-      - run: env | grep SUPABASE
-      - run: npm run test:e2e --workspace server
+
+      - name: Test
+        run: npm run test --workspace server
+
+      - name: Coverage
+        run: npm run test:coverage --workspace server
+
+      - name: E2E Tests
+        run: npm run test:e2e --workspace server
+
+      - name: Check code quality
+        run: npm run check:all --workspace server
