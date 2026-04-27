@@ -4,17 +4,17 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { organisationsRouter } from "./organisations-router";
 
-vi.mock("../../controllers/organisations/get-organisations-controller", () => ({
+vi.mock("../controllers/get-organisations-controller", () => ({
   getOrganisations: vi.fn(({ response }) => {
     response.status(200).json(["mocked-get"]);
   }),
 }));
-vi.mock("../../controllers/organisations/post-organisations-controller", () => ({
+vi.mock("../controllers/post-organisations-controller", () => ({
   postOrganisations: vi.fn(({ response }) => {
     response.status(201).json({ id: "mocked-post" });
   }),
 }));
-vi.mock("../../controllers/organisations/post-organisation-id-invites-controller", () => ({
+vi.mock("../controllers/post-organisation-id-invites-controller", () => ({
   postOrganisationIdInvitesController: vi.fn(({ response }) => {
     response.status(200).json({ invite: "mocked-invite" });
   }),

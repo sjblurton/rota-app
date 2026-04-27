@@ -5,7 +5,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { patchInvitesController } from "../controllers/patch-invites-controller";
 import { invitesRouter } from "./invites-router";
 
-vi.mock("../../controllers/invites/patch-invites-controller", () => ({
+vi.mock("../controllers/patch-invites-controller", () => ({
   patchInvitesController: vi.fn(),
 }));
 

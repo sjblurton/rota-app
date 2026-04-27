@@ -4,7 +4,7 @@ import { supabase } from "../../../libs/auth/supabase";
 import { HttpErrorByCode } from "../../../utils/http/HttpErrorByCode";
 import { requireJwtAuth } from "./require-jwt-auth";
 
-vi.mock("../../auth/supabase", () => ({
+vi.mock("../../../libs/auth/supabase", () => ({
   supabase: {
     auth: {
       getUser: vi.fn(),
