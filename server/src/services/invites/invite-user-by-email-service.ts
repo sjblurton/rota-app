@@ -8,6 +8,10 @@ type InviteUserByEmailServiceInput = {
 };
 
 export const inviteUserByEmailService = async ({ data }: InviteUserByEmailServiceInput) => {
+  if (requireEnv("NODE_ENV") === "test") {
+    return;
+  }
+
   const { email, expires_at: expiresAt } = data;
 
   if (expiresAt < new Date()) {
@@ -23,7 +27,7 @@ export const inviteUserByEmailService = async ({ data }: InviteUserByEmailServic
   });
 
   if (error) {
-    throw new HttpErrorByCode("internal_server_error", error.message);
+    throw error;
   }
   return;
 };

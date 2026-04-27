@@ -18,6 +18,8 @@ vi.mock("../../utils/env/requireEnv", () => ({
   requireEnv: vi.fn(() => "http://localhost:3000"),
 }));
 
+import { AuthError } from "@supabase/supabase-js";
+
 import { type Invite } from "../../types/invites";
 
 const validInvite: Invite = {
@@ -58,14 +60,23 @@ describe("inviteUserByEmailService", () => {
 
   it("throws if supabase returns error", async () => {
     (supabase.auth.admin.inviteUserByEmail as any).mockResolvedValue({
-      error: { message: "fail" },
+      error: new AuthError("Test error", 400, "bad_request"),
     });
-    await expect(inviteUserByEmailService({ data: validInvite })).rejects.toThrow(HttpErrorByCode);
+    await expect(inviteUserByEmailService({ data: validInvite })).rejects.toThrow(AuthError);
   });
 
   it("returns undefined on success", async () => {
     (supabase.auth.admin.inviteUserByEmail as any).mockResolvedValue({ error: null });
     const result = await inviteUserByEmailService({ data: validInvite });
     expect(result).toBeUndefined();
+  });
+
+  it("returns early and does not call supabase in test env", async () => {
+    (requireEnv as any).mockImplementation((key: string) =>
+      key === "NODE_ENV" ? "test" : "http://localhost:3000",
+    );
+    const result = await inviteUserByEmailService({ data: validInvite });
+    expect(result).toBeUndefined();
+    expect(supabase.auth.admin.inviteUserByEmail).not.toHaveBeenCalled();
   });
 });

@@ -12,6 +12,7 @@ export const ESLINT_BOUNDARIES_ELEMENTS = {
   SHARED_ROUTES: "shared-routes",
   GENERATED_PRISMA: "generated-prisma",
   APP: "app",
+  E2E: "e2e",
 };
 
 export const globalTypes = [

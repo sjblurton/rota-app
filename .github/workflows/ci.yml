@@ -1,104 +1,90 @@
 name: CI
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
-
 on:
-  pull_request:
-    branches:
-      - main
   push:
-    branches:
-      - main
-
-concurrency:
-  group: ci-${{ github.ref }}
-  cancel-in-progress: true
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   client:
-    name: Client Checks
-    runs-on: ubuntu-latest
-
-    defaults:
-      run:
-        working-directory: client
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-          cache-dependency-path: package-lock.json
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Type check
-        run: npm run lint:typescript
-
-      - name: Test
-        run: npm run test
-
-      - name: Build
-        run: npm run build
-
-  server:
-    name: Server Checks
     runs-on: ubuntu-latest
     environment: test
-
     env:
-      NODE_ENV: test
-      DATABASE_URL: postgres://d0d67a39c610bf989d39e62807e4b6b88f97652e5d7b7282f1bda92e00dde770:sk_OVDUtQ8AkzIyQQqzHReuY@db.prisma.io:5432/postgres?sslmode=require
-      SUPERADMIN_API_KEY: test-secret-key
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      SUPERADMIN_API_KEY: ${{ secrets.SUPERADMIN_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --workspace client
 
+      - name: Test
+        run: npm run test --workspace client
+
+      - name: Lint
+        run: npm run lint --workspace client
+
+      - name: Type check
+        run: npm run lint:typescript --workspace client
+
+      - name: Build
+        run: npm run build --workspace client
+  server:
+    runs-on: ubuntu-latest
+    environment: test
+    env:
+      DATABASE_URL: postgresql://postgres:pass123@localhost:5432/rota_dev
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      SUPERADMIN_API_KEY: ${{ secrets.SUPERADMIN_API_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm ci --workspace server
+      - run: npm run db:generate --workspace server
+
+      - name: Unit Tests
+        run: npm run test --workspace server
+
+      - name: Coverage Tests
+        run: npm run test:coverage --workspace server
+
+      - name: Check code quality
+        run: npm run check:all --workspace server
+  e2e:
+    runs-on: ubuntu-latest
+    environment: test
     services:
       postgres:
-        image: postgres:16
+        image: postgres:15
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: pass123
-          POSTGRES_DB: rota_test
-
+          POSTGRES_DB: rota_dev
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U postgres -d rota_test"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
-    defaults:
-      run:
-        working-directory: server
-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+    env:
+      DATABASE_URL: postgresql://postgres:pass123@localhost:5432/rota_dev
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+      SUPERADMIN_API_KEY: ${{ secrets.SUPERADMIN_API_KEY }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: npm
-          cache-dependency-path: package-lock.json
+      - run: npm ci --workspace server
+      - run: npm run db:generate --workspace server
 
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Generate Prisma client
-        run: npm run db:generate
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Coverage
-        run: npm run test:coverage
+      - name: E2E Tests
+        run: npm run test:e2e --workspace server

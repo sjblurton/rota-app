@@ -74,4 +74,9 @@ export const boundariesElements = [
     pattern: "src/app.ts",
     mode: "full",
   },
+  {
+    type: ESLINT_BOUNDARIES_ELEMENTS.E2E,
+    pattern: "src/e2e/**/*",
+    mode: "full",
+  },
 ];
