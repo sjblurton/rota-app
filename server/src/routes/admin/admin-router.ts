@@ -1,8 +1,8 @@
 import express from "express";
 
+import { invitesRouter } from "../../api/invites/routes/invites-router";
 import { PATHS } from "../../constants/paths";
-import { requireJwtAuth } from "../../libs/middleware/jwt/require-jwt-auth";
-import { invitesRouter } from "../invites/invites-router";
+import { requireJwtAuth } from "./middleware/require-jwt-auth";
 
 const adminRouter = express.Router();
 

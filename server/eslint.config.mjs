@@ -4,10 +4,23 @@ import sonarjs from "eslint-plugin-sonarjs";
 import simpleImportSort from "eslint-plugin-simple-import-sort";
 import unicorn from "eslint-plugin-unicorn";
 import vitest from "eslint-plugin-vitest";
-import { boundariesDependencyRules } from "./eslint/boundaries/dependencies.mjs";
+
 import { boundariesElements } from "./eslint/boundaries/elements.mjs";
 import globals from "globals";
 import tseslint from "typescript-eslint";
+import { generatedImportRules } from "./eslint/boundaries/dependencies-generated.mjs";
+import { golbalImportRules } from "./eslint/boundaries/dependencies-global.mjs";
+import { featureImportRules } from "./eslint/boundaries/dependencies-feature.mjs";
+import { sharedImportRules } from "./eslint/boundaries/dependencies-shared.mjs";
+import { appImportRules } from "./eslint/boundaries/dependencies-app.mjs";
+
+export const boundariesDependencyRules = [
+  ...generatedImportRules,
+  ...golbalImportRules,
+  ...featureImportRules,
+  ...sharedImportRules,
+  ...appImportRules,
+];
 
 export default [
   {

@@ -1,3 +1,8 @@
+import { describe, expect, it } from "vitest";
+
+import { PATHS } from "../constants/paths";
+import { openApiDocument } from "./openapi";
+
 const patchInvitePath = `${PATHS.apiBaseV1}${PATHS.admin}${PATHS.invites}/{invite_id}`;
 
 describe("Invites OpenAPI", () => {
@@ -31,10 +36,6 @@ describe("Invites OpenAPI", () => {
     expect(patchInvite?.responses?.["404"]).toBeDefined();
   });
 });
-import { describe, expect, it } from "vitest";
-
-import { PATHS } from "../constants/paths";
-import { openApiDocument } from "./openapi";
 
 const organisationsPath = `${PATHS.apiBaseV1}${PATHS.superadmin}${PATHS.organisations}`;
 

@@ -20,44 +20,63 @@ src/
 ├── app.ts                    # Express app setup (middleware, routes)
 ├── server.ts                 # Entry point (startup, DB connectivity check)
 ├── constants/                # Shared constants (HTTP errors, status codes, plan types)
-├── controllers/              # HTTP controllers, grouped by feature (e.g. organisations/)
-│   └── {feature}/            # Controller files for each feature
-├── docs/                     # OpenAPI documentation layer
-│   ├── errors/               # Error response schemas
-│   ├── openapi.ts            # Merges all OpenAPI docs
-│   └── superadmin/           # Superadmin API documentation
-├── generated/                # Prisma generated client (prisma/ input)
-├── libs/                     # Shared domain libraries
-│   ├── auth/                 # Authentication middleware
+├── libs/                     # Shared domain libraries (auth, logging, database, schemas)
+│   ├── auth/                 # Authentication helpers
 │   ├── logger/               # Logging utilities
 │   ├── prisma/               # Database connection
 │   └── schemas/              # Reusable Zod schemas
 │       ├── entities/         # Entity schemas (organisation, shift, etc.)
 │       ├── pagination/       # Pagination query schemas
-│       ├── strings/          # String validation schemas
-│       └── time/             # Date-time validators (ISO 8601 UTC)
-│           └── dateTime.ts   # Shared datetime schema
-├── repositories/             # Data access layer, grouped by feature
-│   └── {feature}/            # Repository files for each feature
-├── routes/                   # Route mounting layer
-│   ├── organisations/
-│   └── superadmin/
-├── services/                 # Business logic layer, grouped by feature
-│   └── {feature}/            # Service files for each feature
+│       └── strings/          # String validation schemas
 ├── types/                    # Type definitions (derived via z.infer<>)
-│   └── *.ts
-└── utils/                    # Stateless helpers (validation, env, http)
-  ├── env/                  # Environment variable reading
-  ├── http/                 # HTTP helpers (status codes, headers)
-  └── validation/           # Schema validation utilities
+├── utils/                    # Stateless helpers (validation, env, http)
+│   ├── env/                  # Environment variable reading
+│   ├── http/                 # HTTP helpers (status codes, headers)
+│   └── validation/           # Schema validation utilities
+├── generated/                # Prisma generated client (prisma/ input)
+├── api/                      # Feature-based API modules (colocated by feature)
+│   ├── {feature}/            # feature
+│   │   ├── controllers/      # Feature-specific controllers
+│   │   ├── routes/           # Feature-specific Express routers
+│   │   └── docs/             # Feature-specific OpenAPI docs and schemas
+├── routes/                   # Top-level route mounting and role-based middleware
+│   └── {shared-route}/       # shared-route (e.g. admin, superadmin) that would be used by multiple features routes
+│       └── middleware/       # shared-route middleware
 ```
 
 **Key Principles:**
 
-- Each feature's repositories are only imported by services of the same feature (enforced by eslint-plugin-boundaries).
-- Services can import other services for business logic composition.
-- Controllers can use any service.
-- No more `modules/` folder; features are grouped under `controllers/`, `repositories/`, and `services/`.
+- Each feature lives under `src/api/{feature}/` and is self-contained with its own controllers, routes, and docs.
+- Shared/domain schemas live in `libs/schemas/`; do not define reusable validation or domain schemas inside feature docs (except for OpenAPI-only schemas).
+- Middleware for admin and superadmin is colocated under their respective `src/routes/{role}/middleware/` folders.
+- OpenAPI documentation is colocated with the feature in `src/api/{feature}/docs/` and should reference shared schemas where possible; keep only documentation-specific schema definitions in feature docs.
+- Do not use `index.ts` barrel files. Name modules explicitly by their content (e.g. `params.ts`, `query.ts`, `schemas.ts`).
+- Import directly from the explicit file path, not from a folder.
+- Routes may only import controllers, not services or repositories directly (enforced by eslint-boundaries).
+
+## Architectural Boundaries
+
+Enforced by `eslint-plugin-boundaries` with deny-by-default. **Global types** (`libs`, `utils`, `types`, `constants`) may be imported by any module.
+
+| From                        | May import                                                            |
+| --------------------------- | --------------------------------------------------------------------- |
+| `api/{feature}/controllers` | Any service, any global type                                          |
+| `api/{feature}/routes`      | Controllers for same feature, any global type, other routes, `app.ts` |
+| `api/{feature}/docs`        | Other docs, any global type                                           |
+| `libs/`                     | Other `libs/`, `generated/prisma`, global types                       |
+| `utils/`                    | Other `utils/`, `libs/`, global types                                 |
+| `constants/`                | Other `constants/`, `libs/`, `utils/`                                 |
+| `types/`                    | Other `types/`, global types                                          |
+| `app.ts`, `server.ts`       | Any global type, routes, docs (bootstrap layer)                       |
+
+## Naming Conventions
+
+- API field names in request, response, query, and path payloads use snake_case.
+- JavaScript and TypeScript variable, function, and parameter names use camelCase.
+- API file names under `src/api/**` use kebab-case.
+- Use British English spelling in repository-authored prose; keep external contract field names unchanged.
+- Keep shared request, query, and body Zod schemas in `src/libs/schemas/**`, never inside feature docs except for OpenAPI-only schemas.
+- Derive TypeScript types via `z.infer<>` in `src/types/*.ts`; never duplicate type definitions.
 
 ## Time Handling
 
@@ -67,23 +86,6 @@ src/
 - Shared domain/request/response schemas live in `libs/schemas/`; OpenAPI-only schemas and registries may live under `docs/`.
 - Routes mount modules via `routes/{module}/`.
 - Docs own OpenAPI registration and other documentation-only API descriptions, rather than defining them inside feature modules.
-
-## Architectural Boundaries
-
-Enforced by `eslint-plugin-boundaries` with deny-by-default. **Global types** (`libs`, `utils`, `docs`, `types`, `constants`) may be imported by any module.
-
-| From                     | May import                                                            |
-| ------------------------ | --------------------------------------------------------------------- |
-| `controllers/{feature}`  | Any service, any global type                                          |
-| `services/{feature}`     | Sibling services, same-feature repositories, any global type          |
-| `repositories/{feature}` | Only used by same-feature services, any global type                   |
-| `routes/{feature}`       | Controllers for same feature, any global type, other routes, `app.ts` |
-| `docs/`                  | Other `docs/` files, any global type                                  |
-| `libs/`                  | Other `libs/`, `generated/prisma` (Prisma client), global types       |
-| `utils/`                 | Other `utils/`, `libs/`, global types                                 |
-| `constants/`             | Other `constants/`, `libs/`, `utils/`                                 |
-| `types/`                 | Other `types/`, global types                                          |
-| `app.ts`, `server.ts`    | Any global type, `routes/`, `docs/` (bootstrap layer)                 |
 
 ## Commands
 
@@ -244,4 +246,7 @@ Query parameters:
 
 - API field names in request, response, query, and path payloads use snake_case.
 - JavaScript and TypeScript variable, function, and parameter names use camelCase.
-- API file names under `src/modules/**` and `src/docs/**` use kebab-case.
+- API file names under `src/api/**` use kebab-case.
+- Use British English spelling in repository-authored prose; keep external contract field names unchanged.
+- Keep shared request, query, and body Zod schemas in `src/libs/schemas/**`, never inside feature docs except for OpenAPI-only schemas.
+- Derive TypeScript types via `z.infer<>` in `src/types/*.ts`; never duplicate type definitions.

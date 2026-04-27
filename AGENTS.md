@@ -30,7 +30,6 @@
 - Do not create `index.ts` barrel files. Name modules explicitly by their content (e.g. `params.ts`, `query.ts`, `schemas.ts`). Import directly from the explicit file path, not from a folder.
 - Use strict TypeScript typing and avoid any.
 - Add or update tests for behavioural changes.
-- For backend API contracts, use ISO 8601 UTC datetimes with trailing Z and convert to local time only in client UI.
 - Use snake_case for API field names in request, response, query, and path payloads.
 - Use camelCase for JavaScript and TypeScript variable, function, and parameter names.
 - Use British English spelling in repository-authored prose; keep external contract field names unchanged.

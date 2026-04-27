@@ -16,25 +16,30 @@
 
 Understand and follow the layout in [server/README.md](README.md#source-structure):
 
-| Folder           | Purpose                                                             |
-| ---------------- | ------------------------------------------------------------------- |
-| `src/app.ts`     | Express middleware and route mounting                               |
-| `src/server.ts`  | Startup entry point with startup checks                             |
-| `src/constants/` | Shared constants (HTTP errors, status codes, plan types)            |
-| `src/docs/`      | OpenAPI documentation layer; never business logic                   |
-| `src/generated/` | Prisma-generated code; do not edit                                  |
-| `src/libs/`      | Shared domain libraries (auth, logging, database, schemas)          |
-| `src/modules/`   | Feature modules, each isolated and feature-complete                 |
-| `src/routes/`    | Route mounting layer mapping to modules                             |
-| `src/types/`     | TypeScript types derived via `z.infer<>`; never duplicate type defs |
-| `src/utils/`     | Stateless helpers (validation, environment, HTTP)                   |
+| Folder / Pattern                    | Purpose                                                             |
+| ----------------------------------- | ------------------------------------------------------------------- |
+| `src/app.ts`                        | Express app entry point and global middleware                       |
+| `src/server.ts`                     | Startup entry point with startup checks                             |
+| `src/constants/`                    | Shared constants (HTTP errors, status codes, plan types)            |
+| `src/libs/`                         | Shared domain libraries (auth, logging, database, schemas)          |
+| `src/types/`                        | TypeScript types derived via `z.infer<>`; never duplicate type defs |
+| `src/utils/`                        | Stateless helpers (validation, environment, HTTP)                   |
+| `src/generated/`                    | Prisma-generated code; do not edit                                  |
+| `src/api/{feature}/controllers/`    | Feature-specific controllers                                        |
+| `src/api/{feature}/routes/`         | Feature-specific Express routers                                    |
+| `src/api/{feature}/docs/`           | OpenAPI documentation and route-specific schemas for the feature    |
+| `src/routes/admin/middleware/`      | Admin-only middleware (e.g. JWT auth)                               |
+| `src/routes/superadmin/middleware/` | Superadmin-only middleware (e.g. API key)                           |
 
 **Key Rules:**
 
-- Shared/domain schemas live in `libs/schemas/`; do not define reusable validation or domain schemas inside `docs/` or `modules/` (except tests). `docs/` may define OpenAPI-only schemas (for example, documented error responses) when they are not shared application schemas.
-- Each module in `modules/{feature}/` is feature-complete with controller, service, repository.
-- Routes in `routes/{feature}/` mount module handlers using eslint-enforced boundaries.
-- OpenAPI documentation is in `docs/` and should reference shared schemas where possible; keep only documentation-specific schema definitions in `docs/`.
+- Each feature lives under `src/api/{feature}/` and is self-contained with its own controllers, routes, and docs.
+- Shared/domain schemas live in `libs/schemas/`; do not define reusable validation or domain schemas inside feature docs (except for OpenAPI-only schemas).
+- Middleware for admin and superadmin is colocated under their respective `src/routes/{role}/middleware/` folders.
+- OpenAPI documentation is colocated with the feature in `src/api/{feature}/docs/` and should reference shared schemas where possible; keep only documentation-specific schema definitions in feature docs.
+- Do not use `index.ts` barrel files. Name modules explicitly by their content (e.g. `params.ts`, `query.ts`, `schemas.ts`).
+- Import directly from the explicit file path, not from a folder.
+- Routes may only import controllers, not services or repositories directly (enforced by eslint-boundaries).
 
 ## TypeScript
 
@@ -97,3 +102,12 @@ See [Testing section in README](README.md#testing) for full details on test setu
 - Lint: cd server && npm run lint
 - Type check: cd server && npm run lint:typescript
 - Test: cd server && npm run test
+
+## ESLint Boundaries
+
+The server uses `eslint-plugin-boundaries` to enforce architectural boundaries and prevent accidental violations of the intended module structure. Boundaries are not just for appeasing ESLint—they are essential for upholding the architecture and maintainability of the codebase.
+
+- **Rule organisation:** Boundaries rules are grouped by architectural concern in `server/eslint/boundaries-*.mjs`.
+- **Purpose:** Each rule exists to preserve the intended separation of concerns, prevent tight coupling, and make the codebase easier to reason about and scale.
+- **Do not add or relax rules simply to silence ESLint errors.** If a rule is causing friction, review whether the architectural boundary is still correct and discuss with the team before making changes.
+- **See:** [server/eslint/boundaries/AGENT.md](eslint/boundaries/AGENT.md) for detailed maintenance guidelines and rationale.
