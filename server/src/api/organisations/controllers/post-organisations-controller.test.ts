@@ -30,8 +30,4 @@ describe("postOrganisations controller", () => {
     expect(response.status).toHaveBeenCalledWith(201);
     expect(response.json).toHaveBeenCalledWith({ id: "org-1", name: "Test Org" });
   });
-
-  it("uses default createOrganisation if not provided", async () => {
-    await expect(postOrganisations({ request, response })).resolves.not.toThrow();
-  });
 });

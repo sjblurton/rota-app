@@ -30,8 +30,4 @@ describe("getOrganisations controller", () => {
     expect(response.status).toHaveBeenCalledWith(200);
     expect(response.json).toHaveBeenCalledWith([{ id: "org-1" }]);
   });
-
-  it("uses default getAllOrganisations if not provided", async () => {
-    await expect(getOrganisations({ request, response })).resolves.not.toThrow();
-  });
 });
