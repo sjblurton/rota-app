@@ -1,12 +1,12 @@
 import z from "zod";
 
-import { acceptInviteBodySchema } from "../../libs/schemas/entities/invite";
+import { acceptInviteBodySchema } from "../../../libs/schemas/entities/invite";
 import {
   type AcceptInviteService,
   acceptInviteService,
-} from "../../services/invites/accept-invite-service";
-import { type ExpressHandlerContext } from "../../types/http";
-import { HttpErrorByCode } from "../../utils/http/HttpErrorByCode";
+} from "../../../services/invites/accept-invite-service";
+import { type ExpressHandlerContext } from "../../../types/http";
+import { HttpErrorByCode } from "../../../utils/http/HttpErrorByCode";
 
 type PatchInvitesControllerInput = {
   acceptInvite?: AcceptInviteService;

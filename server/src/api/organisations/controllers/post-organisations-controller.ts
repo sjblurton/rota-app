@@ -1,10 +1,10 @@
-import { createOrganisationSchema } from "../../libs/schemas/entities/organisation";
+import { createOrganisationSchema } from "../../../libs/schemas/entities/organisation";
 import {
   createOrganisationService,
   type CreateOrganisationServiceType,
-} from "../../services/organisations/create-organisation-service";
-import { type ExpressHandlerContext } from "../../types/http";
-import { validateAndParse } from "../../utils/validation/validate-and-parse";
+} from "../../../services/organisations/create-organisation-service";
+import { type ExpressHandlerContext } from "../../../types/http";
+import { validateAndParse } from "../../../utils/validation/validate-and-parse";
 
 type PostOrganisationsInput = ExpressHandlerContext & {
   createOrganisation?: CreateOrganisationServiceType;

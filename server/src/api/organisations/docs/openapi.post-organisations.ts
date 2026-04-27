@@ -1,13 +1,13 @@
 import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
 
-import { PATHS } from "../../../../constants/paths";
+import { PATHS } from "../../../constants/paths";
+import { commonErrorResponses } from "../../../docs/errors/responses";
 import {
   createOrganisationSchema,
   organisationSchema,
-} from "../../../../libs/schemas/entities/organisation";
-import { organisationsPaginationQuerySchema } from "../../../../libs/schemas/pagination/pagination-options-query";
-import { ORGANISATIONS_TAG } from "../../../constants/tags";
-import { commonErrorResponses } from "../../../errors/responses";
+} from "../../../libs/schemas/entities/organisation";
+import { organisationsPaginationQuerySchema } from "../../../libs/schemas/pagination/pagination-options-query";
+import { ORGANISATIONS_TAG } from "./constants/tags";
 
 const organisationsOpenApiRegistry = new OpenAPIRegistry();
 

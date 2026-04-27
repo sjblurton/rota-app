@@ -1,16 +1,16 @@
 import z from "zod";
 
-import { createInviteBodySchema } from "../../libs/schemas/entities/invite";
+import { createInviteBodySchema } from "../../../libs/schemas/entities/invite";
 import {
   type CreateInviteService,
   createInviteService,
-} from "../../services/invites/create-invite-service";
+} from "../../../services/invites/create-invite-service";
 import {
   getOrganisationByIdService,
   type GetOrganisationByIdServiceType,
-} from "../../services/organisations/get-organisation-by-id-service";
-import { type ExpressHandlerContext } from "../../types/http";
-import { validateAndParse } from "../../utils/validation/validate-and-parse";
+} from "../../../services/organisations/get-organisation-by-id-service";
+import { type ExpressHandlerContext } from "../../../types/http";
+import { validateAndParse } from "../../../utils/validation/validate-and-parse";
 
 type PostOrganisationsIdInvitesInput = ExpressHandlerContext & {
   getOrganisationById?: GetOrganisationByIdServiceType;

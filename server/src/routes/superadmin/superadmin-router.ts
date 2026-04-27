@@ -1,8 +1,8 @@
 import express from "express";
 
+import { organisationsRouter } from "../../api/organisations/routes/organisations-router";
 import { PATHS } from "../../constants/paths";
-import { requireSuperadminApiKey } from "../../libs/middleware/superadmin/require-superadmin-api-key";
-import { organisationsRouter } from "../organisations/organisations-router";
+import { requireSuperadminApiKey } from "./middleware/require-superadmin-api-key";
 
 const superadminRouter = express.Router();
 

@@ -2,7 +2,7 @@ import express from "express";
 import request from "supertest";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { patchInvitesController } from "../../controllers/invites/patch-invites-controller";
+import { patchInvitesController } from "../controllers/patch-invites-controller";
 import { invitesRouter } from "./invites-router";
 
 vi.mock("../../controllers/invites/patch-invites-controller", () => ({

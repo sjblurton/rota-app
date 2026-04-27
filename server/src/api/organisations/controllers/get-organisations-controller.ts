@@ -1,10 +1,10 @@
-import { organisationsPaginationQuerySchema } from "../../libs/schemas/pagination/pagination-options-query";
+import { organisationsPaginationQuerySchema } from "../../../libs/schemas/pagination/pagination-options-query";
 import {
   getAllOrganisationsService,
   type GetAllOrganisationsServiceType,
-} from "../../services/organisations/get-all-organisations-service";
-import { type ExpressHandlerContext } from "../../types/http";
-import { validateAndParse } from "../../utils/validation/validate-and-parse";
+} from "../../../services/organisations/get-all-organisations-service";
+import { type ExpressHandlerContext } from "../../../types/http";
+import { validateAndParse } from "../../../utils/validation/validate-and-parse";
 
 type GetOrganisationsControllerInput = ExpressHandlerContext & {
   getAllOrganisations?: GetAllOrganisationsServiceType;

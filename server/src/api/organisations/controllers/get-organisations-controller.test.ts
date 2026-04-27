@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { organisationsPaginationQuerySchema } from "../../libs/schemas/pagination/pagination-options-query";
+import { organisationsPaginationQuerySchema } from "../../../libs/schemas/pagination/pagination-options-query";
 import { getOrganisations } from "./get-organisations-controller";
 
 const mockRequest = (query = {}) => ({ query }) as any;

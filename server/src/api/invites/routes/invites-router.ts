@@ -1,7 +1,7 @@
 import express from "express";
 
-import { PATHS } from "../../constants/paths";
-import { patchInvitesController } from "../../controllers/invites/patch-invites-controller";
+import { PATHS } from "../../../constants/paths";
+import { patchInvitesController } from "../controllers/patch-invites-controller";
 
 const invitesRouter = express.Router();
 

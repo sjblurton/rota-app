@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { createOrganisationSchema } from "../../libs/schemas/entities/organisation";
+import { createOrganisationSchema } from "../../../libs/schemas/entities/organisation";
 import { postOrganisations } from "./post-organisations-controller";
 
 const mockRequest = (body = {}) => ({ body }) as any;

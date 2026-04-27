@@ -1,9 +1,9 @@
 import express from "express";
 
-import { PATHS } from "../../constants/paths";
-import { getOrganisations } from "../../controllers/organisations/get-organisations-controller";
-import { postOrganisationIdInvitesController } from "../../controllers/organisations/post-organisation-id-invites-controller";
-import { postOrganisations } from "../../controllers/organisations/post-organisations-controller";
+import { PATHS } from "../../../constants/paths";
+import { getOrganisations } from "../controllers/get-organisations-controller";
+import { postOrganisationIdInvitesController } from "../controllers/post-organisation-id-invites-controller";
+import { postOrganisations } from "../controllers/post-organisations-controller";
 
 const organisationsRouter = express.Router();
 

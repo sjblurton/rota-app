@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { supabase } from "../../../libs/auth/supabase";
 import { HttpErrorByCode } from "../../../utils/http/HttpErrorByCode";
-import { supabase } from "../../auth/supabase";
 import { requireJwtAuth } from "./require-jwt-auth";
 
 vi.mock("../../auth/supabase", () => ({

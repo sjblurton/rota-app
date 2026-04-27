@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { type CreateInviteBody, type Invite } from "../../types/invites";
-import { HttpErrorByCode } from "../../utils/http/HttpErrorByCode";
+import { type CreateInviteBody, type Invite } from "../../../types/invites";
+import { HttpErrorByCode } from "../../../utils/http/HttpErrorByCode";
 import { postOrganisationIdInvitesController } from "./post-organisation-id-invites-controller";
 
 const validParams = { organisation_id: "123e4567-e89b-12d3-a456-426614174000" };

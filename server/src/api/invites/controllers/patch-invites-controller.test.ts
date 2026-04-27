@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { HttpErrorByCode } from "../../utils/http/HttpErrorByCode";
+import { HttpErrorByCode } from "../../../utils/http/HttpErrorByCode";
 import { patchInvitesController } from "./patch-invites-controller";
 
 const validParams = { invite_id: "dcf6d793-9fe8-4964-aff4-b27b209052e5" };

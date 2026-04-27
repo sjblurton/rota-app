@@ -1,8 +1,8 @@
 import { type RequestHandler } from "express";
 
+import { supabase } from "../../../libs/auth/supabase";
 import { type SupabaseUser } from "../../../types/supabase_user";
 import { HttpErrorByCode } from "../../../utils/http/HttpErrorByCode";
-import { supabase } from "../../auth/supabase";
 
 export const requireJwtAuth: RequestHandler = async (request, _response, next) => {
   const auth = request.headers.authorization;

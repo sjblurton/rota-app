@@ -1,11 +1,11 @@
 import { OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
 import z from "zod";
 
-import { PATHS } from "../../../../constants/paths";
-import { acceptInviteBodySchema, inviteSchema } from "../../../../libs/schemas/entities/invite";
-import { userSchema } from "../../../../libs/schemas/entities/user";
-import { INVITES_TAG } from "../../../constants/tags";
-import { commonErrorResponses } from "../../../errors/responses";
+import { PATHS } from "../../../constants/paths";
+import { commonErrorResponses } from "../../../docs/errors/responses";
+import { acceptInviteBodySchema, inviteSchema } from "../../../libs/schemas/entities/invite";
+import { userSchema } from "../../../libs/schemas/entities/user";
+import { INVITES_TAG } from "./constants/tags";
 
 const invitesOpenApiRegistry = new OpenAPIRegistry();
 
