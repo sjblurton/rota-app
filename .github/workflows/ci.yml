@@ -12,6 +12,9 @@ jobs:
     environment: test
     env:
       DATABASE_URL: postgresql://postgres:pass123@localhost:5432/rota_dev
+      SUPABASE_URL: dummy-supabase-url.supabase.co
+      SUPABASE_SERVICE_ROLE_KEY: dummy-service-role-key
+      SUPERADMIN_API_KEY: test-secret-key
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -26,6 +29,9 @@ jobs:
     environment: test
     env:
       DATABASE_URL: postgresql://postgres:pass123@localhost:5432/rota_dev
+      SUPABASE_URL: dummy-supabase-url.supabase.co
+      SUPABASE_SERVICE_ROLE_KEY: dummy-service-role-key
+      SUPERADMIN_API_KEY: test-secret-key
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
