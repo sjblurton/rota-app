@@ -17,6 +17,8 @@ jobs:
       - run: npm ci --workspace server
       - run: npm run db:generate --workspace server
       - run: npm run test --workspace server
+        env:
+          DATABASE_URL: postgresql://postgres:pass123@localhost:5432/rota_dev
 
   coverage:
     runs-on: ubuntu-latest
@@ -26,7 +28,10 @@ jobs:
         with:
           node-version: 22
       - run: npm ci --workspace server
+      - run: npm run db:generate --workspace server
       - run: npm run test:coverage --workspace server
+        env:
+          DATABASE_URL: postgresql://postgres:pass123@localhost:5432/rota_dev
 
   e2e:
     runs-on: ubuntu-latest
@@ -57,4 +62,5 @@ jobs:
         with:
           node-version: 22
       - run: npm ci --workspace server
+      - run: npm run db:generate --workspace server
       - run: npm run test:e2e --workspace server
