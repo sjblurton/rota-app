@@ -13,6 +13,7 @@ import { golbalImportRules } from "./eslint/boundaries/dependencies-global.mjs";
 import { featureImportRules } from "./eslint/boundaries/dependencies-feature.mjs";
 import { sharedImportRules } from "./eslint/boundaries/dependencies-shared.mjs";
 import { appImportRules } from "./eslint/boundaries/dependencies-app.mjs";
+import { e2eImportRules } from "./eslint/boundaries/dependencies-e2e.mjs";
 
 export const boundariesDependencyRules = [
   ...generatedImportRules,
@@ -20,6 +21,7 @@ export const boundariesDependencyRules = [
   ...featureImportRules,
   ...sharedImportRules,
   ...appImportRules,
+  ...e2eImportRules,
 ];
 
 export default [
