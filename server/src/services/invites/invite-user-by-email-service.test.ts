@@ -70,4 +70,13 @@ describe("inviteUserByEmailService", () => {
     const result = await inviteUserByEmailService({ data: validInvite });
     expect(result).toBeUndefined();
   });
+
+  it("returns early and does not call supabase in test env", async () => {
+    (requireEnv as any).mockImplementation((key: string) =>
+      key === "NODE_ENV" ? "test" : "http://localhost:3000",
+    );
+    const result = await inviteUserByEmailService({ data: validInvite });
+    expect(result).toBeUndefined();
+    expect(supabase.auth.admin.inviteUserByEmail).not.toHaveBeenCalled();
+  });
 });
