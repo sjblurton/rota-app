@@ -27,10 +27,7 @@ export const inviteUserByEmailService = async ({ data }: InviteUserByEmailServic
   });
 
   if (error) {
-    if (error.status !== 400) {
-      throw new HttpErrorByCode("internal_server_error", error.message);
-    }
-    throw new HttpErrorByCode("bad_request", error.message);
+    throw error;
   }
   return;
 };
