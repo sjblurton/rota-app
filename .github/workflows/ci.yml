@@ -9,6 +9,9 @@ on:
 jobs:
   unit:
     runs-on: ubuntu-latest
+    environment: test
+    env:
+      DATABASE_URL: postgresql://postgres:pass123@localhost:5432/rota_dev
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -16,12 +19,13 @@ jobs:
           node-version: 22
       - run: npm ci --workspace server
       - run: npm run db:generate --workspace server
-        env:
-          DATABASE_URL: postgresql://postgres:pass123@localhost:5432/rota_dev
       - run: npm run test --workspace server
 
   coverage:
     runs-on: ubuntu-latest
+    environment: test
+    env:
+      DATABASE_URL: postgresql://postgres:pass123@localhost:5432/rota_dev
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -29,12 +33,11 @@ jobs:
           node-version: 22
       - run: npm ci --workspace server
       - run: npm run db:generate --workspace server
-        env:
-          DATABASE_URL: postgresql://postgres:pass123@localhost:5432/rota_dev
       - run: npm run test:coverage --workspace server
 
   e2e:
     runs-on: ubuntu-latest
+    environment: test
     services:
       postgres:
         image: postgres:15
