@@ -16,9 +16,9 @@ jobs:
           node-version: 22
       - run: npm ci --workspace server
       - run: npm run db:generate --workspace server
-      - run: npm run test --workspace server
         env:
           DATABASE_URL: postgresql://postgres:pass123@localhost:5432/rota_dev
+      - run: npm run test --workspace server
 
   coverage:
     runs-on: ubuntu-latest
@@ -29,9 +29,9 @@ jobs:
           node-version: 22
       - run: npm ci --workspace server
       - run: npm run db:generate --workspace server
-      - run: npm run test:coverage --workspace server
         env:
           DATABASE_URL: postgresql://postgres:pass123@localhost:5432/rota_dev
+      - run: npm run test:coverage --workspace server
 
   e2e:
     runs-on: ubuntu-latest
@@ -63,4 +63,5 @@ jobs:
           node-version: 22
       - run: npm ci --workspace server
       - run: npm run db:generate --workspace server
+      - run: env | grep SUPABASE
       - run: npm run test:e2e --workspace server
