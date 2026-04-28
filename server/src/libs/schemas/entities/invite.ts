@@ -55,6 +55,12 @@ export const createInviteBodySchema = createInviteSchema
   .omit({
     organisation_id: true,
   })
+  .extend({
+    id: z.uuid().optional().openapi({
+      description:
+        "Optional ID for testing purposes. If not provided, a new UUID will be generated.",
+    }),
+  })
   .openapi({
     example: {
       email: "new.user@example.com",

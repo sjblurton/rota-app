@@ -41,6 +41,12 @@ export const createOrganisationSchema = organisationSchema
   .pick({
     name: true,
   })
+  .extend({
+    id: z.uuid().optional().openapi({
+      description:
+        "Optional ID for testing purposes. If not provided, a new UUID will be generated.",
+    }),
+  })
   .openapi({
     example: {
       name: "Acme Corporation",
