@@ -5,13 +5,13 @@ import { requireEnv } from "../src/utils/env/requireEnv";
 const workerId = requireEnv("VITEST_WORKER_ID") || "0";
 const dbName = `rota_test_${workerId}`;
 const baseUrl = "postgresql://postgres:pass123@localhost:5432/";
+process.env["DATABASE_URL"] = `${baseUrl}${dbName}`;
 
 beforeAll(async () => {
   console.log(`[setup-db] Worker ${workerId}: Starting DB setup for ${dbName}`);
   try {
     console.log(`[setup-db] Creating database ${dbName}...`);
     await execa("psql", ["-U", "postgres", "-c", `CREATE DATABASE ${dbName};`]).catch(() => {});
-    process.env["DATABASE_URL"] = `${baseUrl}${dbName}`;
     console.log(`[setup-db] Set DATABASE_URL to ${process.env["DATABASE_URL"]}`);
     console.log(`[setup-db] Running prisma migrate deploy...`);
     await execa("prisma", ["migrate", "deploy"]);
