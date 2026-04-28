@@ -14,4 +14,4 @@ export const baseWithTimestampsSchema = baseSchema.extend({
   updated_at: z.date().default(() => new Date()),
 });
 
-export const userRoleEnum = z.enum([ROLES.ADMIN, ROLES.STAFF]);
+export const userRoleEnum = z.enum([ROLES.ADMIN]);

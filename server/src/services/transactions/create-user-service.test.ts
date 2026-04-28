@@ -2,6 +2,7 @@ import { afterEach } from "node:test";
 
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { ROLES } from "../../constants/roles";
 import { updateInviteSchema } from "../../libs/schemas/entities/invite";
 import { createUserSchema } from "../../libs/schemas/entities/user";
 import { type UpdateInvite } from "../../types/invites";
@@ -12,7 +13,7 @@ const validUserData: CreateUserInput = {
   email: "test@example.com",
   supabase_user_id: "user-123",
   organisation_id: "00000000-0000-0000-0000-000000000000",
-  role: "staff",
+  role: ROLES.ADMIN,
   status: "active",
   name: null,
 };

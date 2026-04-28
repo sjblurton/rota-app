@@ -1,6 +1,7 @@
 import { AuthError } from "@supabase/supabase-js";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { ROLES } from "../../constants/roles";
 import { supabase } from "../../libs/auth/supabase";
 import { type Invite } from "../../types/invites";
 import { requireEnv } from "../../utils/env/requireEnv";
@@ -25,7 +26,7 @@ const validInvite: Invite = {
   organisation_id: "org-1",
   email: "test@example.com",
   status: "invited",
-  role: "staff",
+  role: ROLES.ADMIN,
   preferred_contact_method: "email",
   created_at: new Date("2026-04-26T16:39:02.185Z"),
   updated_at: new Date("2026-04-26T16:39:02.185Z"),
