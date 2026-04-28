@@ -32,13 +32,14 @@ model Organisation {
   stripe_customer_id  String?
   created_at          DateTime           @default(now())
   updated_at          DateTime           @updatedAt
-  users               User[]
-  invites             Invite[]
+
+  users   User[]
+  invites Invite[]
+  staff   Staff[]
 }
 
 enum UserRole {
   admin
-  staff
 }
 
 enum UserStatus {
@@ -51,10 +52,11 @@ model User {
   id               String     @id @default(uuid())
   email            String     @unique
   supabase_user_id String
-  role             UserRole   @default(staff)
+  role             UserRole   @default(admin)
   status           UserStatus @default(invited)
   organisation_id  String
   name             String?
+  linked_staff_id  String?
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -63,6 +65,7 @@ model User {
 
   invited_invites  Invite[] @relation("InvitedBy")
   accepted_invites Invite[] @relation("AcceptedBy")
+  linked_staff     Staff?   @relation(fields: [linked_staff_id], references: [id])
 }
 
 enum InviteStatus {
@@ -81,7 +84,7 @@ model Invite {
   organisation_id          String
   email                    String
   preferred_contact_method InviteContactMethod @default(email)
-  role                     UserRole            @default(staff)
+  role                     UserRole            @default(admin)
   status                   InviteStatus        @default(invited)
   created_at               DateTime            @default(now())
   updated_at               DateTime            @updatedAt
@@ -94,4 +97,30 @@ model Invite {
   accepted_by  User?        @relation("AcceptedBy", fields: [accepted_by_id], references: [id])
 
   @@unique([organisation_id, email])
+}
+
+enum StaffStatus {
+  active
+  inactive
+}
+
+enum StaffRole {
+  manager
+  staff
+}
+
+model Staff {
+  id              String      @id @default(uuid())
+  name            String
+  email           String?     @unique
+  phone_number    String?     @unique
+  organisation_id String
+  role            StaffRole   @default(staff)
+  status          StaffStatus @default(active)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  organisation Organisation @relation(fields: [organisation_id], references: [id])
+  users        User[]
 }
