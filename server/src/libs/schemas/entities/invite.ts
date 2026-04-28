@@ -23,7 +23,7 @@ export const inviteSchema = baseWithTimestampsSchema
     organisation_id: z.uuid(),
     invited_by_user_id: z.uuid().nullable().optional(),
     accepted_by_user_id: z.uuid().nullable().optional(),
-    role: userRoleEnum.default(ROLES.STAFF),
+    role: userRoleEnum.default(ROLES.ADMIN),
     status: inviteStatusEnum.default(COMMON_STATUS_NAMES.INVITED),
     expires_at: z.date(),
     preferred_contact_method: inviteContactMethodEnum.default(MESSAGE_TYPES.EMAIL),

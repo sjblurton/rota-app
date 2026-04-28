@@ -53,7 +53,7 @@ describe("updateInviteRepository", () => {
   it("works with extra fields present", async () => {
     const input = {
       id: "invite-id",
-      role: "staff",
+      role: ROLES.ADMIN,
       foo: undefined,
       bar: 123,
     } as any;
@@ -63,7 +63,7 @@ describe("updateInviteRepository", () => {
     });
     expect(mockUpdate).toHaveBeenCalledWith({
       where: { id: "invite-id" },
-      data: { role: "staff", bar: 123 },
+      data: { role: ROLES.ADMIN, bar: 123 },
     });
   });
 });

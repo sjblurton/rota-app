@@ -26,7 +26,7 @@ export const userSchema = baseWithTimestampsSchema
       email: "user@example.com",
       name: "John Doe",
       supabase_user_id: "supabase_user_id_123",
-      role: ROLES.STAFF,
+      role: ROLES.ADMIN,
       organisation_id: "123e4567-e89b-12d3-a456-426614174000",
       status: COMMON_STATUS_NAMES.ACTIVE,
       created_at: new Date(),
@@ -47,7 +47,7 @@ export const createUserSchema = userSchema
     example: {
       email: "user@example.com",
       name: "John Doe",
-      role: ROLES.STAFF,
+      role: ROLES.ADMIN,
       supabase_user_id: "supabase_user_id_123",
       organisation_id: "123e4567-e89b-12d3-a456-426614174000",
       status: COMMON_STATUS_NAMES.ACTIVE,

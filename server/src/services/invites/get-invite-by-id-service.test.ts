@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { ROLES } from "../../constants/roles";
 import { HttpErrorByCode } from "../../utils/http/HttpErrorByCode";
 import { getInviteByIdService } from "./get-invite-by-id-service";
 
@@ -8,7 +9,7 @@ const validInvite = {
   organisation_id: "org-1",
   email: "test@example.com",
   status: "invited",
-  role: "staff",
+  role: ROLES.ADMIN,
   preferred_contact_method: "email",
   created_at: new Date("2026-04-26T16:39:02.185Z"),
   updated_at: new Date("2026-04-26T16:39:02.185Z"),
