@@ -17,22 +17,6 @@ async function main() {
       status: "active",
     },
   });
-  await prisma.invite.upsert({
-    where: { id: "00000000-0000-0000-0000-000000000000" },
-    update: {
-      email: "user@test.com",
-      role: "admin",
-      preferred_contact_method: "email",
-      organisation_id: "00000000-0000-0000-0000-000000000000",
-    },
-    create: {
-      id: "00000000-0000-0000-0000-000000000000",
-      email: "user@test.com",
-      role: "admin",
-      preferred_contact_method: "email",
-      organisation_id: "00000000-0000-0000-0000-000000000000",
-    },
-  });
 }
 
 main()

@@ -129,7 +129,27 @@ To run in watch mode:
 npm run test -- --watch
 ```
 
-**Note:** End-to-end tests (with real HTTP and DB) may be added in the future.
+## End-to-End (E2E) Testing
+
+E2E tests run against a real PostgreSQL database and require Docker or a local Postgres instance.
+
+### Running E2E Tests
+
+1. Ensure Docker is running, or you have a local Postgres instance available at: `postgresql://postgres:pass123@localhost:5432/` (You can adjust this in `.env.test`.)
+2. Start a Postgres container (if needed): `docker run --name rota-e2e-postgres -e POSTGRES_PASSWORD=pass123 -p 5432:5432 -d postgres:16`
+3. Run the e2e tests: `npm run test:e2e
+   - Each test worker uses its own isolated database for parallel, reliable runs.
+   - Databases are created and dropped automatically during test setup/teardown.
+
+### Notes
+
+- E2E tests are configured in `vitest.e2e.config.ts` and use `test/setup-db.ts` for per-worker DB setup.
+- You can customise the database connection in `.env.test`.
+- Make sure to stop and remove the Docker container after testing:
+
+  ```bash
+  docker stop rota-e2e-postgres && docker rm rota-e2e-postgres
+  ```
 
 ### Coverage Requirements
 
@@ -210,8 +230,8 @@ The server will start at `http://localhost:3000` with automatic hot reload.
 
 Interactive Swagger UI with try-it-out functionality:
 
-- **Local:** http://localhost:3000/api/v1/docs/
-- **Staging:** https://rota-app-e45i.onrender.com/api/v1/docs/
+- **Local:** `http://localhost:3000/api/v1/docs/`
+- **Staging:** `https://rota-app-e45i.onrender.com/api/v1/docs/`
 
 Authentication: Use the Authorize button and enter your `SUPERADMIN_API_KEY`.
 
@@ -241,12 +261,3 @@ Query parameters:
 - `offset` — page offset (default: 0)
 - `order_by_key` — sort by: `created_at`, `updated_at`, `name`, `status`, or `plan`
 - `order` — sort direction: `asc` or `desc` (default: `desc`)
-
-## Naming Conventions
-
-- API field names in request, response, query, and path payloads use snake_case.
-- JavaScript and TypeScript variable, function, and parameter names use camelCase.
-- API file names under `src/api/**` use kebab-case.
-- Use British English spelling in repository-authored prose; keep external contract field names unchanged.
-- Keep shared request, query, and body Zod schemas in `src/libs/schemas/**`, never inside feature docs except for OpenAPI-only schemas.
-- Derive TypeScript types via `z.infer<>` in `src/types/*.ts`; never duplicate type definitions.

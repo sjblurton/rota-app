@@ -3,7 +3,7 @@
     "target": "ES2023",
     "module": "CommonJS",
     "lib": ["ES2023"],
-    "rootDir": "src",
+    "rootDir": ".",
     "outDir": "dist",
     "strict": true,
     "esModuleInterop": true,
@@ -26,6 +26,6 @@
     "noUncheckedIndexedAccess": true,
     "types": ["node"]
   },
-  "include": ["src/**/*", "src/generated/**/*"],
+  "include": ["src/**/*", "src/generated/**/*", "test/**/*"],
   "exclude": ["node_modules", "dist", "**/*.spec.ts"]
 }

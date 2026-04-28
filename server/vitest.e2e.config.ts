@@ -2,7 +2,7 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
-    fileParallelism: false,
+    fileParallelism: true,
     setupFiles: ["./test/setup-env.ts", "./test/setup-db.ts"],
   },
 });

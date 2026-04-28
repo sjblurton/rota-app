@@ -10,6 +10,10 @@ type CreateOrganisationRepositoryInput = {
 export const createOrganisationRepository = async ({
   data,
   organisationRepo = prisma.organisation,
-}: CreateOrganisationRepositoryInput) => organisationRepo.create({ data });
+}: CreateOrganisationRepositoryInput) => {
+  const { id, ...rest } = data;
+  const input = id ? { id, ...rest } : rest;
+  return organisationRepo.create({ data: input });
+};
 
 export type CreateOrganisationRepository = typeof createOrganisationRepository;
