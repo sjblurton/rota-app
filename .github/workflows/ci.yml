@@ -65,7 +65,7 @@ jobs:
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: pass123
-          POSTGRES_DB: rota_dev
+          POSTGRES_DB: postgres
         ports:
           - 5432:5432
         options: >-
@@ -74,7 +74,7 @@ jobs:
           --health-timeout=5s
           --health-retries=5
     env:
-      DATABASE_URL: postgresql://postgres:pass123@localhost:5432/rota_dev
+      DATABASE_URL: postgresql://postgres:pass123@localhost:5432/postgres
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       SUPERADMIN_API_KEY: ${{ secrets.SUPERADMIN_API_KEY }}
