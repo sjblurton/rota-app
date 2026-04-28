@@ -1,6 +1,8 @@
+import { AuthError } from "@supabase/supabase-js";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { supabase } from "../../libs/auth/supabase";
+import { type Invite } from "../../types/invites";
 import { requireEnv } from "../../utils/env/requireEnv";
 import { HttpErrorByCode } from "../../utils/http/HttpErrorByCode";
 import { inviteUserByEmailService } from "./invite-user-by-email-service";
@@ -17,10 +19,6 @@ vi.mock("../../libs/auth/supabase", () => ({
 vi.mock("../../utils/env/requireEnv", () => ({
   requireEnv: vi.fn(() => "http://localhost:3000"),
 }));
-
-import { AuthError } from "@supabase/supabase-js";
-
-import { type Invite } from "../../types/invites";
 
 const validInvite: Invite = {
   id: "dcf6d793-9fe8-4964-aff4-b27b209052e5",
