@@ -1,13 +1,11 @@
 import { beforeAll, afterAll } from "vitest";
 import { execa } from "execa";
-import { requireEnv } from "../src/utils/env/requireEnv";
 import { logger } from "../src/libs/logger/logger";
 import { prisma } from "../src/libs/prisma/prisma";
+import { requireEnv } from "../src/utils/env/requireEnv";
 
 const workerId = requireEnv("VITEST_WORKER_ID") || "0";
 const dbName = `rota_test_${workerId}`;
-const baseUrl = "postgresql://postgres:pass123@localhost:5432/";
-process.env["DATABASE_URL"] = `${baseUrl}${dbName}`;
 
 beforeAll(async () => {
   logger.info(`[setup-db] Worker ${workerId}: Starting DB setup for ${dbName}`);
