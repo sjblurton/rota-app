@@ -11,6 +11,7 @@
       ]
     },
     "server": {
+      "ignoreBinaries": ["psql"],
       "ignoreDependencies": [
         "jiti",
         "pino-pretty",
@@ -18,8 +19,7 @@
         "@types/pino-http",
         "@types/pg",
         "pg",
-        "jose",
-        "execa"
+        "jose"
       ]
     }
   }
