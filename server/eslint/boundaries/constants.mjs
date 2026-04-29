@@ -13,6 +13,7 @@ export const ESLINT_BOUNDARIES_ELEMENTS = {
   GENERATED_PRISMA: "generated-prisma",
   APP: "app",
   E2E: "e2e",
+  TEST_UTILS: "test-utils",
 };
 
 export const globalTypes = [

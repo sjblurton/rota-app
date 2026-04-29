@@ -8,7 +8,7 @@ This folder contains the configuration and rule definitions for `eslint-plugin-b
 
 - **constants.mjs**: Centralises type names, arrays, and constants for boundaries config.
 - **elements.mjs**: Defines boundaries elements for ESLint (types, modules, etc).
-- **dependencies-*.mjs**: Each file contains a logical group of dependency rules:
+- **dependencies-\*.mjs**: Each file contains a logical group of dependency rules:
   - `dependencies-generated.mjs`: Generated/infra rules
   - `dependencies-global.mjs`: Global types rules
   - `dependencies-feature.mjs`: Feature rules (feature-to-global, feature-to-feature, feature-to-shared)

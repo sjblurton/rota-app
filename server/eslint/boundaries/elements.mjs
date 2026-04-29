@@ -79,4 +79,9 @@ export const boundariesElements = [
     pattern: "src/e2e/**/*",
     mode: "full",
   },
+  {
+    type: ESLINT_BOUNDARIES_ELEMENTS.TEST_UTILS,
+    pattern: "src/test-utils/**/*",
+    mode: "full",
+  },
 ];
