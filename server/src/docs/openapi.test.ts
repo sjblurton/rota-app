@@ -1,3 +1,38 @@
+const patchStaffPath = "/api/v1/admin/organisations/{organisation_id}/staff";
+
+describe("Staff PATCH OpenAPI", () => {
+  it("documents PATCH /api/v1/admin/organisations/{organisation_id}/staff path", () => {
+    const patchStaff = openApiDocument["paths"]?.[patchStaffPath];
+    expect(patchStaff).toBeDefined();
+    expect(patchStaff).toHaveProperty("patch");
+    expect(patchStaff?.patch?.summary).toMatch(/update staff member/i);
+    expect(patchStaff?.patch?.security).toEqual([{ BearerAuth: [] }]);
+    expect(patchStaff?.patch?.parameters?.[0]).toMatchObject({
+      name: "organisation_id",
+      in: "path",
+      required: true,
+      schema: { type: "string", format: "uuid" },
+    });
+  });
+
+  it("documents correct request and response schemas for PATCH /api/v1/admin/organisations/{organisation_id}/staff", () => {
+    const patchStaff = openApiDocument?.["paths"]?.[patchStaffPath]?.patch;
+    expect(patchStaff).toBeDefined();
+    const requestBody = patchStaff?.requestBody;
+    const hasContent = requestBody && "content" in requestBody;
+    expect(hasContent && requestBody.content?.["application/json"]?.schema).toBeDefined();
+    expect(patchStaff?.responses?.["200"]?.content?.["application/json"]?.schema).toBeDefined();
+  });
+
+  it("documents error responses for PATCH /api/v1/admin/organisations/{organisation_id}/staff", () => {
+    const patchStaff = openApiDocument?.["paths"]?.[patchStaffPath]?.patch;
+    expect(patchStaff?.responses?.["400"]).toBeDefined();
+    expect(patchStaff?.responses?.["401"]).toBeDefined();
+    expect(patchStaff?.responses?.["403"]).toBeDefined();
+    expect(patchStaff?.responses?.["404"]).toBeDefined();
+    expect(patchStaff?.responses?.["409"]).toBeDefined();
+  });
+});
 const postStaffPath = "/api/v1/admin/organisations/{organisation_id}/staff";
 
 describe("Staff OpenAPI", () => {

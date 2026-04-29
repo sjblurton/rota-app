@@ -2,6 +2,7 @@ import { type RequestHandler } from "express";
 
 import { supabase } from "../../../libs/auth/supabase";
 import { type SupabaseUser } from "../../../types/supabase_user";
+import { requireEnv } from "../../../utils/env/requireEnv";
 import { HttpErrorByCode } from "../../../utils/http/HttpErrorByCode";
 
 const createMockUser = (overrides?: Partial<SupabaseUser>): SupabaseUser => ({
@@ -20,6 +21,12 @@ const createMockUser = (overrides?: Partial<SupabaseUser>): SupabaseUser => ({
 
 export function createRequireJwtAuth(mockUser?: Partial<SupabaseUser>): RequestHandler {
   return async (request, _response, next) => {
+    if (mockUser && requireEnv("NODE_ENV") !== "test") {
+      throw new HttpErrorByCode(
+        "internal_server_error",
+        "Mock user should only be used in test environment",
+      );
+    }
     if (mockUser) {
       request.superbaseUser = createMockUser(mockUser);
       return next();

@@ -2,44 +2,46 @@ import { extendZodWithOpenApi, OpenAPIRegistry } from "@asteasolutions/zod-to-op
 import { z } from "zod";
 
 import { commonErrorResponses } from "../../../docs/errors/responses";
-import { createStaffSchema, staffSchema } from "../../../libs/schemas/entities/staff";
+import { patchStaffBodySchema, staffSchema } from "../../../libs/schemas/entities/staff";
 import { STAFF_TAG } from "./constants/tags";
 
 extendZodWithOpenApi(z);
 
-export const postStaffRegistry = new OpenAPIRegistry();
+export const patchStaffRegistry = new OpenAPIRegistry();
 
-postStaffRegistry.registerPath({
-  method: "post",
+const patchStaffParamsSchema = z.object({
+  organisation_id: z.uuid().describe("Organisation UUID"),
+});
+
+patchStaffRegistry.registerPath({
+  method: "patch",
   path: "/api/v1/admin/organisations/{organisation_id}/staff",
   tags: [STAFF_TAG],
-  summary: "Create a staff member for an organisation",
+  summary: "Update staff member(s) for an organisation",
   description: [
-    "Creates a new staff member for the specified organisation.",
+    "Updates one or more staff members for the specified organisation.",
     "\n",
     "Business rules:",
-    "- If an email address is provided, it must be unique within the organisation.",
-    "- If a phone number is provided, it must be unique within the organisation.",
+    "- Only the fields provided will be updated.",
+    "- Email and phone number must remain unique within the organisation.",
     "- If both are provided, both must be unique within the organisation.",
     "\n",
     "The endpoint will return a 409 Conflict error if the provided email or phone number already exists for another staff member in the same organisation.",
   ].join("\n"),
   request: {
-    params: z.object({
-      organisation_id: z.uuid().describe("Organisation UUID"),
-    }),
+    params: patchStaffParamsSchema,
     body: {
       content: {
         "application/json": {
-          schema: createStaffSchema,
+          schema: patchStaffBodySchema,
         },
       },
       required: true,
     },
   },
   responses: {
-    201: {
-      description: "Staff member created successfully",
+    200: {
+      description: "Staff member updated successfully",
       content: {
         "application/json": {
           schema: staffSchema,
@@ -50,8 +52,9 @@ postStaffRegistry.registerPath({
     "401": commonErrorResponses.unauthorisedResponse,
     "409": commonErrorResponses.conflictResponse,
     "403": commonErrorResponses.forbiddenResponse,
+    "404": commonErrorResponses.notFoundResponse,
   },
   security: [{ BearerAuth: [] }],
 });
 
-export const staffOpenApiRegistry = postStaffRegistry;
+export const staffPatchOpenApiRegistry = patchStaffRegistry;
