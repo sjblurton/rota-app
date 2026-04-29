@@ -2,11 +2,18 @@ import express from "express";
 
 import { PATHS } from "../../../constants/paths";
 import { patchInvitesController } from "../controllers/patch-invites-controller";
+import { postInvitesController } from "../controllers/post-invites-controller";
 
-const invitesRouter = express.Router();
+const patchInvitesRouter = express.Router();
 
-invitesRouter.patch(PATHS.home + PATHS.invites_id, (req, res) =>
+const postInvitesRouter = express.Router();
+
+patchInvitesRouter.patch(PATHS.invites_id, (req, res) =>
   patchInvitesController({ request: req, response: res }),
 );
 
-export { invitesRouter };
+postInvitesRouter.post(PATHS.organisation_id + PATHS.invites, (req, res) =>
+  postInvitesController({ request: req, response: res }),
+);
+
+export { patchInvitesRouter, postInvitesRouter };
