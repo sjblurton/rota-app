@@ -79,6 +79,16 @@ api/
 - Import these schemas in both controllers (for validation) and docs (for OpenAPI).
 - Do not duplicate schema definitions in feature docs except for documentation-only fields.
 
+## Error Response Imports for OpenAPI Docs
+
+- When writing OpenAPI docs, always import shared error response schemas using:
+
+  ```typescript
+  import { commonErrorResponses } from "src/docs/errors/responses";
+  ```
+
+- Use these for standard error responses (400, 401, 403, 409, etc.) to ensure consistency across API documentation.
+
 ## See Also
 
 - See AGENTS.md in the repo root for global conventions.
