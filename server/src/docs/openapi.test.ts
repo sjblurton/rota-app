@@ -1,3 +1,29 @@
+const postStaffPath = "/api/v1/admin/organisations/{organisation_id}/staff";
+
+describe("Staff OpenAPI", () => {
+  it("documents POST /api/v1/admin/organisations/{orgId}/staff path", () => {
+    const postStaff = openApiDocument["paths"]?.[postStaffPath];
+    expect(postStaff).toBeDefined();
+    expect(postStaff).toHaveProperty("post");
+    expect(postStaff?.post?.summary).toMatch(/Create a staff member/i);
+    expect(postStaff?.post?.security).toEqual([{ BearerAuth: [] }]);
+    expect(postStaff?.post?.parameters?.[0]).toMatchObject({
+      name: "organisation_id",
+      in: "path",
+      required: true,
+      schema: { type: "string", format: "uuid" },
+    });
+  });
+
+  it("documents correct request and response schemas for POST /api/v1/admin/organisations/{orgId}/staff", () => {
+    const postStaff = openApiDocument?.["paths"]?.[postStaffPath]?.post;
+    expect(postStaff).toBeDefined();
+    const requestBody = postStaff?.requestBody;
+    const hasContent = requestBody && "content" in requestBody;
+    expect(hasContent && requestBody.content?.["application/json"]?.schema).toBeDefined();
+    expect(postStaff?.responses?.["201"]?.content?.["application/json"]?.schema).toBeDefined();
+  });
+});
 import { describe, expect, it } from "vitest";
 
 import { PATHS } from "../constants/paths";
