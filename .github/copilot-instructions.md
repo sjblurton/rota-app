@@ -17,6 +17,7 @@
   - For repo-wide or complex changes, escalate to the orchestrator agent.
 
 ## Agent Reminders
+
 - Never edit code without consulting the relevant `AGENT.md` and `PLAN.agent.md`.
 - Never bypass the workflow order defined in `PLAN.agent.md` or `AGENTS.md`.
 - Always summarise and reference all relevant `AGENT.md` files in PRs or documentation for cross-folder or architectural changes.
