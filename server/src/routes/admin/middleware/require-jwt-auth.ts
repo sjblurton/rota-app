@@ -4,28 +4,49 @@ import { supabase } from "../../../libs/auth/supabase";
 import { type SupabaseUser } from "../../../types/supabase_user";
 import { HttpErrorByCode } from "../../../utils/http/HttpErrorByCode";
 
-export const requireJwtAuth: RequestHandler = async (request, _response, next) => {
-  const auth = request.headers.authorization;
-  if (!auth?.startsWith("Bearer ")) {
-    throw new HttpErrorByCode("unauthorised", "Missing token");
-  }
+const createMockUser = (overrides?: Partial<SupabaseUser>): SupabaseUser => ({
+  id: "test-user-id",
+  email: "user@test.com",
+  user_metadata: {
+    invite_id: "test-invite-id",
+    organisation_id: "test-org-id",
+  },
+  app_metadata: {},
+  aud: "authenticated",
+  created_at: new Date().toISOString(),
+  updated_at: new Date().toISOString(),
+  ...overrides,
+});
 
-  const token = auth.split(" ")[1];
+export function createRequireJwtAuth(mockUser?: Partial<SupabaseUser>): RequestHandler {
+  return async (request, _response, next) => {
+    if (mockUser) {
+      request.superbaseUser = createMockUser(mockUser);
+      return next();
+    }
 
-  if (!token) {
-    throw new HttpErrorByCode("unauthorised", "Missing token");
-  }
+    const auth = request.headers.authorization;
+    if (!auth?.startsWith("Bearer ")) {
+      throw new HttpErrorByCode("unauthorised", "Missing token");
+    }
 
-  const {
-    data: { user },
-    error,
-  } = await supabase.auth.getUser(token);
+    const token = auth.split(" ")[1];
+    if (!token) {
+      throw new HttpErrorByCode("unauthorised", "Missing token");
+    }
 
-  if (error || !user) {
-    throw new HttpErrorByCode("unauthorised", "Invalid token");
-  }
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.getUser(token);
 
-  request.superbaseUser = user as SupabaseUser;
+    if (error || !user) {
+      throw new HttpErrorByCode("unauthorised", "Invalid token");
+    }
 
-  next();
-};
+    request.superbaseUser = user as SupabaseUser;
+    next();
+  };
+}
+
+export const requireJwtAuth = createRequireJwtAuth();
