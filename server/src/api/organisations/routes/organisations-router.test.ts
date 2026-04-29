@@ -14,11 +14,6 @@ vi.mock("../controllers/post-organisations-controller", () => ({
     response.status(201).json({ id: "mocked-post" });
   }),
 }));
-vi.mock("../controllers/post-organisation-id-invites-controller", () => ({
-  postOrganisationIdInvitesController: vi.fn(({ response }) => {
-    response.status(200).json({ invite: "mocked-invite" });
-  }),
-}));
 
 describe("organisationsRouter", () => {
   let app: express.Express;
@@ -38,11 +33,5 @@ describe("organisationsRouter", () => {
     const res = await request(app).get("/organisations");
     expect(res.status).toBe(200);
     expect(res.body).toEqual(["mocked-get"]);
-  });
-
-  it("POST /organisations/:organisation_id/invites calls postOrganisationIdInvitesController", async () => {
-    const res = await request(app).post("/organisations/org-1/invites").send({});
-    expect(res.status).toBe(200);
-    expect(res.body).toEqual({ invite: "mocked-invite" });
   });
 });

@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { type CreateInviteBody, type Invite } from "../../../types/invites";
 import { HttpErrorByCode } from "../../../utils/http/HttpErrorByCode";
-import { postOrganisationIdInvitesController } from "./post-organisation-id-invites-controller";
+import { postInvitesController } from "./post-invites-controller";
 
 const validParams = { organisation_id: "123e4567-e89b-12d3-a456-426614174000" };
 const validBody: CreateInviteBody = {
@@ -45,7 +45,7 @@ describe("postOrganisationIdInvitesController", () => {
   });
 
   it("validates params and body, calls getOrganisationById, and responds with invite", async () => {
-    await postOrganisationIdInvitesController({
+    await postInvitesController({
       request,
       response,
       getOrganisationById,
@@ -70,9 +70,9 @@ describe("postOrganisationIdInvitesController", () => {
 
   it("throws if organisation_id is invalid", async () => {
     request = mockRequest({ organisation_id: "not-a-uuid" }, validBody);
-    await expect(
-      postOrganisationIdInvitesController({ request, response, getOrganisationById }),
-    ).rejects.toThrow(HttpErrorByCode);
+    await expect(postInvitesController({ request, response, getOrganisationById })).rejects.toThrow(
+      HttpErrorByCode,
+    );
   });
 
   it("throws if body is invalid", async () => {
@@ -81,8 +81,8 @@ describe("postOrganisationIdInvitesController", () => {
       preferred_contact_method: "email",
       role: "admin",
     });
-    await expect(
-      postOrganisationIdInvitesController({ request, response, getOrganisationById }),
-    ).rejects.toThrow(HttpErrorByCode);
+    await expect(postInvitesController({ request, response, getOrganisationById })).rejects.toThrow(
+      HttpErrorByCode,
+    );
   });
 });

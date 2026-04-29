@@ -7,7 +7,7 @@ export const PATHS = {
   organisations: "/organisations",
   organisation_id: "/:organisation_id",
   invites: "/invites",
-  invites_id: ":invite_id",
+  invites_id: "/:invite_id",
   docs: "/docs",
   home: "/",
 } as const;

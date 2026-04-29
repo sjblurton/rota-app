@@ -12,17 +12,17 @@ import {
 import { type ExpressHandlerContext } from "../../../types/http";
 import { validateAndParse } from "../../../utils/validation/validate-and-parse";
 
-type PostOrganisationsIdInvitesInput = ExpressHandlerContext & {
+type PostInvitesInput = ExpressHandlerContext & {
   getOrganisationById?: GetOrganisationByIdServiceType;
   createInvite?: CreateInviteService;
 };
 
-export const postOrganisationIdInvitesController = async ({
+export const postInvitesController = async ({
   request,
   response,
   getOrganisationById = getOrganisationByIdService,
   createInvite = createInviteService,
-}: PostOrganisationsIdInvitesInput) => {
+}: PostInvitesInput) => {
   const { organisation_id: organisationId } = validateAndParse(
     z.object({ organisation_id: z.uuid() }),
     request.params,
