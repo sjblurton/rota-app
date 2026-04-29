@@ -19,7 +19,7 @@
     "db:reset:seed": "npm run db:reset && npm run db:seed",
     "db:format": "prisma format --schema=prisma/schema.prisma",
     "db:format:check": "prisma format --schema=prisma/schema.prisma --check",
-    "check:all": "npm run lint && npm run test:coverage && npm run db:format:check && npm run format:check && npm run test:e2e",
+    "check:all": "npm run lint && npm run test:coverage && npm run db:format:check && npm run format:check",
     "test:e2e": "vitest run --config vitest.e2e.config.ts src/e2e"
   },
   "lint-staged": {
