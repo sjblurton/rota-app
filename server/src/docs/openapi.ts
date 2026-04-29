@@ -3,6 +3,7 @@ import { OpenApiGeneratorV3, OpenAPIRegistry } from "@asteasolutions/zod-to-open
 import { invitesOpenApiRegistry } from "../api/invites/docs/openapi.patch-invites";
 import { superadminInvitesOpenApiRegistry } from "../api/invites/docs/openapi.post-invites";
 import { organisationsOpenApiRegistry } from "../api/organisations/docs/openapi.post-organisations";
+import { staffPatchOpenApiRegistry } from "../api/staff/docs/openapi.patch-staff";
 import { staffOpenApiRegistry } from "../api/staff/docs/openapi.post-staff";
 
 const registry = new OpenAPIRegistry([
@@ -10,6 +11,7 @@ const registry = new OpenAPIRegistry([
   superadminInvitesOpenApiRegistry,
   organisationsOpenApiRegistry,
   staffOpenApiRegistry,
+  staffPatchOpenApiRegistry,
 ]);
 
 registry.registerComponent("securitySchemes", "BearerAuth", {

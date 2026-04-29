@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { supabase } from "../../../libs/auth/supabase";
 import { HttpErrorByCode } from "../../../utils/http/HttpErrorByCode";
-import { requireJwtAuth } from "./require-jwt-auth";
+import { createRequireJwtAuth, requireJwtAuth } from "./require-jwt-auth";
 
 vi.mock("../../../libs/auth/supabase", () => ({
   supabase: {
@@ -60,5 +60,21 @@ describe("requireJwtAuth middleware", () => {
     await requireJwtAuth(request, response, next);
     expect(request.superbaseUser).toEqual(fakeUser);
     expect(next).toHaveBeenCalled();
+  });
+
+  it("sets request.superbaseUser and calls next if mockUser is provided and NODE_ENV is 'test'", async () => {
+    process.env["NODE_ENV"] = "test";
+    const mockUser = { id: "mock-id", email: "mock@test.com" };
+    const middleware = createRequireJwtAuth(mockUser);
+    await middleware(request, response, next);
+    expect(request.superbaseUser).toMatchObject(mockUser);
+    expect(next).toHaveBeenCalled();
+  });
+
+  it("throws if mockUser is provided and NODE_ENV is not 'test'", async () => {
+    process.env["NODE_ENV"] = "production";
+    const mockUser = { id: "mock-id", email: "mock@test.com" };
+    const middleware = createRequireJwtAuth(mockUser);
+    await expect(middleware(request, response, next)).rejects.toThrow();
   });
 });

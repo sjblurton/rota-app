@@ -53,3 +53,10 @@ export const createStaffSchema = staffSchema
       status: "active",
     },
   });
+
+export const patchStaffBodySchema = createStaffSchema.partial().openapi({
+  example: {
+    email: "jane.doe@example.com",
+    phone_number: "+447123456789",
+  },
+});
