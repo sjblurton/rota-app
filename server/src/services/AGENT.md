@@ -10,15 +10,15 @@ This folder contains service functions for all business logic and orchestration.
 
 ## Guidelines
 
-- Each feature or domain concept should have its own service file (e.g. `accept-invite-service.ts`).
+- Each feature or domain concept should have its own service file (e.g. `accept-invite.services.ts`).
 - Service functions:
   - Should orchestrate multiple repository calls, business rules, and error handling.
-  - Should not contain HTTP or Express-specific logic (keep that in controllers/routes).
+  - Should not contain HTTP or Express-specific logic (keep that in controllers/routers).
   - Should not import or use Express request/response objects.
   - Should be pure and stateless where possible.
   - Should accept dependencies (e.g. repository or service functions) as optional arguments, defaulting to the real implementation. This allows for easy mocking in unit tests.
 - Always default dependency arguments to the real implementation, e.g.: `export const myService = async ({ dep = realDep, ...args }) => { ... }`
-- Do not import repositories in controllers/routes—always go through a service.
+- Do not import repositories in controllers/routers—always go through a service.
 - Do not call external APIs directly from services unless it is part of the business logic (prefer a dedicated integration layer if needed).
 
 ## Testing
