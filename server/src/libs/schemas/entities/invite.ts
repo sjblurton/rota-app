@@ -1,21 +1,21 @@
-import { extendZodWithOpenApi } from "@asteasolutions/zod-to-openapi";
-import { z } from "zod";
+import { extendZodWithOpenApi } from '@asteasolutions/zod-to-openapi'
+import { z } from 'zod'
 
-import { MESSAGE_TYPES } from "../../../constants/message-type";
-import { ROLES } from "../../../constants/roles";
-import { COMMON_STATUS_NAMES } from "../../../constants/status";
-import { baseWithTimestampsSchema, userRoleEnum } from "./base";
+import { MESSAGE_TYPES } from '../../../constants/message-type'
+import { ROLES } from '../../../constants/roles'
+import { COMMON_STATUS_NAMES } from '../../../constants/status'
+import { baseWithTimestampsSchema, userRoleEnum } from './base'
 
-extendZodWithOpenApi(z);
+extendZodWithOpenApi(z)
 
 const inviteStatusEnum = z.enum([
   COMMON_STATUS_NAMES.INVITED,
   COMMON_STATUS_NAMES.ACCEPTED,
   COMMON_STATUS_NAMES.REVOKED,
   COMMON_STATUS_NAMES.EXPIRED,
-]);
+])
 
-const inviteContactMethodEnum = z.enum([MESSAGE_TYPES.EMAIL]);
+const inviteContactMethodEnum = z.enum([MESSAGE_TYPES.EMAIL])
 
 export const inviteSchema = baseWithTimestampsSchema
   .extend({
@@ -30,18 +30,18 @@ export const inviteSchema = baseWithTimestampsSchema
   })
   .openapi({
     example: {
-      id: "123e4567-e89b-12d3-a456-426614174000",
-      email: "new.user@example.com",
-      organisation_id: "123e4567-e89b-12d3-a456-426614174000",
-      invited_by_user_id: "123e4567-e89b-12d3-a456-426614174000",
-      accepted_by_user_id: "123e4567-e89b-12d3-a456-426614174000",
-      status: "invited",
-      created_at: "2026-04-20T10:00:00Z",
-      updated_at: "2026-04-20T10:00:00Z",
-      expires_at: "2026-05-20T10:00:00Z",
-      preferred_contact_method: "email",
+      id: '123e4567-e89b-12d3-a456-426614174000',
+      email: 'new.user@example.com',
+      organisation_id: '123e4567-e89b-12d3-a456-426614174000',
+      invited_by_user_id: '123e4567-e89b-12d3-a456-426614174000',
+      accepted_by_user_id: '123e4567-e89b-12d3-a456-426614174000',
+      status: 'invited',
+      created_at: '2026-04-20T10:00:00Z',
+      updated_at: '2026-04-20T10:00:00Z',
+      expires_at: '2026-05-20T10:00:00Z',
+      preferred_contact_method: 'email',
     },
-  });
+  })
 
 export const createInviteSchema = inviteSchema.pick({
   organisation_id: true,
@@ -49,7 +49,7 @@ export const createInviteSchema = inviteSchema.pick({
   invited_by_user_id: true,
   preferred_contact_method: true,
   role: true,
-});
+})
 
 export const createInviteBodySchema = createInviteSchema
   .omit({
@@ -58,24 +58,24 @@ export const createInviteBodySchema = createInviteSchema
   .extend({
     id: z.uuid().optional().openapi({
       description:
-        "Optional ID for testing purposes. If not provided, a new UUID will be generated.",
+        'Optional ID for testing purposes. If not provided, a new UUID will be generated.',
     }),
   })
   .openapi({
     example: {
-      email: "new.user@example.com",
-      role: "admin",
+      email: 'new.user@example.com',
+      role: 'admin',
     },
-  });
+  })
 
 export const acceptInviteBodySchema = z
   .object({
-    status: z.literal("accepted"),
+    status: z.literal('accepted'),
   })
   .openapi({
-    example: { status: "accepted" },
-  });
+    example: { status: 'accepted' },
+  })
 
 export const updateInviteSchema = inviteSchema.partial().extend({
   id: z.uuid(),
-});
+})

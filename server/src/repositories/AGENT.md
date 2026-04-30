@@ -10,7 +10,7 @@ This folder contains repository functions for all database access. Repositories:
 
 ## Guidelines
 
-- Each entity or domain concept should have its own repository file (e.g. `invite-repository.ts`).
+- Each entity or domain concept should have its own repository file (e.g. `invites.repository.ts`).
 - All repository functions should accept an optional `tx?: PrismaClient` argument, defaulting to the imported `prisma` instance. This allows for easy mocking in tests and for transaction control in services/transactions.
 - Repository functions:
   - Should be pure and only interact with the database (no business logic, no validation, no side effects).
@@ -23,18 +23,18 @@ This folder contains repository functions for all database access. Repositories:
 
 ## Testing
 
-- Repository tests (e.g. `update-invite-repository.test.ts`) should only exist if the function does more than a direct Prisma call (e.g. data cleaning, field omission).
+- Repository tests (e.g. `update-invites.repository.test.ts`) should only exist if the function does more than a direct Prisma call (e.g. data cleaning, field omission).
 - For integration tests, use real database IDs and test data as needed.
 
 ## Example
 
 ```ts
-// update-invite-repository.ts
-export const updateInviteRepository = async ({ tx = prisma, data }) => {
-  const { id, ...rest } = data;
-  const cleaned = cleanDeep(rest, { undefinedValues: true });
-  return tx.invite.update({ where: { id }, data: cleaned });
-};
+// update-invites.repository.ts
+export const updateInvitesRepository = async ({ tx = prisma, data }) => {
+  const { id, ...rest } = data
+  const cleaned = cleanDeep(rest, { undefinedValues: true })
+  return tx.invite.update({ where: { id }, data: cleaned })
+}
 ```
 
 ## Transactions

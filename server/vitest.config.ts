@@ -1,12 +1,12 @@
-import { defineConfig } from "vitest/config";
+import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   test: {
-    setupFiles: ["./test/setup-env.ts"],
-    exclude: ["src/e2e/**"],
+    setupFiles: ['./test/setup-env.ts'],
+    exclude: ['src/e2e/**'],
     coverage: {
-      provider: "v8",
-      reporter: ["text", "lcov"],
+      provider: 'v8',
+      reporter: ['text', 'lcov'],
       thresholds: {
         lines: 90,
         functions: 90,
@@ -14,13 +14,13 @@ export default defineConfig({
         statements: 90,
       },
       exclude: [
-        "src/server.ts",
-        "src/app.ts",
-        "**/*.d.ts",
-        "src/repositories/**",
-        "**/node_modules/**",
-        "src/generated/**",
+        'src/server.ts',
+        'src/app.ts',
+        '**/*.d.ts',
+        'src/repositories/**',
+        '**/node_modules/**',
+        'src/generated/**',
       ],
     },
   },
-});
+})

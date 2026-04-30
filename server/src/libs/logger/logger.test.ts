@@ -1,53 +1,53 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-const originalEnv = process.env;
+const originalEnv = process.env
 
-describe("logger", () => {
+describe('logger', () => {
   beforeEach(() => {
-    vi.resetModules();
-    process.env = { ...originalEnv };
-  });
+    vi.resetModules()
+    process.env = { ...originalEnv }
+  })
 
   afterEach(() => {
-    process.env = originalEnv;
-    vi.restoreAllMocks();
-  });
+    process.env = originalEnv
+    vi.restoreAllMocks()
+  })
 
-  it("uses pretty transport when not in production", async () => {
-    const pinoMock = vi.fn(() => ({ info: vi.fn() }));
+  it('uses pretty transport when not in production', async () => {
+    const pinoMock = vi.fn(() => ({ info: vi.fn() }))
 
-    vi.doMock("pino", () => ({
+    vi.doMock('pino', () => ({
       default: pinoMock,
-    }));
+    }))
 
-    process.env["NODE_ENV"] = "development";
-    delete process.env["LOG_LEVEL"];
+    process.env['NODE_ENV'] = 'development'
+    delete process.env['LOG_LEVEL']
 
-    await import("./logger");
+    await import('./logger')
 
     expect(pinoMock).toHaveBeenCalledWith({
-      level: "info",
+      level: 'info',
       transport: {
-        target: "pino-pretty",
+        target: 'pino-pretty',
         options: { colorize: true },
       },
-    });
-  });
+    })
+  })
 
-  it("omits pretty transport in production and honours LOG_LEVEL", async () => {
-    const pinoMock = vi.fn(() => ({ info: vi.fn() }));
+  it('omits pretty transport in production and honours LOG_LEVEL', async () => {
+    const pinoMock = vi.fn(() => ({ info: vi.fn() }))
 
-    vi.doMock("pino", () => ({
+    vi.doMock('pino', () => ({
       default: pinoMock,
-    }));
+    }))
 
-    process.env["NODE_ENV"] = "production";
-    process.env["LOG_LEVEL"] = "debug";
+    process.env['NODE_ENV'] = 'production'
+    process.env['LOG_LEVEL'] = 'debug'
 
-    await import("./logger");
+    await import('./logger')
 
     expect(pinoMock).toHaveBeenCalledWith({
-      level: "debug",
-    });
-  });
-});
+      level: 'debug',
+    })
+  })
+})
