@@ -5,7 +5,7 @@ import { updateInviteSchema } from '../../libs/schemas/entities/invite'
 import {
   type UpdateInviteRepository,
   updateInviteRepository,
-} from '../../repositories/invites/update-invite-repository'
+} from '../../repositories/invites/update-invite.repository'
 
 type UpdateInviteServiceInput = {
   updateInvite?: UpdateInviteRepository

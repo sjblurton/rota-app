@@ -3,7 +3,7 @@ import { organisationSchema } from '../../libs/schemas/entities/organisation'
 import {
   type GetAllOrganisationsRepository,
   getAllOrganisationsRepository,
-} from '../../repositories/organisations/get-all-organisations-repository'
+} from '../../repositories/organisations/get-all-organisations.repository'
 
 type GetAllOrganisationsServiceInput = {
   paginationQuery?: OrganisationsPaginationQuery

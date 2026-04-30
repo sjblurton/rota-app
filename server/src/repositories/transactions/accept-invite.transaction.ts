@@ -2,8 +2,8 @@ import { type UpdateInvite } from '../../@types/invites'
 import { type CreateUserInput } from '../../@types/user'
 import { type PrismaClient } from '../../generated/prisma/client'
 import { prisma } from '../../libs/prisma/prisma'
-import { updateInviteRepository } from '../invites/update-invite-repository'
-import { type CreateUserRepository, createUserRepository } from '../users/create-user-repository'
+import { updateInviteRepository } from '../invites/update-invite.repository'
+import { type CreateUserRepository, createUserRepository } from '../users/create-user.repository'
 
 type AcceptInviteTransactionInput = {
   userData: CreateUserInput

@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { ROLES } from '../../constants/roles'
-import { updateInviteRepository } from './update-invite-repository'
+import { updateInviteRepository } from './update-invite.repository'
 
 const mockUpdate = vi.fn(async ({ where, data }) => ({ where, data }))
 const mockPrismaClient = { invite: { update: mockUpdate } }

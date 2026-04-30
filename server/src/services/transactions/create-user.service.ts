@@ -5,7 +5,7 @@ import { createUserSchema } from '../../libs/schemas/entities/user'
 import {
   type AcceptInviteTransaction,
   acceptInviteTransaction,
-} from '../../repositories/transactions/accept-invite-transaction'
+} from '../../repositories/transactions/accept-invite.transaction'
 
 type CreateUserServiceInput = {
   acceptInvite?: AcceptInviteTransaction

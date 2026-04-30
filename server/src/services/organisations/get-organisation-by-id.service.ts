@@ -2,7 +2,7 @@ import { organisationSchema } from '../../libs/schemas/entities/organisation'
 import {
   type GetOrganisationByIdRepository,
   getOrganisationByIdRepository,
-} from '../../repositories/organisations/get-organisation-by-id-repository'
+} from '../../repositories/organisations/get-organisation-by-id.repository'
 import { HttpErrorByCode } from '../../utils/http/HttpErrorByCode'
 
 type GetOrganisationByIdServiceInput = {
