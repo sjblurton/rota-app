@@ -65,7 +65,7 @@ api/
     docs/
 ```
 
-## Controller Guidelines
+## Controllers Guidelines
 
 - Controllers are responsible for:
   - Receiving validated request data (params, body, query).
@@ -75,9 +75,9 @@ api/
   - Contain business logic or direct DB access.
   - Import or use Prisma directly.
   - Perform validation (except for calling a shared validation utility).
-- Always import validation schemas from `src/libs/schemas/` and validate at the controller boundary.
+- Always import validation schemas from `src/libs/schemas/` and validate at the controllers boundary.
 
-## Router Guidelines
+## Routers Guidelines
 
 - Routers:
   - Define HTTP routes and mount controllers.
@@ -92,7 +92,7 @@ api/
   - Contain OpenAPI documentation for the resource.
   - Reference zod schemas imported from `src/libs/schemas/` for request/response bodies.
   - Only define documentation-specific schemas locally if not reusable elsewhere.
-  - Keep documentation up to date with actual routes and controllers.
+  - Keep documentation up to date with actual routers and controllers.
 
 ## Zod Schema Usage
 
