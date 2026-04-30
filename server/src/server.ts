@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 
-import app from "./app";
+import app from "./app/app";
 import { PATHS } from "./constants/paths";
 import { logger } from "./libs/logger/logger";
 import { prisma } from "./libs/prisma/prisma";

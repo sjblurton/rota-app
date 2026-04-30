@@ -1,4 +1,4 @@
-import type { OrganisationsPaginationQuery } from "../../../types/organisation";
+import type { OrganisationsPaginationQuery } from "../../../@types/organisation";
 
 const DEFAULT_ORDER_BY_KEY = "created_at" as const;
 

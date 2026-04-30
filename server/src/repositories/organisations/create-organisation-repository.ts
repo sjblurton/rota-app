@@ -1,6 +1,6 @@
+import type { CreateOrganisationInput } from "../../@types/organisation";
 import type { PrismaClient } from "../../generated/prisma/client";
 import { prisma } from "../../libs/prisma/prisma";
-import type { CreateOrganisationInput } from "../../types/organisation";
 
 type CreateOrganisationRepositoryInput = {
   data: CreateOrganisationInput;

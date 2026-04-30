@@ -1,10 +1,10 @@
 import { OpenApiGeneratorV3, OpenAPIRegistry } from "@asteasolutions/zod-to-openapi";
 
-import { invitesOpenApiRegistry } from "../api/invites/docs/openapi.patch-invites";
-import { superadminInvitesOpenApiRegistry } from "../api/invites/docs/openapi.post-invites";
-import { organisationsOpenApiRegistry } from "../api/organisations/docs/openapi.post-organisations";
-import { staffPatchOpenApiRegistry } from "../api/staff/docs/openapi.patch-staff";
-import { staffOpenApiRegistry } from "../api/staff/docs/openapi.post-staff";
+import { invitesOpenApiRegistry } from "../api/invites/docs/patch-invites.openapi";
+import { superadminInvitesOpenApiRegistry } from "../api/invites/docs/post-invites.openapi";
+import { organisationsOpenApiRegistry } from "../api/organisations/docs/post-organisations.openapi";
+import { staffPatchOpenApiRegistry } from "../api/staff/docs/patch-staff.openapi";
+import { staffOpenApiRegistry } from "../api/staff/docs/post-staff.openapi";
 
 const registry = new OpenAPIRegistry([
   invitesOpenApiRegistry,

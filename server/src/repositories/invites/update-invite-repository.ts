@@ -1,9 +1,9 @@
 import cleanDeep from "clean-deep";
 
+import { type UpdateInvite } from "../../@types/invites";
+import { type RemoveUndefinedUtility } from "../../@types/RemoveUndefinedUtility";
 import type { Prisma, PrismaClient } from "../../generated/prisma/client";
 import { prisma } from "../../libs/prisma/prisma";
-import { type UpdateInvite } from "../../types/invites";
-import { type RemoveUndefinedUtility } from "../../types/RemoveUndefinedUtility";
 
 type UpdateInviteRepositoryInput = {
   tx?: PrismaClient | Prisma.TransactionClient;

@@ -23,7 +23,7 @@ describe("server entrypoint", () => {
     const infoMock = vi.fn();
     const dotenvConfigMock = vi.fn();
 
-    vi.doMock("./app", () => ({
+    vi.doMock("./app/app", () => ({
       default: {
         listen: listenMock,
       },
@@ -74,7 +74,7 @@ describe("server entrypoint", () => {
       .spyOn(process, "exit")
       .mockImplementation(((_code?: string | number | null | undefined) => undefined) as never);
 
-    vi.doMock("./app", () => ({
+    vi.doMock("./app/app", () => ({
       default: {
         listen: listenMock,
       },

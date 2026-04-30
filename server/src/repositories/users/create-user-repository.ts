@@ -1,6 +1,6 @@
+import type { CreateUserInput } from "../../@types/user";
 import type { Prisma, PrismaClient } from "../../generated/prisma/client";
 import { prisma } from "../../libs/prisma/prisma";
-import type { CreateUserInput } from "../../types/user";
 
 type CreateUserRepositoryInput = {
   tx?: PrismaClient | Prisma.TransactionClient;

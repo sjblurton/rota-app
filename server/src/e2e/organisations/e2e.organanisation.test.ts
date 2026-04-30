@@ -2,7 +2,7 @@ import request from "supertest";
 import { v4 as uuidv4 } from "uuid";
 import { describe, expect, it } from "vitest";
 
-import app from "../../app";
+import app from "../../app/app";
 import { PATHS } from "../../constants/paths";
 import { requireEnv } from "../../utils/env/requireEnv";
 

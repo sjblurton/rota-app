@@ -1,6 +1,6 @@
+import { type CreateInvite } from "../../@types/invites";
 import type { PrismaClient } from "../../generated/prisma/client";
 import { prisma } from "../../libs/prisma/prisma";
-import { type CreateInvite } from "../../types/invites";
 
 type CreateInviteRepositoryInput = {
   inviteRepositoryPrismaClient?: PrismaClient["invite"];

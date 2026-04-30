@@ -3,10 +3,10 @@ import request from "supertest";
 import { v4 as uuidv4 } from "uuid";
 import { describe, expect, it } from "vitest";
 
-import app from "../../app";
+import { type SupabaseUser } from "../../@types/supabase_user";
+import app from "../../app/app";
+import { createTestAdminApp } from "../../app/test-admin.app";
 import { PATHS } from "../../constants/paths";
-import { createTestAdminApp } from "../../test-utils/createTestAdminApp";
-import { type SupabaseUser } from "../../types/supabase_user";
 import { requireEnv } from "../../utils/env/requireEnv";
 
 const INVITE_ID = uuidv4();
