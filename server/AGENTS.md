@@ -14,28 +14,30 @@
 
 ## Source Structure
 
-Understand and follow the layout in [server/README.md](README.md#source-structure):
+Keep HTTP handling in router handlers or controllers.
 
-| Folder / Pattern                    | Purpose                                                             |
-| ----------------------------------- | ------------------------------------------------------------------- |
-| `src/app.ts`                        | Express app entry point and global middleware                       |
-| `src/server.ts`                     | Startup entry point with startup checks                             |
-| `src/constants/`                    | Shared constants (HTTP errors, status codes, plan types)            |
-| `src/libs/`                         | Shared domain libraries (auth, logging, database, schemas)          |
-| `src/@types/`                       | TypeScript types derived via `z.infer<>`; never duplicate type defs |
-| `src/utils/`                        | Stateless helpers (validation, environment, HTTP)                   |
-| `src/generated/`                    | Prisma-generated code; do not edit                                  |
-| `src/api/{feature}/controllers/`    | Feature-specific controllers                                        |
-| `src/api/{feature}/routers/`        | Feature-specific Express routers                                    |
-| `src/api/{feature}/docs/`           | OpenAPI documentation and router-specific schemas for the feature   |
-| `src/routes/admin/middleware/`      | Admin-only middleware (e.g. JWT auth)                               |
-| `src/routes/superadmin/middleware/` | Superadmin-only middleware (e.g. API key)                           |
+| Folder / Pattern | Purpose                                                             |
+| ---------------- | ------------------------------------------------------------------- |
+| `src/app.ts`     | Express app entry point and global middleware                       |
+| `src/server.ts`  | Startup entry point with startup checks                             |
+| `src/constants/` | Shared constants (HTTP errors, status codes, plan types)            |
+| `src/libs/`      | Shared domain libraries (auth, logging, database, schemas)          |
+| `src/@types/`    | TypeScript types derived via `z.infer<>`; never duplicate type defs |
+| `src/utils/`     | Stateless helpers (validation, environment, HTTP)                   |
+| `src/generated/` | Prisma-generated code; do not edit                                  |
+
+Each feature lives under `src/api/{feature}/` and is self-contained with its own controllers, routers, and docs.
+| `src/api/{feature}/routers/` | Feature-specific Express routers |
+Middleware for admin and superadmin is colocated under their respective `src/routers/{role}/middleware/` folders.
+| `src/routes/admin/middleware/` | Admin-only middleware (e.g. JWT auth) |
+Routers may only import controllers, not services or repositories directly (enforced by eslint-boundaries).
 
 **Key Rules:**
 
-- Each feature lives under `src/api/{feature}/` and is self-contained with its own controllers, routers, and docs.
+Use kebab-case for API file names under `src/modules/**` and `src/docs/**`, and plural form for folders: `controllers/`, `services/`, `routers/`.
+
 - Shared/domain schemas live in `libs/schemas/`; do not define reusable validation or domain schemas inside feature docs (except for OpenAPI-only schemas).
-- Middleware for admin and superadmin is colocated under their respective `src/routes/{role}/middleware/` folders.
+  Derive TypeScript types via `z.infer<>` in `src/@types/*.ts`; never duplicate type definitions.
 - OpenAPI documentation is colocated with the feature in `src/api/{feature}/docs/` and should reference shared schemas where possible; keep only documentation-specific schema definitions in feature docs.
 - Do not use `index.ts` barrel files. Name modules explicitly by their content (e.g. `params.ts`, `query.ts`, `schemas.ts`).
 - Import directly from the explicit file path, not from a folder.
