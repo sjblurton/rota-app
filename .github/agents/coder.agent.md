@@ -1,5 +1,5 @@
 ---
-description: "Use when implementing or modifying server API routes, controllers, services, zod schemas, OpenAPI docs, request validation, or backend tests."
+description: "Use when implementing or modifying server API routers, controllers, services, zod schemas, OpenAPI docs, request validation, or backend tests."
 tools: [read, search, edit, execute, todo]
 user-invocable: true
 agents: []
@@ -26,9 +26,9 @@ Your job is to make focused backend changes that keep runtime behaviour, shared 
 
 - Do not add request bodies to GET endpoints.
 - Do not create `index.ts` barrel files. Name modules explicitly by their content (e.g. `params.ts`, `query.ts`, `schemas.ts`). Import directly from the explicit file path, not from a folder.
-- Keep shared request, query, and body schemas in `server/src/lib/schemas/**`, not inside route docs files.
+- Keep shared request, query, and body schemas in `server/src/libs/schemas/**`, not inside router docs files.
 - Keep reusable OpenAPI schema helpers in `server/src/docs/**`.
-- Keep HTTP handling in routes or controllers and business logic in services.
+- Keep HTTP handling in routers or controllers and business logic in services.
 - Do not change unrelated files.
 - Keep API timestamps in ISO 8601 UTC format with trailing Z and reuse shared date-time schemas.
 - Use snake_case for API field names and camelCase for JavaScript and TypeScript symbols.
