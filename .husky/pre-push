@@ -4,3 +4,4 @@ set -e
 cd server
 npm run test:coverage
 npm run test:e2e
+npm run format
