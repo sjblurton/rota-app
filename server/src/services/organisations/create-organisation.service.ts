@@ -3,7 +3,7 @@ import { organisationSchema } from '../../libs/schemas/entities/organisation'
 import {
   type CreateOrganisationRepository,
   createOrganisationRepository,
-} from '../../repositories/organisations/create-organisation-repository'
+} from '../../repositories/organisations/create-organisation.repository'
 
 type CreateOrganisationServiceInput = {
   data: CreateOrganisationInput

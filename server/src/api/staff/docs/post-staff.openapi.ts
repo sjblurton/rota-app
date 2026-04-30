@@ -2,7 +2,7 @@ import { extendZodWithOpenApi, OpenAPIRegistry } from '@asteasolutions/zod-to-op
 import { z } from 'zod'
 
 import { commonErrorResponses } from '../../../docs/errors/responses'
-import { createStaffSchema, staffSchema } from '../../../libs/schemas/entities/staff'
+import { createStaffBodySchema, staffSchema } from '../../../libs/schemas/entities/staff'
 import { STAFF_TAG } from './constants/tags'
 
 extendZodWithOpenApi(z)
@@ -26,12 +26,14 @@ postStaffRegistry.registerPath({
   ].join('\n'),
   request: {
     params: z.object({
-      organisation_id: z.uuid().describe('Organisation UUID'),
+      organisation_id: z.uuid().describe('Organisation UUID').openapi({
+        example: '00000000-0000-0000-0000-000000000000',
+      }),
     }),
     body: {
       content: {
         'application/json': {
-          schema: createStaffSchema,
+          schema: createStaffBodySchema,
         },
       },
       required: true,

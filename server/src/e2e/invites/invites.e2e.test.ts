@@ -3,26 +3,25 @@ import request from 'supertest'
 import { v4 as uuidv4 } from 'uuid'
 import { describe, expect, it } from 'vitest'
 
-import { type SupabaseUser } from '../../@types/supabase_user'
 import app from '../../app/app'
 import { createTestAdminApp } from '../../app/test-admin.app'
 import { PATHS } from '../../constants/paths'
 import { requireEnv } from '../../utils/env/requireEnv'
+import { mockUser } from '../__mocks__/supabaseUser'
 
 const INVITE_ID = uuidv4()
 const ORG_ID = '00000000-0000-0000-0000-000000000000'
 const TEST_USER_EMAIL = faker.internet.email()
 
-const mockUser: Partial<SupabaseUser> = {
-  id: 'test-user-id',
-  email: 'user@test.com',
-  user_metadata: {
-    invite_id: INVITE_ID,
-    organisation_id: ORG_ID,
-  },
-}
-
-const testApp = createTestAdminApp(mockUser)
+const testApp = createTestAdminApp(
+  mockUser({
+    email: TEST_USER_EMAIL,
+    user_metadata: {
+      invite_id: INVITE_ID,
+      organisation_id: ORG_ID,
+    },
+  }),
+)
 
 describe('/organisations/:id/invites', () => {
   describe('POST /organisations/:id/invites', () => {

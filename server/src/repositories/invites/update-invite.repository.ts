@@ -1,7 +1,6 @@
 import cleanDeep from 'clean-deep'
 
 import { type UpdateInvite } from '../../@types/invites'
-import { type RemoveUndefinedUtility } from '../../@types/RemoveUndefinedUtility'
 import type { Prisma, PrismaClient } from '../../generated/prisma/client'
 import { prisma } from '../../libs/prisma/prisma'
 
@@ -15,9 +14,9 @@ export const updateInviteRepository = async ({
   data,
 }: UpdateInviteRepositoryInput) => {
   const { id, ...rest } = data
-  const cleaned: RemoveUndefinedUtility<Omit<UpdateInvite, 'id'>> = cleanDeep(rest, {
+  const cleaned = cleanDeep(rest, {
     undefinedValues: true,
-  })
+  }) as Prisma.InviteUpdateInput
 
   return tx.invite.update({ where: { id }, data: cleaned })
 }

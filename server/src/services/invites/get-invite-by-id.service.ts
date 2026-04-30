@@ -1,7 +1,7 @@
 import {
   type GetInviteByIdRepository,
   getInviteByIdRepository,
-} from '../../repositories/invites/get-invite-by-id-repository'
+} from '../../repositories/invites/get-invite-by-id.repository'
 import { HttpErrorByCode } from '../../utils/http/HttpErrorByCode'
 
 type GetInviteServiceInput = {

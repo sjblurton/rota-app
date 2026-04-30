@@ -10,4 +10,5 @@ export const PATHS = {
   invites_id: '/:invite_id',
   docs: '/docs',
   home: '/',
+  staff: '/staff',
 } as const

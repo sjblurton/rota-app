@@ -43,16 +43,19 @@ export const staffSchema = baseWithTimestampsSchema
 
 export const createStaffSchema = staffSchema
   .omit({ id: true, created_at: true, updated_at: true })
-  .partial()
-  .openapi({
-    example: {
-      name: 'Jane Doe',
-      email: 'jane.doe@example.com',
-      phone_number: '+447123456789',
-      role: 'manager',
-      status: 'active',
-    },
+  .extend({
+    id: z.uuid().optional(),
   })
+
+export const createStaffBodySchema = createStaffSchema.omit({ organisation_id: true }).openapi({
+  example: {
+    name: 'Jane Doe',
+    email: 'jane.doe@example.com',
+    phone_number: '+447123456789',
+    role: 'manager',
+    status: 'active',
+  },
+})
 
 export const patchStaffBodySchema = createStaffSchema.partial().openapi({
   example: {

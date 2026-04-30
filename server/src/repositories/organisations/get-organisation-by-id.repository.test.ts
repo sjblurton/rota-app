@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 
-import { getOrganisationByIdRepository } from './get-organisation-by-id-repository'
+import { getOrganisationByIdRepository } from './get-organisation-by-id.repository'
 
 describe('getOrganisationByIdRepository', () => {
   it('calls organisationRepo.findUnique with correct id', async () => {

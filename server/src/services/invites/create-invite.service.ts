@@ -3,7 +3,7 @@ import { inviteSchema } from '../../libs/schemas/entities/invite'
 import {
   type CreateInviteRepository,
   createInviteRepository,
-} from '../../repositories/invites/create-invite-repository'
+} from '../../repositories/invites/create-invite.repository'
 import {
   type InviteUserByEmailService,
   inviteUserByEmailService,
