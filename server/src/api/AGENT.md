@@ -9,13 +9,13 @@ This folder contains all API resource modules for the backend. Each resource (e.
 - Each resource module is a folder: `{module-name}/`
 - Inside each module folder:
   - `controllers/` — Request handler logic (no direct DB access, calls services/repositories)
-  - `routes/` — Express routers for this resource (mount controllers, no business logic)
+  - `routers/` — Express routers for this resource (mount controllers, no business logic)
   - `docs/` — OpenAPI or endpoint documentation for this resource
 - No business logic, DB access, or service code should be placed directly in this folder or in routers/controllers. Only call out to services/repositories/utilities.
 
 ## Naming
 
-- Use explicit file names: `post-invites.controller.ts`, `invites.router.ts`, etc.
+- Use explicit file names: `post-invites.controllers.ts`, `invites.routers.ts`, etc.
 - Do not use `index.ts` barrel files.
 
 ## Zod Schema Placement and OpenAPI Doc File Naming
@@ -53,15 +53,15 @@ This folder contains all API resource modules for the backend. Each resource (e.
 api/
   invites/
     controllers/
-      post-invites-controller.ts
-      patch-invites-controller.ts
-    routes/
-      invites-router.ts
+      post-invites.controllers.ts
+      patch-invites.controllers.ts
+    routers/
+      invites.routers.ts
     docs/
       post-invites.openapi.ts
   organisations/
     controllers/
-    routes/
+    routers/
     docs/
 ```
 
