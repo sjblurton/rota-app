@@ -11,13 +11,13 @@ const sharedElementsCanImportGlobalElements = sharedElements.map((type) => ({
 
 const sharedRoutesCanImportSharedRoutesOfTheSameModule = {
   from: {
-    type: ESLINT_BOUNDARIES_ELEMENTS.SHARED_ROUTES,
+    type: ESLINT_BOUNDARIES_ELEMENTS.SHARED_ROUTERS,
     captured: { moduleName: "{{from.captured.moduleName}}" },
   },
   allow: [
     {
       to: {
-        type: ESLINT_BOUNDARIES_ELEMENTS.SHARED_ROUTES,
+        type: ESLINT_BOUNDARIES_ELEMENTS.SHARED_ROUTERS,
         captured: { moduleName: "{{from.captured.moduleName}}" },
       },
     },
@@ -25,11 +25,11 @@ const sharedRoutesCanImportSharedRoutesOfTheSameModule = {
 };
 
 const sharedRoutesCanImportFeatureRoutes = {
-  from: { type: ESLINT_BOUNDARIES_ELEMENTS.SHARED_ROUTES },
+  from: { type: ESLINT_BOUNDARIES_ELEMENTS.SHARED_ROUTERS },
   allow: [
     {
       to: {
-        type: ESLINT_BOUNDARIES_ELEMENTS.ROUTES,
+        type: ESLINT_BOUNDARIES_ELEMENTS.ROUTERS,
       },
     },
   ],

@@ -8,8 +8,8 @@ export const boundariesElements = [
     mode: "full",
   },
   {
-    type: ESLINT_BOUNDARIES_ELEMENTS.ROUTES,
-    pattern: "src/api/*/routes/**/*",
+    type: ESLINT_BOUNDARIES_ELEMENTS.ROUTERS,
+    pattern: "src/api/*/routers/**/*",
     capture: ["moduleName"],
     mode: "full",
   },
@@ -32,7 +32,7 @@ export const boundariesElements = [
   },
   {
     type: ESLINT_BOUNDARIES_ELEMENTS.TYPES,
-    pattern: "src/types/**/*",
+    pattern: "src/@types/**/*",
     mode: "full",
   },
   {
@@ -59,8 +59,8 @@ export const boundariesElements = [
     capture: ["moduleName"],
   },
   {
-    type: ESLINT_BOUNDARIES_ELEMENTS.SHARED_ROUTES,
-    pattern: "src/routes/*/**/*",
+    type: ESLINT_BOUNDARIES_ELEMENTS.SHARED_ROUTERS,
+    pattern: "src/routers/*/**/*",
     mode: "full",
     capture: ["moduleName"],
   },
@@ -71,7 +71,7 @@ export const boundariesElements = [
   },
   {
     type: ESLINT_BOUNDARIES_ELEMENTS.APP,
-    pattern: "src/app.ts",
+    pattern: "src/app/**/*",
     mode: "full",
   },
   {
@@ -80,8 +80,8 @@ export const boundariesElements = [
     mode: "full",
   },
   {
-    type: ESLINT_BOUNDARIES_ELEMENTS.TEST_UTILS,
-    pattern: "src/test-utils/**/*",
+    type: ESLINT_BOUNDARIES_ELEMENTS.MIDDLEWARE,
+    pattern: "src/middleware/**/*",
     mode: "full",
   },
 ];

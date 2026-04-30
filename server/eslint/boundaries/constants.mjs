@@ -1,7 +1,7 @@
 export const ESLINT_BOUNDARIES_ELEMENTS = {
   LIBS: "libs",
   CONTROLLERS: "controllers",
-  ROUTES: "routes",
+  ROUTERS: "routers",
   DOCS: "docs",
   UTILS: "utils",
   TYPES: "types",
@@ -9,11 +9,11 @@ export const ESLINT_BOUNDARIES_ELEMENTS = {
   SHARED_DOCS: "shared-docs",
   SHARED_REPOSITORIES: "shared-repositories",
   SHARED_SERVICES: "shared-services",
-  SHARED_ROUTES: "shared-routes",
+  SHARED_ROUTERS: "shared-routers",
   GENERATED_PRISMA: "generated-prisma",
   APP: "app",
   E2E: "e2e",
-  TEST_UTILS: "test-utils",
+  MIDDLEWARE: "middleware",
 };
 
 export const globalTypes = [
@@ -26,12 +26,12 @@ export const globalTypes = [
 export const featureElements = [
   ESLINT_BOUNDARIES_ELEMENTS.CONTROLLERS,
   ESLINT_BOUNDARIES_ELEMENTS.DOCS,
-  ESLINT_BOUNDARIES_ELEMENTS.ROUTES,
+  ESLINT_BOUNDARIES_ELEMENTS.ROUTERS,
 ];
 
 export const sharedElements = [
   ESLINT_BOUNDARIES_ELEMENTS.SHARED_SERVICES,
-  ESLINT_BOUNDARIES_ELEMENTS.SHARED_ROUTES,
+  ESLINT_BOUNDARIES_ELEMENTS.SHARED_ROUTERS,
   ESLINT_BOUNDARIES_ELEMENTS.SHARED_DOCS,
   ESLINT_BOUNDARIES_ELEMENTS.SHARED_REPOSITORIES,
 ];

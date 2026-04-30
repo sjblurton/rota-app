@@ -14,7 +14,7 @@ import { featureImportRules } from "./eslint/boundaries/dependencies-feature.mjs
 import { sharedImportRules } from "./eslint/boundaries/dependencies-shared.mjs";
 import { appImportRules } from "./eslint/boundaries/dependencies-app.mjs";
 import { e2eImportRules } from "./eslint/boundaries/dependencies-e2e.mjs";
-import { testUtilsImportRules } from "./eslint/boundaries/dependencies-test-utils.mjs";
+import { middlewareImportRules } from "./eslint/boundaries/dependencies-middleware.mjs";
 
 export const boundariesDependencyRules = [
   ...generatedImportRules,
@@ -23,7 +23,7 @@ export const boundariesDependencyRules = [
   ...sharedImportRules,
   ...appImportRules,
   ...e2eImportRules,
-  ...testUtilsImportRules,
+  ...middlewareImportRules,
 ];
 
 export default [

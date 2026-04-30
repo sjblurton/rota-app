@@ -27,7 +27,7 @@ const featureToSharedElementRules = [
 
 const featureRoutesCanImportFeatureControllers = {
   from: {
-    type: ESLINT_BOUNDARIES_ELEMENTS.ROUTES,
+    type: ESLINT_BOUNDARIES_ELEMENTS.ROUTERS,
     captured: { moduleName: "{{from.captured.moduleName}}" },
   },
   allow: [
