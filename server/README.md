@@ -168,14 +168,14 @@ Excluded from coverage: `src/server.ts`, `src/app.ts` (bootstrap layer).
 
 ```typescript
 // src/libs/logger/logger.test.ts
-import { describe, it, expect } from "vitest";
-import { logger } from "./logger";
+import { describe, it, expect } from 'vitest'
+import { logger } from './logger'
 
-describe("logger", () => {
-  it("logs messages", () => {
-    expect(logger).toBeDefined();
-  });
-});
+describe('logger', () => {
+  it('logs messages', () => {
+    expect(logger).toBeDefined()
+  })
+})
 ```
 
 ### Test Environment Variables

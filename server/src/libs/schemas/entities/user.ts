@@ -1,8 +1,8 @@
-import z from "zod";
+import z from 'zod'
 
-import { ROLES } from "../../../constants/roles";
-import { COMMON_STATUS_NAMES } from "../../../constants/status";
-import { baseWithTimestampsSchema, userRoleEnum } from "./base";
+import { ROLES } from '../../../constants/roles'
+import { COMMON_STATUS_NAMES } from '../../../constants/status'
+import { baseWithTimestampsSchema, userRoleEnum } from './base'
 
 export const userSchema = baseWithTimestampsSchema
   .extend({
@@ -22,17 +22,17 @@ export const userSchema = baseWithTimestampsSchema
   })
   .openapi({
     example: {
-      id: "123e4567-e89b-12d3-a456-426614174000",
-      email: "user@example.com",
-      name: "John Doe",
-      supabase_user_id: "supabase_user_id_123",
+      id: '123e4567-e89b-12d3-a456-426614174000',
+      email: 'user@example.com',
+      name: 'John Doe',
+      supabase_user_id: 'supabase_user_id_123',
       role: ROLES.ADMIN,
-      organisation_id: "123e4567-e89b-12d3-a456-426614174000",
+      organisation_id: '123e4567-e89b-12d3-a456-426614174000',
       status: COMMON_STATUS_NAMES.ACTIVE,
       created_at: new Date(),
       updated_at: new Date(),
     },
-  });
+  })
 
 export const createUserSchema = userSchema
   .pick({
@@ -45,11 +45,11 @@ export const createUserSchema = userSchema
   })
   .openapi({
     example: {
-      email: "user@example.com",
-      name: "John Doe",
+      email: 'user@example.com',
+      name: 'John Doe',
       role: ROLES.ADMIN,
-      supabase_user_id: "supabase_user_id_123",
-      organisation_id: "123e4567-e89b-12d3-a456-426614174000",
+      supabase_user_id: 'supabase_user_id_123',
+      organisation_id: '123e4567-e89b-12d3-a456-426614174000',
       status: COMMON_STATUS_NAMES.ACTIVE,
     },
-  });
+  })

@@ -1,6 +1,6 @@
-import type { Request, Response } from "express";
+import type { Request, Response } from 'express'
 
 export type ExpressHandlerContext = {
-  request: Request;
-  response: Response;
-};
+  request: Request
+  response: Response
+}

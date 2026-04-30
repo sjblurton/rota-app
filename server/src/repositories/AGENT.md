@@ -31,10 +31,10 @@ This folder contains repository functions for all database access. Repositories:
 ```ts
 // update-invites.repository.ts
 export const updateInvitesRepository = async ({ tx = prisma, data }) => {
-  const { id, ...rest } = data;
-  const cleaned = cleanDeep(rest, { undefinedValues: true });
-  return tx.invite.update({ where: { id }, data: cleaned });
-};
+  const { id, ...rest } = data
+  const cleaned = cleanDeep(rest, { undefinedValues: true })
+  return tx.invite.update({ where: { id }, data: cleaned })
+}
 ```
 
 ## Transactions

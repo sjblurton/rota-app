@@ -1,8 +1,8 @@
-import { defineConfig } from "vitest/config";
+import { defineConfig } from 'vitest/config'
 
 export default defineConfig({
   test: {
     fileParallelism: true,
-    setupFiles: ["./test/setup-env.ts", "./test/setup-db.ts"],
+    setupFiles: ['./test/setup-env.ts', './test/setup-db.ts'],
   },
-});
+})

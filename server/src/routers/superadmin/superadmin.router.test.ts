@@ -1,37 +1,37 @@
-import express from "express";
-import request from "supertest";
-import { describe, expect, it } from "vitest";
+import express from 'express'
+import request from 'supertest'
+import { describe, expect, it } from 'vitest'
 
-import { requireEnv } from "../../utils/env/requireEnv";
-import { superadminRouter } from "./superadmin.router";
+import { requireEnv } from '../../utils/env/requireEnv'
+import { superadminRouter } from './superadmin.router'
 
-describe("superadminRouter API key enforcement", () => {
-  const app = express();
-  app.use(express.json());
-  app.use("/api/superadmin", superadminRouter);
+describe('superadminRouter API key enforcement', () => {
+  const app = express()
+  app.use(express.json())
+  app.use('/api/superadmin', superadminRouter)
 
-  it("rejects requests without the API key", async () => {
-    const res = await request(app).post("/api/superadmin/organisations").send();
-    expect(res.status).toBe(401);
-  });
+  it('rejects requests without the API key', async () => {
+    const res = await request(app).post('/api/superadmin/organisations').send()
+    expect(res.status).toBe(401)
+  })
 
-  it("rejects requests with an incorrect API key", async () => {
+  it('rejects requests with an incorrect API key', async () => {
     const res = await request(app)
-      .post("/api/superadmin/organisations")
-      .set("X-Superadmin-Key", "invalid-key")
-      .send();
+      .post('/api/superadmin/organisations')
+      .set('X-Superadmin-Key', 'invalid-key')
+      .send()
 
-    expect(res.status).toBe(403);
-  });
+    expect(res.status).toBe(403)
+  })
 
-  it("accepts requests with the correct API key", async () => {
-    const apiKey = requireEnv("SUPERADMIN_API_KEY");
+  it('accepts requests with the correct API key', async () => {
+    const apiKey = requireEnv('SUPERADMIN_API_KEY')
 
     const res = await request(app)
-      .post("/api/superadmin/organisations")
-      .set("X-Superadmin-Key", apiKey)
-      .send();
+      .post('/api/superadmin/organisations')
+      .set('X-Superadmin-Key', apiKey)
+      .send()
 
-    expect([401, 403]).not.toContain(res.status);
-  });
-});
+    expect([401, 403]).not.toContain(res.status)
+  })
+})

@@ -1,69 +1,69 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { ROLES } from "../../constants/roles";
-import { updateInviteRepository } from "./update-invite-repository";
+import { ROLES } from '../../constants/roles'
+import { updateInviteRepository } from './update-invite-repository'
 
-const mockUpdate = vi.fn(async ({ where, data }) => ({ where, data }));
-const mockPrismaClient = { invite: { update: mockUpdate } };
+const mockUpdate = vi.fn(async ({ where, data }) => ({ where, data }))
+const mockPrismaClient = { invite: { update: mockUpdate } }
 
-describe("updateInviteRepository", () => {
+describe('updateInviteRepository', () => {
   beforeEach(() => {
-    mockUpdate.mockClear();
-  });
+    mockUpdate.mockClear()
+  })
 
-  it("calls update with cleaned data and id", async () => {
+  it('calls update with cleaned data and id', async () => {
     const input = {
-      id: "invite-id",
+      id: 'invite-id',
       role: ROLES.ADMIN,
       status: undefined,
       accepted_by_user_id: undefined,
-      expires_at: new Date("2026-05-01T00:00:00Z"),
-    };
+      expires_at: new Date('2026-05-01T00:00:00Z'),
+    }
     await updateInviteRepository({
       tx: mockPrismaClient as any,
       data: input,
-    });
+    })
     expect(mockUpdate).toHaveBeenCalledWith({
-      where: { id: "invite-id" },
+      where: { id: 'invite-id' },
       data: {
-        role: "admin",
-        expires_at: new Date("2026-05-01T00:00:00Z"),
+        role: 'admin',
+        expires_at: new Date('2026-05-01T00:00:00Z'),
       },
-    });
-  });
+    })
+  })
 
-  it("removes all undefined fields from update data", async () => {
+  it('removes all undefined fields from update data', async () => {
     const input = {
-      id: "invite-id",
+      id: 'invite-id',
       role: undefined,
       status: undefined,
       accepted_by_user_id: undefined,
       expires_at: undefined,
-    };
+    }
     await updateInviteRepository({
       tx: mockPrismaClient as any,
       data: input,
-    });
+    })
     expect(mockUpdate).toHaveBeenCalledWith({
-      where: { id: "invite-id" },
+      where: { id: 'invite-id' },
       data: {},
-    });
-  });
+    })
+  })
 
-  it("works with extra fields present", async () => {
+  it('works with extra fields present', async () => {
     const input = {
-      id: "invite-id",
+      id: 'invite-id',
       role: ROLES.ADMIN,
       foo: undefined,
       bar: 123,
-    } as any;
+    } as any
     await updateInviteRepository({
       tx: mockPrismaClient as any,
       data: input,
-    });
+    })
     expect(mockUpdate).toHaveBeenCalledWith({
-      where: { id: "invite-id" },
+      where: { id: 'invite-id' },
       data: { role: ROLES.ADMIN, bar: 123 },
-    });
-  });
-});
+    })
+  })
+})

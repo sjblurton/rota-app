@@ -1,74 +1,74 @@
-import { afterEach } from "node:test";
+import { afterEach } from 'node:test'
 
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { type UpdateInvite } from "../../@types/invites";
-import { type CreateUserInput } from "../../@types/user";
-import { ROLES } from "../../constants/roles";
-import { updateInviteSchema } from "../../libs/schemas/entities/invite";
-import { createUserSchema } from "../../libs/schemas/entities/user";
-import { createUserService } from "./create-user.service";
+import { type UpdateInvite } from '../../@types/invites'
+import { type CreateUserInput } from '../../@types/user'
+import { ROLES } from '../../constants/roles'
+import { updateInviteSchema } from '../../libs/schemas/entities/invite'
+import { createUserSchema } from '../../libs/schemas/entities/user'
+import { createUserService } from './create-user.service'
 
 const validUserData: CreateUserInput = {
-  email: "test@example.com",
-  supabase_user_id: "user-123",
-  organisation_id: "00000000-0000-0000-0000-000000000000",
+  email: 'test@example.com',
+  supabase_user_id: 'user-123',
+  organisation_id: '00000000-0000-0000-0000-000000000000',
   role: ROLES.ADMIN,
-  status: "active",
+  status: 'active',
   name: null,
-};
+}
 
 const validInviteData: UpdateInvite = {
-  id: "dcf6d793-9fe8-4964-aff4-b27b209052e5",
-  status: "accepted",
-};
+  id: 'dcf6d793-9fe8-4964-aff4-b27b209052e5',
+  status: 'accepted',
+}
 
-const fixedDate = new Date("2026-04-26T17:07:44.808Z");
+const fixedDate = new Date('2026-04-26T17:07:44.808Z')
 
-describe("createUserService", () => {
-  let acceptInvite: any;
+describe('createUserService', () => {
+  let acceptInvite: any
 
   beforeEach(() => {
-    vi.useFakeTimers();
-    vi.setSystemTime(fixedDate);
-    acceptInvite = vi.fn().mockResolvedValue({ user: "created" });
-  });
+    vi.useFakeTimers()
+    vi.setSystemTime(fixedDate)
+    acceptInvite = vi.fn().mockResolvedValue({ user: 'created' })
+  })
 
   afterEach(() => {
-    vi.useRealTimers();
-  });
+    vi.useRealTimers()
+  })
 
-  it("parses data, calls acceptInvite, and returns user", async () => {
+  it('parses data, calls acceptInvite, and returns user', async () => {
     const result = await createUserService({
       acceptInvite,
       userData: validUserData,
       inviteData: validInviteData,
-    });
+    })
     expect(acceptInvite).toHaveBeenCalledWith({
       inviteUpdateData: updateInviteSchema.parse(validInviteData),
       userData: createUserSchema.parse(validUserData),
-    });
-    expect(result).toEqual({ user: "created" });
-  });
+    })
+    expect(result).toEqual({ user: 'created' })
+  })
 
-  it("throws if userData is invalid", async () => {
+  it('throws if userData is invalid', async () => {
     await expect(
       createUserService({
         acceptInvite,
-        userData: { ...validUserData, email: "not-an-email" },
+        userData: { ...validUserData, email: 'not-an-email' },
         inviteData: validInviteData,
       }),
-    ).rejects.toThrow();
-  });
+    ).rejects.toThrow()
+  })
 
-  it("throws if inviteData is invalid", async () => {
+  it('throws if inviteData is invalid', async () => {
     await expect(
       createUserService({
         acceptInvite,
         userData: validUserData,
         // @ts-expect-error - testing invalid data
-        inviteData: { ...validInviteData, status: "invalid" },
+        inviteData: { ...validInviteData, status: 'invalid' },
       }),
-    ).rejects.toThrow();
-  });
-});
+    ).rejects.toThrow()
+  })
+})

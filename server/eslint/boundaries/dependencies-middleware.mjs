@@ -1,4 +1,4 @@
-import { ESLINT_BOUNDARIES_ELEMENTS, globalTypes } from "./constants.mjs";
+import { ESLINT_BOUNDARIES_ELEMENTS, globalTypes } from './constants.mjs'
 
 const middlewareCanImportGolbalTypes = {
   from: { type: ESLINT_BOUNDARIES_ELEMENTS.MIDDLEWARE },
@@ -7,7 +7,7 @@ const middlewareCanImportGolbalTypes = {
       to: { type: [...globalTypes] },
     },
   ],
-};
+}
 
 const middlewareCanImportMiddleware = {
   from: { type: ESLINT_BOUNDARIES_ELEMENTS.MIDDLEWARE },
@@ -16,9 +16,6 @@ const middlewareCanImportMiddleware = {
       to: { type: ESLINT_BOUNDARIES_ELEMENTS.MIDDLEWARE },
     },
   ],
-};
+}
 
-export const middlewareImportRules = [
-  middlewareCanImportGolbalTypes,
-  middlewareCanImportMiddleware,
-];
+export const middlewareImportRules = [middlewareCanImportGolbalTypes, middlewareCanImportMiddleware]

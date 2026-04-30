@@ -1,4 +1,4 @@
-import { globalTypes, ESLINT_BOUNDARIES_ELEMENTS } from "./constants.mjs";
+import { globalTypes, ESLINT_BOUNDARIES_ELEMENTS } from './constants.mjs'
 
 export const appImportRules = [
   {
@@ -12,4 +12,4 @@ export const appImportRules = [
       { to: { type: ESLINT_BOUNDARIES_ELEMENTS.APP } },
     ],
   },
-];
+]

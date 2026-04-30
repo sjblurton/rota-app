@@ -105,7 +105,7 @@ api/
 - When writing OpenAPI docs, always import shared error response schemas using:
 
   ```typescript
-  import { commonErrorResponses } from "src/docs/errors/responses";
+  import { commonErrorResponses } from 'src/docs/errors/responses'
   ```
 
 - Use these for standard error responses (400, 401, 403, 409, etc.) to ensure consistency across API documentation.

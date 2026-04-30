@@ -1,4 +1,4 @@
-import { ESLINT_BOUNDARIES_ELEMENTS } from "./constants.mjs";
+import { ESLINT_BOUNDARIES_ELEMENTS } from './constants.mjs'
 
 const canImportGeneratedPrisma = {
   from: [
@@ -7,6 +7,6 @@ const canImportGeneratedPrisma = {
     { type: ESLINT_BOUNDARIES_ELEMENTS.SHARED_SERVICES },
   ],
   allow: { to: { type: ESLINT_BOUNDARIES_ELEMENTS.GENERATED_PRISMA } },
-};
+}
 
-export const generatedImportRules = [canImportGeneratedPrisma];
+export const generatedImportRules = [canImportGeneratedPrisma]

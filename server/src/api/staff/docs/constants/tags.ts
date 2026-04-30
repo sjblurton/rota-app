@@ -1,1 +1,1 @@
-export const STAFF_TAG = "Staff";
+export const STAFF_TAG = 'Staff'

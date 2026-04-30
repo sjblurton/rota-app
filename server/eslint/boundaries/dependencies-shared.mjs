@@ -1,4 +1,4 @@
-import { globalTypes, sharedElements, ESLINT_BOUNDARIES_ELEMENTS } from "./constants.mjs";
+import { globalTypes, sharedElements, ESLINT_BOUNDARIES_ELEMENTS } from './constants.mjs'
 
 const sharedElementsCanImportGlobalElements = sharedElements.map((type) => ({
   from: { type },
@@ -7,22 +7,22 @@ const sharedElementsCanImportGlobalElements = sharedElements.map((type) => ({
       to: { type: [...globalTypes] },
     },
   ],
-}));
+}))
 
 const sharedRoutesCanImportSharedRoutesOfTheSameModule = {
   from: {
     type: ESLINT_BOUNDARIES_ELEMENTS.SHARED_ROUTERS,
-    captured: { moduleName: "{{from.captured.moduleName}}" },
+    captured: { moduleName: '{{from.captured.moduleName}}' },
   },
   allow: [
     {
       to: {
         type: ESLINT_BOUNDARIES_ELEMENTS.SHARED_ROUTERS,
-        captured: { moduleName: "{{from.captured.moduleName}}" },
+        captured: { moduleName: '{{from.captured.moduleName}}' },
       },
     },
   ],
-};
+}
 
 const sharedRoutesCanImportFeatureRoutes = {
   from: { type: ESLINT_BOUNDARIES_ELEMENTS.SHARED_ROUTERS },
@@ -33,13 +33,13 @@ const sharedRoutesCanImportFeatureRoutes = {
       },
     },
   ],
-};
+}
 
 const sharedRepositoriesCanImportRepositoriesOfTheSameNameOrAnyIfTransactions = [
   {
     from: {
       type: ESLINT_BOUNDARIES_ELEMENTS.SHARED_REPOSITORIES,
-      captured: { moduleName: "transactions" },
+      captured: { moduleName: 'transactions' },
     },
     allow: [
       {
@@ -50,18 +50,18 @@ const sharedRepositoriesCanImportRepositoriesOfTheSameNameOrAnyIfTransactions = 
   {
     from: {
       type: ESLINT_BOUNDARIES_ELEMENTS.SHARED_REPOSITORIES,
-      captured: { moduleName: "{{from.captured.moduleName}}" },
+      captured: { moduleName: '{{from.captured.moduleName}}' },
     },
     allow: [
       {
         to: {
           type: ESLINT_BOUNDARIES_ELEMENTS.SHARED_REPOSITORIES,
-          captured: { moduleName: "{{from.captured.moduleName}}" },
+          captured: { moduleName: '{{from.captured.moduleName}}' },
         },
       },
     ],
   },
-];
+]
 
 const sharedDocsImportRules = [
   {
@@ -71,7 +71,7 @@ const sharedDocsImportRules = [
       { to: { type: ESLINT_BOUNDARIES_ELEMENTS.SHARED_DOCS } },
     ],
   },
-];
+]
 
 const sharedServicesImportRules = [
   {
@@ -81,18 +81,18 @@ const sharedServicesImportRules = [
   {
     from: {
       type: ESLINT_BOUNDARIES_ELEMENTS.SHARED_SERVICES,
-      captured: { moduleName: "{{from.captured.moduleName}}" },
+      captured: { moduleName: '{{from.captured.moduleName}}' },
     },
     allow: [
       {
         to: {
           type: ESLINT_BOUNDARIES_ELEMENTS.SHARED_REPOSITORIES,
-          captured: { moduleName: "{{from.captured.moduleName}}" },
+          captured: { moduleName: '{{from.captured.moduleName}}' },
         },
       },
     ],
   },
-];
+]
 
 export const sharedImportRules = [
   ...sharedElementsCanImportGlobalElements,
@@ -101,4 +101,4 @@ export const sharedImportRules = [
   ...sharedDocsImportRules,
   ...sharedServicesImportRules,
   ...sharedRepositoriesCanImportRepositoriesOfTheSameNameOrAnyIfTransactions,
-];
+]

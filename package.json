@@ -11,7 +11,9 @@
     "dev:server": "npm --prefix server run dev",
     "dev": "concurrently --names 'CLIENT,SERVER' --prefix-colors 'cyan,magenta' \"npm run dev:client\" \"npm run dev:server\"",
     "lint": "npm --prefix client run lint && npm --prefix server run lint",
-    "knip": "dotenv -e server/.env.test -- knip"
+    "knip": "dotenv -e server/.env.test -- knip",
+    "format": "npm --prefix client run format && npm --prefix server run format",
+    "check": "npm --prefix client run check && npm --prefix server run format:check"
   },
   "devDependencies": {
     "@types/node": "^25.6.0",

@@ -1,21 +1,21 @@
-import { type Invite } from "../../@types/invites";
-import { supabase } from "../../libs/auth/supabase";
-import { requireEnv } from "../../utils/env/requireEnv";
-import { HttpErrorByCode } from "../../utils/http/HttpErrorByCode";
+import { type Invite } from '../../@types/invites'
+import { supabase } from '../../libs/auth/supabase'
+import { requireEnv } from '../../utils/env/requireEnv'
+import { HttpErrorByCode } from '../../utils/http/HttpErrorByCode'
 
 type InviteUserByEmailServiceInput = {
-  data: Invite;
-};
+  data: Invite
+}
 
 export const inviteUserByEmailService = async ({ data }: InviteUserByEmailServiceInput) => {
-  if (requireEnv("NODE_ENV") === "test") {
-    return;
+  if (requireEnv('NODE_ENV') === 'test') {
+    return
   }
 
-  const { email, expires_at: expiresAt } = data;
+  const { email, expires_at: expiresAt } = data
 
   if (expiresAt < new Date()) {
-    throw new HttpErrorByCode("bad_request", "Invite has already expired");
+    throw new HttpErrorByCode('bad_request', 'Invite has already expired')
   }
 
   const { error } = await supabase.auth.admin.inviteUserByEmail(email, {
@@ -23,13 +23,13 @@ export const inviteUserByEmailService = async ({ data }: InviteUserByEmailServic
       invite_id: data.id,
       organisation_id: data.organisation_id,
     },
-    redirectTo: `${requireEnv("APP_URL")}/invite/${data.id}`,
-  });
+    redirectTo: `${requireEnv('APP_URL')}/invite/${data.id}`,
+  })
 
   if (error) {
-    throw error;
+    throw error
   }
-  return;
-};
+  return
+}
 
-export type InviteUserByEmailService = typeof inviteUserByEmailService;
+export type InviteUserByEmailService = typeof inviteUserByEmailService

@@ -1,37 +1,37 @@
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
-import { type Invite } from "../../@types/invites";
-import { ROLES } from "../../constants/roles";
-import { HttpErrorByCode } from "../../utils/http/HttpErrorByCode";
-import { acceptInviteService } from "./accept-invite.service";
+import { type Invite } from '../../@types/invites'
+import { ROLES } from '../../constants/roles'
+import { HttpErrorByCode } from '../../utils/http/HttpErrorByCode'
+import { acceptInviteService } from './accept-invite.service'
 
 const validInvite: Invite = {
-  id: "dcf6d793-9fe8-4964-aff4-b27b209052e5",
-  organisation_id: "org-1",
-  email: "test@example.com",
-  status: "invited",
+  id: 'dcf6d793-9fe8-4964-aff4-b27b209052e5',
+  organisation_id: 'org-1',
+  email: 'test@example.com',
+  status: 'invited',
   role: ROLES.ADMIN,
-  preferred_contact_method: "email",
-  created_at: new Date("2026-04-26T16:39:02.185Z"),
-  updated_at: new Date("2026-04-26T16:39:02.185Z"),
-  expires_at: new Date("2026-05-01T16:39:02.185Z"),
-};
+  preferred_contact_method: 'email',
+  created_at: new Date('2026-04-26T16:39:02.185Z'),
+  updated_at: new Date('2026-04-26T16:39:02.185Z'),
+  expires_at: new Date('2026-05-01T16:39:02.185Z'),
+}
 
-const validBody = { status: "accepted" } as const;
-const validUserId = "user-123";
+const validBody = { status: 'accepted' } as const
+const validUserId = 'user-123'
 
-describe("acceptInviteService", () => {
-  let updateInvite: any;
-  let createUser: any;
-  let getInviteById: any;
+describe('acceptInviteService', () => {
+  let updateInvite: any
+  let createUser: any
+  let getInviteById: any
 
   beforeEach(() => {
-    updateInvite = vi.fn();
-    createUser = vi.fn().mockResolvedValue({ user: "created" });
-    getInviteById = vi.fn().mockResolvedValue(validInvite);
-  });
+    updateInvite = vi.fn()
+    createUser = vi.fn().mockResolvedValue({ user: 'created' })
+    getInviteById = vi.fn().mockResolvedValue(validInvite)
+  })
 
-  it("accepts invite and creates user", async () => {
+  it('accepts invite and creates user', async () => {
     const result = await acceptInviteService({
       updateInvite,
       createUser,
@@ -39,27 +39,27 @@ describe("acceptInviteService", () => {
       inviteId: validInvite.id,
       supabaseUserId: validUserId,
       body: validBody,
-    });
-    expect(getInviteById).toHaveBeenCalledWith({ id: validInvite.id });
+    })
+    expect(getInviteById).toHaveBeenCalledWith({ id: validInvite.id })
     expect(createUser).toHaveBeenCalledWith({
       userData: {
         email: validInvite.email,
         supabase_user_id: validUserId,
         organisation_id: validInvite.organisation_id,
         role: validInvite.role,
-        status: "active",
+        status: 'active',
         name: null,
       },
       inviteData: {
         id: validInvite.id,
         status: validBody.status,
       },
-    });
-    expect(result).toEqual({ user: "created" });
-  });
+    })
+    expect(result).toEqual({ user: 'created' })
+  })
 
-  it("throws if invite is already accepted", async () => {
-    getInviteById.mockResolvedValue({ ...validInvite, status: "accepted" });
+  it('throws if invite is already accepted', async () => {
+    getInviteById.mockResolvedValue({ ...validInvite, status: 'accepted' })
     await expect(
       acceptInviteService({
         updateInvite,
@@ -69,11 +69,11 @@ describe("acceptInviteService", () => {
         supabaseUserId: validUserId,
         body: validBody,
       }),
-    ).rejects.toThrow(HttpErrorByCode);
-  });
+    ).rejects.toThrow(HttpErrorByCode)
+  })
 
-  it("throws if invite is revoked", async () => {
-    getInviteById.mockResolvedValue({ ...validInvite, status: "revoked" });
+  it('throws if invite is revoked', async () => {
+    getInviteById.mockResolvedValue({ ...validInvite, status: 'revoked' })
     await expect(
       acceptInviteService({
         updateInvite,
@@ -83,11 +83,11 @@ describe("acceptInviteService", () => {
         supabaseUserId: validUserId,
         body: validBody,
       }),
-    ).rejects.toThrow(HttpErrorByCode);
-  });
+    ).rejects.toThrow(HttpErrorByCode)
+  })
 
-  it("throws if invite is expired", async () => {
-    getInviteById.mockResolvedValue({ ...validInvite, status: "expired" });
+  it('throws if invite is expired', async () => {
+    getInviteById.mockResolvedValue({ ...validInvite, status: 'expired' })
     await expect(
       acceptInviteService({
         updateInvite,
@@ -97,11 +97,11 @@ describe("acceptInviteService", () => {
         supabaseUserId: validUserId,
         body: validBody,
       }),
-    ).rejects.toThrow(HttpErrorByCode);
-  });
+    ).rejects.toThrow(HttpErrorByCode)
+  })
 
-  it("expires invite if expires_at is in the past", async () => {
-    getInviteById.mockResolvedValue({ ...validInvite, expires_at: new Date("2020-01-01") });
+  it('expires invite if expires_at is in the past', async () => {
+    getInviteById.mockResolvedValue({ ...validInvite, expires_at: new Date('2020-01-01') })
     await expect(
       acceptInviteService({
         updateInvite,
@@ -111,12 +111,12 @@ describe("acceptInviteService", () => {
         supabaseUserId: validUserId,
         body: validBody,
       }),
-    ).rejects.toThrow(HttpErrorByCode);
+    ).rejects.toThrow(HttpErrorByCode)
     expect(updateInvite).toHaveBeenCalledWith({
       data: {
-        status: "expired",
+        status: 'expired',
         id: validInvite.id,
       },
-    });
-  });
-});
+    })
+  })
+})

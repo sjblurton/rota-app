@@ -28,16 +28,16 @@ This folder contains all shared Zod schemas for the backend. These schemas:
 
 ```ts
 // invite.ts
-import { z } from "zod";
+import { z } from 'zod'
 export const inviteSchema = z
   .object({
     id: z.string().uuid(),
     email: z.string().email(),
     // ...
   })
-  .describe("Invite entity")
-  .openapi({ example: { id: "...", email: "..." } });
-export type Invite = z.infer<typeof inviteSchema>;
+  .describe('Invite entity')
+  .openapi({ example: { id: '...', email: '...' } })
+export type Invite = z.infer<typeof inviteSchema>
 ```
 
 ## Agent Instructions

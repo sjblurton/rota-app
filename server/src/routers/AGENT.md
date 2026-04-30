@@ -24,13 +24,13 @@ This folder contains shared router modules and middleware for the backend. It is
 
 ```ts
 // admin.router.ts
-import express from "express";
-import { invitesRouter } from "../../api/invites/routers/invites.router";
-import { requireJwtAuth } from "./middleware/require-jwt-auth";
-const adminRouter = express.Router();
-adminRouter.use(requireJwtAuth);
-adminRouter.use("/invites", invitesRouter);
-export { adminRouter };
+import express from 'express'
+import { invitesRouter } from '../../api/invites/routers/invites.router'
+import { requireJwtAuth } from './middleware/require-jwt-auth'
+const adminRouter = express.Router()
+adminRouter.use(requireJwtAuth)
+adminRouter.use('/invites', invitesRouter)
+export { adminRouter }
 ```
 
 ## Agent Instructions

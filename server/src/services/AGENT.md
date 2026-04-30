@@ -36,7 +36,7 @@ export const acceptInviteService = async ({
   ...args
 }) => {
   // business logic
-};
+}
 ```
 
 ## See Also
