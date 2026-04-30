@@ -10,9 +10,9 @@ const e2eCanImportApp = {
   allow: [{ to: { type: ESLINT_BOUNDARIES_ELEMENTS.APP } }],
 }
 
-const e2eCanImportTestUtils = {
+const e2eCanImportE2e = {
   from: { type: ESLINT_BOUNDARIES_ELEMENTS.E2E },
-  allow: [{ to: { type: ESLINT_BOUNDARIES_ELEMENTS.TEST_UTILS } }],
+  allow: [{ to: { type: ESLINT_BOUNDARIES_ELEMENTS.E2E } }],
 }
 
-export const e2eImportRules = [e2eCanImportGlobal, e2eCanImportApp, e2eCanImportTestUtils]
+export const e2eImportRules = [e2eCanImportGlobal, e2eCanImportApp, e2eCanImportE2e]
