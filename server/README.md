@@ -17,7 +17,7 @@ Express REST API for the Rota application.
 
 ```text
 src/
-├── app.ts                    # Express app setup (middleware, routes)
+├── app.ts                    # Express app setup (middleware, routers)
 ├── server.ts                 # Entry point (startup, DB connectivity check)
 ├── constants/                # Shared constants (HTTP errors, status codes, plan types)
 ├── libs/                     # Shared domain libraries (auth, logging, database, schemas)
@@ -39,7 +39,7 @@ src/
 │   │   ├── controllers/      # Feature-specific controllers
 │   │   ├── routers/          # Feature-specific Express routers
 │   │   └── docs/             # Feature-specific OpenAPI docs and schemas
-├── routes/                   # Top-level route mounting and role-based middleware
+├── routers/                  # Top-level router mounting and role-based middleware
 │   └── {shared-router}/      # shared-router (e.g. admin, superadmin) that would be used by multiple features routers
 │       └── middleware/       # shared-route middleware
 ```
@@ -48,7 +48,7 @@ src/
 
 - Each feature lives under `src/api/{feature}/` and is self-contained with its own controllers, routers, and docs.
 - Shared/domain schemas live in `libs/schemas/`; do not define reusable validation or domain schemas inside feature docs (except for OpenAPI-only schemas).
-- Middleware for admin and superadmin is colocated under their respective `src/routes/{role}/middleware/` folders.
+- Middleware for admin and superadmin is colocated under their respective `src/routers/{role}/middleware/` folders.
 - OpenAPI documentation is colocated with the feature in `src/api/{feature}/docs/` and should reference shared schemas where possible; keep only documentation-specific schema definitions in feature docs.
 - Do not use `index.ts` barrel files. Name modules explicitly by their content (e.g. `params.ts`, `query.ts`, `schemas.ts`).
 - Import directly from the explicit file path, not from a folder.
