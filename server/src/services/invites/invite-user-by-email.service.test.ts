@@ -1,4 +1,6 @@
 import { AuthError } from '@supabase/supabase-js'
+import { DateTime } from 'luxon'
+import { v4 as uuidV4 } from 'uuid'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { type Invite } from '../../@types/invites'
@@ -7,6 +9,9 @@ import { supabase } from '../../libs/auth/supabase'
 import { requireEnv } from '../../utils/env/requireEnv'
 import { HttpErrorByCode } from '../../utils/http/HttpErrorByCode'
 import { inviteUserByEmailService } from './invite-user-by-email.service'
+
+const inviteId = uuidV4()
+const orgId = uuidV4()
 
 vi.mock('../../libs/auth/supabase', () => ({
   supabase: {
@@ -20,28 +25,29 @@ vi.mock('../../libs/auth/supabase', () => ({
 vi.mock('../../utils/env/requireEnv', () => ({
   requireEnv: vi.fn(() => 'http://localhost:3000'),
 }))
+const mockToday = new Date('2026-04-29T10:00:00Z')
 
 const validInvite: Invite = {
-  id: 'dcf6d793-9fe8-4964-aff4-b27b209052e5',
-  organisation_id: 'org-1',
+  id: inviteId,
+  organisation_id: orgId,
   email: 'test@example.com',
   status: 'invited',
   role: ROLES.ADMIN,
   preferred_contact_method: 'email',
-  created_at: new Date('2026-04-26T16:39:02.185Z'),
-  updated_at: new Date('2026-04-26T16:39:02.185Z'),
-  expires_at: new Date('2026-05-01T16:39:02.185Z'),
+  created_at: new Date(mockToday),
+  updated_at: new Date(mockToday),
+  expires_at: DateTime.fromJSDate(mockToday).plus({ days: 7 }).toJSDate(),
 }
 
 describe('inviteUserByEmailService', () => {
   beforeEach(() => {
+    vi.useFakeTimers().setSystemTime(mockToday)
     vi.clearAllMocks()
   })
 
   it('throws if invite is expired', async () => {
-    await expect(
-      inviteUserByEmailService({ data: { ...validInvite, expires_at: new Date('2020-01-01') } }),
-    ).rejects.toThrow(HttpErrorByCode)
+    vi.setSystemTime(DateTime.fromJSDate(mockToday).plus({ days: 8 }).toJSDate())
+    await expect(inviteUserByEmailService({ data: validInvite })).rejects.toThrow(HttpErrorByCode)
   })
 
   it('calls supabase.auth.admin.inviteUserByEmail with correct args', async () => {
