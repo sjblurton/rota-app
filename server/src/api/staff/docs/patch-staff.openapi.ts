@@ -2,7 +2,7 @@ import { extendZodWithOpenApi, OpenAPIRegistry } from '@asteasolutions/zod-to-op
 import { z } from 'zod'
 
 import { commonErrorResponses } from '../../../docs/errors/responses'
-import { patchStaffBodySchema, staffSchema } from '../../../libs/schemas/entities/staff'
+import { staffSchema, updateStaffBodySchema } from '../../../libs/schemas/entities/staff'
 import { STAFF_TAG } from './constants/tags'
 
 extendZodWithOpenApi(z)
@@ -33,7 +33,7 @@ patchStaffRegistry.registerPath({
     body: {
       content: {
         'application/json': {
-          schema: patchStaffBodySchema,
+          schema: updateStaffBodySchema,
         },
       },
       required: true,
