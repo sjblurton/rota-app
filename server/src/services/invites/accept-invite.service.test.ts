@@ -1,9 +1,14 @@
+import { DateTime } from 'luxon'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { type Invite } from '../../@types/invites'
 import { ROLES } from '../../constants/roles'
 import { HttpErrorByCode } from '../../utils/http/HttpErrorByCode'
 import { acceptInviteService } from './accept-invite.service'
+
+const mockToday = new Date('2026-04-29T10:00:00Z')
+
+const oneWeekFromToday = DateTime.fromJSDate(mockToday).plus({ days: 7 }).toJSDate()
 
 const validInvite: Invite = {
   id: 'dcf6d793-9fe8-4964-aff4-b27b209052e5',
@@ -12,9 +17,9 @@ const validInvite: Invite = {
   status: 'invited',
   role: ROLES.ADMIN,
   preferred_contact_method: 'email',
-  created_at: new Date('2026-04-26T16:39:02.185Z'),
-  updated_at: new Date('2026-04-26T16:39:02.185Z'),
-  expires_at: new Date('2026-05-01T16:39:02.185Z'),
+  created_at: new Date(mockToday),
+  updated_at: new Date(mockToday),
+  expires_at: oneWeekFromToday,
 }
 
 const validBody = { status: 'accepted' } as const
@@ -29,6 +34,7 @@ describe('acceptInviteService', () => {
     updateInvite = vi.fn()
     createUser = vi.fn().mockResolvedValue({ user: 'created' })
     getInviteById = vi.fn().mockResolvedValue(validInvite)
+    vi.useFakeTimers().setSystemTime(mockToday)
   })
 
   it('accepts invite and creates user', async () => {

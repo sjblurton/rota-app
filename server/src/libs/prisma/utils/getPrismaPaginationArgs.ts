@@ -1,8 +1,11 @@
-import type { OrganisationsPaginationQuery } from '../../../@types/organisation'
+import type {
+  OrganisationsPaginationQuery,
+  OrganisationStaffPaginationQuery,
+} from '../../../@types/organisation'
 
 const DEFAULT_ORDER_BY_KEY = 'created_at' as const
 
-type GetPrismaPaginationArgsInput = OrganisationsPaginationQuery
+type GetPrismaPaginationArgsInput = OrganisationsPaginationQuery | OrganisationStaffPaginationQuery
 
 export function getPrismaPaginationArgs({
   limit = 20,
