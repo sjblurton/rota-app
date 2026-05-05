@@ -57,9 +57,12 @@ export const createStaffBodySchema = createStaffSchema.omit({ organisation_id: t
   },
 })
 
-export const patchStaffBodySchema = createStaffSchema.partial().openapi({
-  example: {
-    email: 'jane.doe@example.com',
-    phone_number: '+447123456789',
-  },
-})
+export const patchStaffBodySchema = createStaffSchema
+  .omit({ organisation_id: true })
+  .partial()
+  .openapi({
+    example: {
+      email: 'jane.doe@example.com',
+      phone_number: '+447123456789',
+    },
+  })
