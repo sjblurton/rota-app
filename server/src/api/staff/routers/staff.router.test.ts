@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { PATHS } from '../../../constants/paths'
 import { postStaffController } from '../controllers/post-staff.controller'
-import { staffRouter } from './post-staff.router'
+import { staffRouter } from './staff.router'
 
 const dummyStaff = {
   name: 'Jane Doe',
@@ -16,6 +16,10 @@ const dummyStaff = {
 
 vi.mock('../controllers/post-staff.controller', () => ({
   postStaffController: vi.fn(),
+}))
+
+vi.mock('../controllers/get-all-organisation-staff.controller', () => ({
+  getAllOrganisationStaffController: vi.fn(),
 }))
 
 describe('staffRouter', () => {
@@ -40,6 +44,22 @@ describe('staffRouter', () => {
       ok: true,
       body: dummyStaff,
     })
+  })
+
+  it('calls getAllOrganisationStaffController on GET', async () => {
+    const mockStaffList = [
+      { id: '1', ...dummyStaff, organisation_id: 'org-1' },
+      { id: '2', ...dummyStaff, organisation_id: 'org-1' },
+    ]
+    const { getAllOrganisationStaffController } =
+      await import('../controllers/get-all-organisation-staff.controller')
+    ;(getAllOrganisationStaffController as any).mockImplementation(({ response }: any) => {
+      response.json(mockStaffList)
+    })
+
+    const res = await request(app).get(PATHS.organisation_id + PATHS.staff)
+    expect(res.status).toBe(200)
+    expect(res.body).toEqual(mockStaffList)
   })
 
   it('returns error if controller throws', async () => {
