@@ -1,7 +1,7 @@
 import { type Router } from 'express'
 
 import { patchInvitesRouter } from '../../../api/invites/routers/invites.router'
-import { staffRouter } from '../../../api/staff/routers/post-staff.router'
+import { staffRouter } from '../../../api/staff/routers/staff.router'
 import { PATHS } from '../../../constants/paths'
 
 export const ADMIN_PATHS: { path: string; router: Router }[] = [
