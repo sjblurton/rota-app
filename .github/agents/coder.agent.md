@@ -1,5 +1,5 @@
 ---
-description: "Use when implementing or modifying server API routers, controllers, services, zod schemas, OpenAPI docs, request validation, or backend tests."
+description: 'Use when implementing or modifying server API routers, controllers, services, zod schemas, OpenAPI docs, request validation, or backend tests.'
 tools: [read, search, edit, execute, todo]
 user-invocable: true
 agents: []
@@ -70,6 +70,6 @@ Your job is to make focused backend changes that keep runtime behaviour, shared 
 - Do not duplicate repository logic—always use the shared repository.
 - Example import:
   ```ts
-  import { organisationsRepository } from "../../../libs/repository/organisations/organisations-repository";
+  import { organisationsRepository } from '../../../libs/repository/organisations/organisations-repository'
   ```
 - This ensures boundaries compliance and code reuse.
