@@ -16,15 +16,17 @@ Defines global agent roles, escalation paths, and agent behaviour for the reposi
 **Before starting any planning or coding, run the project’s full check script (`npm run check:all` in the server folder) and abort if errors are found.**
 
 Before making changes, always:
-  1. Locate and read the nearest AGENT.md for the target folder.
-  2. If the change spans multiple folders, escalate to the PLAN agent.
-  3. If the change is architectural or repo-wide, escalate to the orchestrator agent.
-  4. Summarise and reference all relevant AGENT.md files in PRs or documentation.
-**After making changes, always run `npm run check:all` and fix any errors before submitting or merging.**
-**Use `npm run test:watch` during development for rapid feedback.**
-Agents must not:
-  - Edit code without consulting the relevant AGENT.md.
-  - Bypass the workflow order defined in PLAN.agent.md or AGENTS.md.
+
+1. Locate and read the nearest AGENT.md for the target folder.
+2. If the change spans multiple folders, escalate to the PLAN agent.
+3. If the change is architectural or repo-wide, escalate to the orchestrator agent.
+4. Summarise and reference all relevant AGENT.md files in PRs or documentation.
+   **After making changes, always run `npm run check:all` and fix any errors before submitting or merging.**
+   **Use `npm run test:watch` during development for rapid feedback.**
+   Agents must not:
+
+- Edit code without consulting the relevant AGENT.md.
+- Bypass the workflow order defined in PLAN.agent.md or AGENTS.md.
 
 ## Escalation Path
 

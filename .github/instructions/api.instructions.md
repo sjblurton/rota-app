@@ -1,6 +1,6 @@
 ---
-description: "Use when editing or reviewing server API routers, controllers, services, zod validation, or OpenAPI documentation. Covers REST conventions, schema placement, pagination, and docs/runtime alignment."
-applyTo: "server/src/**/*.ts"
+description: 'Use when editing or reviewing server API routers, controllers, services, zod validation, or OpenAPI documentation. Covers REST conventions, schema placement, pagination, and docs/runtime alignment.'
+applyTo: 'server/src/**/*.ts'
 ---
 
 # API Guidelines
