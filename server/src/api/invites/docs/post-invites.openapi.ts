@@ -6,11 +6,11 @@ import { createInviteBodySchema, inviteSchema } from '../../../libs/schemas/enti
 import { getOrganisationIdParamsSchema } from '../../../libs/schemas/params/getOrganisationIdParamsSchema'
 import { INVITES_TAG } from './constants/tags'
 
-const superadminInvitesOpenApiRegistry = new OpenAPIRegistry()
+const postInvitesOpenApiRegistry = new OpenAPIRegistry()
 
-superadminInvitesOpenApiRegistry.registerPath({
+postInvitesOpenApiRegistry.registerPath({
   method: 'post',
-  path: OpenApiPaths.OPENAPI_PATHS.ORGANISATION_INVITES,
+  path: OpenApiPaths.OPENAPI_PATHS.SUPERADMIN_ORGANISATION_INVITES,
   summary: 'Invite a user to an organisation (Superadmin)',
   description:
     'Invites a user to an organisation by email. Restricted to superadmin via `X-Superadmin-Key`. If the user already exists, an invite will not be sent.',
@@ -43,4 +43,4 @@ superadminInvitesOpenApiRegistry.registerPath({
   },
 })
 
-export { superadminInvitesOpenApiRegistry }
+export { postInvitesOpenApiRegistry }

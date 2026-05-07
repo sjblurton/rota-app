@@ -1,21 +1,25 @@
 import { OpenApiGeneratorV3, OpenAPIRegistry } from '@asteasolutions/zod-to-openapi'
 
-import { invitesOpenApiRegistry } from '../api/invites/docs/patch-invites.openapi'
-import { superadminInvitesOpenApiRegistry } from '../api/invites/docs/post-invites.openapi'
-import { organisationsOpenApiRegistry } from '../api/organisations/docs/post-organisations.openapi'
+import { getInvitesOpenApiRegistry } from '../api/invites/docs/get-invites-by-id.openapi'
+import { patchInvitesOpenApiRegistry } from '../api/invites/docs/patch-invites.openapi'
+import { postInvitesOpenApiRegistry } from '../api/invites/docs/post-invites.openapi'
+import { getOrganisationsOpenApiRegistry } from '../api/organisations/docs/get-organisations,openapi'
+import { postOrganisationsOpenApiRegistry } from '../api/organisations/docs/post-organisations.openapi'
 import { getAllOrganisationStaffOpenApiRegistry } from '../api/staff/docs/get-all-organisation-staff.openapi'
 import { getStaffOpenApiRegistry } from '../api/staff/docs/get-staff-by-id.openapi'
 import { staffPatchOpenApiRegistry } from '../api/staff/docs/patch-staff.openapi'
 import { staffOpenApiRegistry } from '../api/staff/docs/post-staff.openapi'
 
 const registry = new OpenAPIRegistry([
-  invitesOpenApiRegistry,
-  superadminInvitesOpenApiRegistry,
-  organisationsOpenApiRegistry,
+  patchInvitesOpenApiRegistry,
+  postInvitesOpenApiRegistry,
+  postOrganisationsOpenApiRegistry,
+  getOrganisationsOpenApiRegistry,
   staffOpenApiRegistry,
   staffPatchOpenApiRegistry,
   getStaffOpenApiRegistry,
   getAllOrganisationStaffOpenApiRegistry,
+  getInvitesOpenApiRegistry,
 ])
 
 registry.registerComponent('securitySchemes', 'BearerAuth', {

@@ -9,11 +9,11 @@ import { userSchema } from '../../../libs/schemas/entities/user'
 import { getInviteIdParamsSchema } from '../../../libs/schemas/params/getInviteIdParamsSchema'
 import { INVITES_TAG } from './constants/tags'
 
-const invitesOpenApiRegistry = new OpenAPIRegistry()
+const patchInvitesOpenApiRegistry = new OpenAPIRegistry()
 
-invitesOpenApiRegistry.registerPath({
+patchInvitesOpenApiRegistry.registerPath({
   method: 'patch',
-  path: OpenApiPaths.OPENAPI_PATHS.INVITE_BY_ID,
+  path: OpenApiPaths.OPENAPI_PATHS.ADMIN_INVITE_BY_ID,
   summary: 'Accept an invite (Authenticated)',
   description: [
     "Accepts an invite by updating its status to 'accepted'. Turn light mode on to see details better.",
@@ -58,4 +58,4 @@ invitesOpenApiRegistry.registerPath({
   },
 })
 
-export { invitesOpenApiRegistry }
+export { patchInvitesOpenApiRegistry }

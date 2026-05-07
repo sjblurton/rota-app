@@ -14,7 +14,7 @@ const getStaffRegistry = new OpenAPIRegistry()
 
 getStaffRegistry.registerPath({
   method: 'get',
-  path: OpenApiPaths.OPENAPI_PATHS.STAFF_BY_ID,
+  path: OpenApiPaths.OPENAPI_PATHS.ADMIN_STAFF_BY_ID,
   tags: [STAFF_TAG, ADMIN_TAG],
   summary: 'Get staff member by ID',
   description: 'Retrieves a staff member by their unique ID.',

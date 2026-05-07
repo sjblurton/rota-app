@@ -11,7 +11,7 @@ const app = express()
 
 applyMiddlewares(app)
 
-app.use(OpenApiPaths.SWAGGER_DOCS_BASE_PATH, swaggerUi.serve, swaggerUi.setup(openApiDocument))
+app.use(OpenApiPaths.OPENAPI_PATHS.SWAGGER_DOCS, swaggerUi.serve, swaggerUi.setup(openApiDocument))
 
 for (const { path, router } of ROOT_ROUTES) {
   app.use(path, router)

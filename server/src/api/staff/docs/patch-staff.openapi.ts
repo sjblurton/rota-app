@@ -11,7 +11,7 @@ const patchStaffRegistry = new OpenAPIRegistry()
 
 patchStaffRegistry.registerPath({
   method: 'patch',
-  path: OpenApiPaths.OPENAPI_PATHS.STAFF_BY_ID,
+  path: OpenApiPaths.OPENAPI_PATHS.ADMIN_STAFF_BY_ID,
   tags: [STAFF_TAG, ADMIN_TAG],
   summary: 'Update staff member for an organisation',
   description: [
