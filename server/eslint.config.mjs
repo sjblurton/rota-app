@@ -28,6 +28,9 @@ export const boundariesDependencyRules = [
 
 export default [
   {
+    ignores: ['dist/'],
+  },
+  {
     files: ['**/*.{js,mjs,cjs,ts,mts,cts}'],
     plugins: { js },
     languageOptions: { globals: globals.browser },
