@@ -23,6 +23,10 @@ jobs:
       - name: Lint Server
         run: npm run lint --workspace server
 
+      - name: Debug ESLint config
+        run: npx eslint --print-config src/repositories/staff/get-staff-by-id.repository.ts
+        working-directory: server
+
       - name: Lint Client
         run: npm run lint --workspace client
 
