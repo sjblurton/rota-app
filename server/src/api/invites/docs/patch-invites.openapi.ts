@@ -1,19 +1,19 @@
 import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi'
 import z from 'zod'
 
-import { PATHS } from '../../../constants/paths'
+import { OpenApiPaths } from '../../../docs/constants/docs.routes'
+import { ADMIN_TAG } from '../../../docs/constants/tags'
 import { commonErrorResponses } from '../../../docs/errors/responses'
 import { acceptInviteBodySchema, inviteSchema } from '../../../libs/schemas/entities/invite'
 import { userSchema } from '../../../libs/schemas/entities/user'
+import { getInviteIdParamsSchema } from '../../../libs/schemas/params/getInviteIdParamsSchema'
 import { INVITES_TAG } from './constants/tags'
 
 const invitesOpenApiRegistry = new OpenAPIRegistry()
 
-const patchInvitePath = `${PATHS.apiBaseV1}${PATHS.admin}${PATHS.invites}/{invite_id}`
-
 invitesOpenApiRegistry.registerPath({
   method: 'patch',
-  path: patchInvitePath,
+  path: OpenApiPaths.OPENAPI_PATHS.INVITE_BY_ID,
   summary: 'Accept an invite (Authenticated)',
   description: [
     "Accepts an invite by updating its status to 'accepted'. Turn light mode on to see details better.",
@@ -28,21 +28,10 @@ invitesOpenApiRegistry.registerPath({
     '- Returns 200 OK with the updated invite and the new user.',
     '- If the invite is expired, already accepted, or otherwise invalid, returns 409 Conflict.',
   ].join('\n'),
-  tags: [INVITES_TAG],
+  tags: [INVITES_TAG, ADMIN_TAG],
   security: [{ BearerAuth: [] }],
-  parameters: [
-    {
-      name: 'invite_id',
-      in: 'path',
-      required: true,
-      schema: {
-        type: 'string',
-        format: 'uuid',
-      },
-      example: '123e4567-e89b-12d3-a456-426614174000',
-    },
-  ],
   request: {
+    params: getInviteIdParamsSchema,
     body: {
       required: true,
       content: {

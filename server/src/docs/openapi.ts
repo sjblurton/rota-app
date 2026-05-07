@@ -4,6 +4,7 @@ import { invitesOpenApiRegistry } from '../api/invites/docs/patch-invites.openap
 import { superadminInvitesOpenApiRegistry } from '../api/invites/docs/post-invites.openapi'
 import { organisationsOpenApiRegistry } from '../api/organisations/docs/post-organisations.openapi'
 import { getAllOrganisationStaffOpenApiRegistry } from '../api/staff/docs/get-all-organisation-staff.openapi'
+import { getStaffOpenApiRegistry } from '../api/staff/docs/get-staff-by-id.openapi'
 import { staffPatchOpenApiRegistry } from '../api/staff/docs/patch-staff.openapi'
 import { staffOpenApiRegistry } from '../api/staff/docs/post-staff.openapi'
 
@@ -13,6 +14,7 @@ const registry = new OpenAPIRegistry([
   organisationsOpenApiRegistry,
   staffOpenApiRegistry,
   staffPatchOpenApiRegistry,
+  getStaffOpenApiRegistry,
   getAllOrganisationStaffOpenApiRegistry,
 ])
 
