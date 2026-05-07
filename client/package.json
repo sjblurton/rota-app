@@ -10,15 +10,14 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "lint:eslint": "eslint .",
+    "lint": "eslint .",
     "lint:eslint:fix": "eslint --fix .",
     "format": "prettier --write . && npm run lint:eslint:fix",
-    "check:all": "prettier --check .",
+    "check": "prettier --check .",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "post-cta-init": "npx -y create-db@latest --user-agent tanstack/tsrouter",
-    "lint:typescript": "tsc --noEmit",
-    "lint": "npm run lint:eslint && npm run lint:typescript"
+    "typescheck": "tsc --noEmit"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

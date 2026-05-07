@@ -1,9 +1,8 @@
 {
   "scripts": {
     "lint:eslint:fix": "eslint --fix .",
-    "lint:eslint": "eslint .",
-    "lint:typescript": "tsc --noEmit",
-    "lint": "npm run lint:eslint && npm run lint:typescript",
+    "lint": "eslint .",
+    "typescheck": "tsc --noEmit",
     "dev": "dotenv -e .env -- ts-node-dev --respawn --transpile-only src/server.ts",
     "test": "vitest run",
     "test:watch": "vitest --watch",

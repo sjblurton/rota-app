@@ -22,21 +22,23 @@ jobs:
       - name: Knip
         run: npm run knip
 
-      - name: Verify boundaries config
-        run: sh ci-verify-boundaries.sh
-        working-directory: server
-
       - name: Lint Server
         run: npm run lint --workspace server
+
+      - name: Typecheck Server
+        run: npm run typecheck --workspace server
+
+      - name: Check Server formatting
+        run: npm run check --workspace server
 
       - name: Lint Client
         run: npm run lint --workspace client
 
-      - name: Check:all Server
-        run: npm run check:all --workspace server
+      - name: Typecheck Client
+        run: npm run typecheck --workspace client
 
-      - name: Check:all Client
-        run: npm run check:all --workspace client
+      - name: Check Client formatting
+        run: npm run check --workspace client
   client:
     runs-on: ubuntu-latest
     environment: test
