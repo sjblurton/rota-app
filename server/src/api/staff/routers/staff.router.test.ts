@@ -3,23 +3,16 @@ import request from 'supertest'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 import { PATHS } from '../../../constants/paths'
-import { postStaffController } from '../controllers/post-staff.controller'
+import { getStaffByIdController } from '../controllers/get-staff-by-id.controller'
+import { patchStaffController } from '../controllers/patch-staff.controller'
 import { staffRouter } from './staff.router'
 
-const dummyStaff = {
-  name: 'Jane Doe',
-  email: 'jane.doe@example.com',
-  phone_number: '+447123456789',
-  role: 'manager',
-  status: 'active',
-}
-
-vi.mock('../controllers/post-staff.controller', () => ({
-  postStaffController: vi.fn(),
+vi.mock('../controllers/get-staff-by-id.controller', () => ({
+  getStaffByIdController: vi.fn(),
 }))
 
-vi.mock('../controllers/get-all-organisation-staff.controller', () => ({
-  getAllOrganisationStaffController: vi.fn(),
+vi.mock('../controllers/patch-staff.controller', () => ({
+  patchStaffController: vi.fn(),
 }))
 
 describe('staffRouter', () => {
@@ -29,46 +22,33 @@ describe('staffRouter', () => {
     app = express()
     app.use(express.json())
     app.use(staffRouter)
-    ;(postStaffController as any).mockReset()
+    ;(getStaffByIdController as any).mockReset()
+    ;(patchStaffController as any).mockReset()
   })
 
-  it('calls postStaffController on POST', async () => {
-    ;(postStaffController as any).mockImplementation(({ request, response }: any) => {
-      response.status(201).json({ ok: true, body: request.body })
+  it('calls getStaffByIdController on GET', async () => {
+    ;(getStaffByIdController as any).mockImplementation(({ request, response }: any) => {
+      response.status(200).json({ ok: true, params: request.params })
+    })
+    const res = await request(app).get(PATHS.staff_id.replace(':staff_id', '123'))
+    expect(getStaffByIdController).toHaveBeenCalled()
+    expect(res.status).toBe(200)
+    expect(res.body).toEqual({ ok: true, params: { staff_id: '123' } })
+  })
+
+  it('calls patchStaffController on PATCH', async () => {
+    ;(patchStaffController as any).mockImplementation(({ request, response }: any) => {
+      response.status(200).json({ ok: true, params: request.params, body: request.body })
     })
     const res = await request(app)
-      .post(PATHS.organisation_id + PATHS.staff)
-      .send(dummyStaff)
-    expect(res.status).toBe(201)
+      .patch(PATHS.staff_id.replace(':staff_id', '123'))
+      .send({ name: 'Updated Name' })
+    expect(patchStaffController).toHaveBeenCalled()
+    expect(res.status).toBe(200)
     expect(res.body).toEqual({
       ok: true,
-      body: dummyStaff,
+      params: { staff_id: '123' },
+      body: { name: 'Updated Name' },
     })
-  })
-
-  it('calls getAllOrganisationStaffController on GET', async () => {
-    const mockStaffList = [
-      { id: '1', ...dummyStaff, organisation_id: 'org-1' },
-      { id: '2', ...dummyStaff, organisation_id: 'org-1' },
-    ]
-    const { getAllOrganisationStaffController } =
-      await import('../controllers/get-all-organisation-staff.controller')
-    ;(getAllOrganisationStaffController as any).mockImplementation(({ response }: any) => {
-      response.json(mockStaffList)
-    })
-
-    const res = await request(app).get(PATHS.organisation_id + PATHS.staff)
-    expect(res.status).toBe(200)
-    expect(res.body).toEqual(mockStaffList)
-  })
-
-  it('returns error if controller throws', async () => {
-    ;(postStaffController as any).mockImplementation(async () => {
-      throw new Error('fail')
-    })
-    const res = await request(app)
-      .post(PATHS.organisation_id + PATHS.staff)
-      .send({})
-    expect(res.status).toBe(500)
   })
 })

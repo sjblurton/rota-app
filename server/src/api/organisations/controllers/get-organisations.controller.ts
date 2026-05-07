@@ -17,5 +17,5 @@ export const getOrganisations = async ({
 }: GetOrganisationsControllerInput) => {
   const parsedQuery = validateAndParse(organisationsPaginationQuerySchema, request.query)
   const organisations = await getAllOrganisations({ paginationQuery: parsedQuery })
-  response.status(200).json(organisations)
+  return response.status(200).json(organisations)
 }
