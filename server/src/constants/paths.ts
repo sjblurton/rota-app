@@ -11,4 +11,5 @@ export const PATHS = {
   docs: '/docs',
   home: '/',
   staff: '/staff',
+  staff_id: '/:staff_id',
 } as const

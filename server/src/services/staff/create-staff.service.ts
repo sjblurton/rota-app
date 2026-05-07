@@ -41,14 +41,14 @@ export const createStaffService = async ({
   if (!isEmailAvailable) {
     throw new HttpErrorByCode(
       'conflict',
-      'A staff member with this email already exists in the organisation',
+      `A staff member with this email: ${data.email} already exists in the organisation`,
     )
   }
 
   if (!isPhoneNumberAvailable) {
     throw new HttpErrorByCode(
       'conflict',
-      'A staff member with this phone number already exists in the organisation',
+      `A staff member with this phone number: ${data.phone_number} already exists in the organisation`,
     )
   }
 
