@@ -32,7 +32,7 @@ jobs:
         run: npm run typecheck --workspace server
 
       - name: Check Server formatting
-        run: npm run check --workspace server
+        run: npm run check:all --workspace server
 
       - name: Lint Client
         run: npm run lint --workspace client
