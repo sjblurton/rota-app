@@ -2,7 +2,7 @@
   "scripts": {
     "lint:eslint:fix": "eslint --fix .",
     "lint": "eslint .",
-    "lint:print-config": "npx eslint --print-config src/libs/prisma/prisma.ts",
+    "eslint:print-config": "npx eslint --print-config src/libs/prisma/prisma.ts",
     "typescheck": "tsc --noEmit",
     "dev": "dotenv -e .env -- ts-node-dev --respawn --transpile-only src/server.ts",
     "test": "vitest run",
