@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import { prisma } from '../src/libs/prisma/prisma-temp-test'
+import { prisma } from '../src/libs/prisma/prisma'
 
 async function main() {
   console.log('Seeding organisation...')

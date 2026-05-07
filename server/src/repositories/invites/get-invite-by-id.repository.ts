@@ -1,5 +1,5 @@
 import { type PrismaClient } from '../../generated/prisma/client'
-import { prisma } from '../../libs/prisma/prisma-temp-test'
+import { prisma } from '../../libs/prisma/prisma'
 
 type GetInviteByIdRepositoryInput = {
   inviteRepositoryPrismaClient?: PrismaClient['invite']

@@ -1,6 +1,6 @@
 import { type UpdateInvite } from '../../@types/invites'
 import { type PrismaClient } from '../../generated/prisma/client'
-import { prisma } from '../../libs/prisma/prisma-temp-test'
+import { prisma } from '../../libs/prisma/prisma'
 import { updateInviteSchema } from '../../libs/schemas/entities/invite'
 import {
   type UpdateInviteRepository,

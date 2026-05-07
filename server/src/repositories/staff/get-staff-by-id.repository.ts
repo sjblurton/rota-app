@@ -1,5 +1,5 @@
 import type { Prisma, PrismaClient } from '../../generated/prisma/client'
-import { prisma } from '../../libs/prisma/prisma-temp-test'
+import { prisma } from '../../libs/prisma/prisma'
 
 type GetStaffByIdRepositoryInput = {
   tx?: PrismaClient | Prisma.TransactionClient

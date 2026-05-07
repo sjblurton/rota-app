@@ -1,6 +1,6 @@
 import type { OrganisationStaffPaginationQuery } from '../../@types/organisation'
 import type { Prisma, PrismaClient } from '../../generated/prisma/client'
-import { prisma } from '../../libs/prisma/prisma-temp-test'
+import { prisma } from '../../libs/prisma/prisma'
 import { getPrismaPaginationArgs } from '../../libs/prisma/utils/getPrismaPaginationArgs'
 
 type GetOrganisationStaffRepositoryInput = {
