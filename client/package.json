@@ -13,7 +13,7 @@
     "lint:eslint": "eslint .",
     "lint:eslint:fix": "eslint --fix .",
     "format": "prettier --write . && npm run lint:eslint:fix",
-    "check": "prettier --check . && npm run lint:eslint && npm run lint:typescript",
+    "check:all": "prettier --check .",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "post-cta-init": "npx -y create-db@latest --user-agent tanstack/tsrouter",

@@ -17,8 +17,20 @@ jobs:
           node-version: 22
       - run: npm ci
 
-      - name: Check Code Quality
-        run: npm run check:all
+      - name: Knip
+        run: npm run knip
+
+      - name: Lint Server
+        run: npm run lint --workspace server
+
+      - name: Lint Client
+        run: npm run lint --workspace client
+
+      - name: Check:all Server
+        run: npm run check:all --workspace server
+
+      - name: Check:all Client
+        run: npm run check:all --workspace client
   client:
     runs-on: ubuntu-latest
     environment: test
