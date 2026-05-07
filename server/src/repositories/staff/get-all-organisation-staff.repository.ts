@@ -9,7 +9,7 @@ type GetOrganisationStaffRepositoryInput = {
   organisationId: string
 }
 
-export const getOrganisationStaffRepository = async ({
+export const getOrganisationStaffRepository = ({
   tx = prisma,
   paginationQuery = {},
   organisationId,

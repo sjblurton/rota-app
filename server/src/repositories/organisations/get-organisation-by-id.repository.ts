@@ -6,7 +6,7 @@ type GetOrganisationByIdRepositoryInput = {
   organisationRepo?: PrismaClient['organisation']
 }
 
-export const getOrganisationByIdRepository = async ({
+export const getOrganisationByIdRepository = ({
   id,
   organisationRepo = prisma.organisation,
 }: GetOrganisationByIdRepositoryInput) => organisationRepo.findUnique({ where: { id } })

@@ -8,7 +8,7 @@ type GetAllOrganisationsRepositoryInput = {
   organisationRepo?: PrismaClient['organisation']
 }
 
-export const getAllOrganisationsRepository = async ({
+export const getAllOrganisationsRepository = ({
   paginationQuery = {},
   organisationRepo = prisma.organisation,
 }: GetAllOrganisationsRepositoryInput) =>

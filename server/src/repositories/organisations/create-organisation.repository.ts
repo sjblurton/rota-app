@@ -7,7 +7,7 @@ type CreateOrganisationRepositoryInput = {
   organisationRepo?: PrismaClient['organisation']
 }
 
-export const createOrganisationRepository = async ({
+export const createOrganisationRepository = ({
   data,
   organisationRepo = prisma.organisation,
 }: CreateOrganisationRepositoryInput) => {

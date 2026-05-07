@@ -7,7 +7,7 @@ type CreateInviteRepositoryInput = {
   data: CreateInvite
 }
 
-export const createInviteRepository = async ({
+export const createInviteRepository = ({
   inviteRepositoryPrismaClient = prisma.invite,
   data,
 }: CreateInviteRepositoryInput) => inviteRepositoryPrismaClient.create({ data })

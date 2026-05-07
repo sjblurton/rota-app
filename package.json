@@ -15,7 +15,7 @@
     "lint:typescript": "npm --prefix client run lint:typescript && npm --prefix server run lint:typescript",
     "knip": "dotenv -e server/.env.test -- knip",
     "format": "prettier --write .",
-    "check": "prettier .",
+    "check": "prettier --check .",
     "test": "npm --prefix client run test && npm --prefix server run test:coverage && npm --prefix server run test:e2e",
     "check:all": "npm run lint && npm run check && npm run knip && npm run lint:typescript"
   },

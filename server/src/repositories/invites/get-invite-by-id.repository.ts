@@ -6,7 +6,7 @@ type GetInviteByIdRepositoryInput = {
   id: string
 }
 
-export const getInviteByIdRepository = async ({
+export const getInviteByIdRepository = ({
   inviteRepositoryPrismaClient = prisma['invite'],
   id,
 }: GetInviteByIdRepositoryInput) => inviteRepositoryPrismaClient.findUnique({ where: { id } })

@@ -9,10 +9,7 @@ type UpdateInviteRepositoryInput = {
   data: UpdateInvite
 }
 
-export const updateInviteRepository = async ({
-  tx = prisma,
-  data,
-}: UpdateInviteRepositoryInput) => {
+export const updateInviteRepository = ({ tx = prisma, data }: UpdateInviteRepositoryInput) => {
   const { id, ...rest } = data
   const cleaned = cleanDeep(rest, {
     undefinedValues: true,
