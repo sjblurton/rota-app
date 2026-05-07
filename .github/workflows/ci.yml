@@ -22,8 +22,8 @@ jobs:
       - name: Knip
         run: npm run knip
 
-      - name: Debug ESLint config
-        run: npx eslint --print-config src/repositories/staff/get-staff-by-id.repository.ts
+      - name: Debug boundaries config
+        run: cat eslint/boundaries/elements.mjs
         working-directory: server
 
       - name: Lint Server
