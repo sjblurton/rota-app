@@ -10,7 +10,7 @@ type UpdateStaffRepositoryInput = {
   data: UpdateStaffInput
 }
 
-export const updateStaffRepository = async ({
+export const updateStaffRepository = ({
   tx = prisma,
   data,
   staffId,

@@ -6,10 +6,7 @@ type GetStaffByIdRepositoryInput = {
   staffId: string
 }
 
-export const getStaffByIdRepository = async ({
-  tx = prisma,
-  staffId,
-}: GetStaffByIdRepositoryInput) => {
+export const getStaffByIdRepository = ({ tx = prisma, staffId }: GetStaffByIdRepositoryInput) => {
   return tx.staff.findUnique({
     where: { id: staffId },
   })

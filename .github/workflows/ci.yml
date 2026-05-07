@@ -7,6 +7,41 @@ on:
     branches: [main]
 
 jobs:
+  quality:
+    runs-on: ubuntu-latest
+    environment: test
+    env:
+      DATABASE_URL: postgresql://postgres:pass123@localhost:5432/rota_dev
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22.22.2'
+      - run: npm ci
+
+      - name: Generate Prisma Client
+        run: npm run db:generate --workspace server
+
+      - name: Knip
+        run: npm run knip
+
+      - name: Lint Server
+        run: npm run lint --workspace server
+
+      - name: Typecheck Server
+        run: npm run typecheck --workspace server
+
+      - name: Check Server formatting
+        run: npm run check:all --workspace server
+
+      - name: Lint Client
+        run: npm run lint --workspace client
+
+      - name: Typecheck Client
+        run: npm run typecheck --workspace client
+
+      - name: Check Client formatting
+        run: npm run check --workspace client
   client:
     runs-on: ubuntu-latest
     environment: test
@@ -23,12 +58,6 @@ jobs:
 
       - name: Test
         run: npm run test --workspace client
-
-      - name: Lint
-        run: npm run lint --workspace client
-
-      - name: Type check
-        run: npm run lint:typescript --workspace client
 
       - name: Build
         run: npm run build --workspace client
@@ -48,14 +77,11 @@ jobs:
       - run: npm ci --workspace server
       - run: npm run db:generate --workspace server
 
-      - name: Unit Tests
-        run: npm run test --workspace server
-
       - name: Coverage Tests
         run: npm run test:coverage --workspace server
 
-      - name: Check code quality
-        run: npm run check:all --workspace server
+      - name: Build
+        run: npm run build --workspace server
   e2e:
     runs-on: ubuntu-latest
     environment: test

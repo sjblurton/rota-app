@@ -1,6 +1,6 @@
 import { ESLINT_BOUNDARIES_ELEMENTS } from './constants.mjs'
+
 export const boundariesElements = [
-  // Feature-based elements (with moduleName capture)
   {
     type: ESLINT_BOUNDARIES_ELEMENTS.CONTROLLERS,
     pattern: 'src/api/*/controllers/**/*',
@@ -19,10 +19,10 @@ export const boundariesElements = [
     capture: ['moduleName'],
     mode: 'full',
   },
-  // Globally Shared layers
   {
     type: ESLINT_BOUNDARIES_ELEMENTS.LIBS,
-    pattern: 'src/libs/**/*',
+    pattern: 'src/libs/*/**/*',
+    capture: ['moduleName'],
     mode: 'full',
   },
   {
@@ -40,7 +40,6 @@ export const boundariesElements = [
     pattern: 'src/constants/**/*',
     mode: 'full',
   },
-  // Shared element that can be imported into chosen layers
   {
     type: ESLINT_BOUNDARIES_ELEMENTS.SHARED_DOCS,
     pattern: 'src/docs/**/*',

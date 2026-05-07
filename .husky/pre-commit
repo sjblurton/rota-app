@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 set -e
 
-cd server
 npx lint-staged
-npm run lint:typescript
+npm run format
+npm run lint:fix

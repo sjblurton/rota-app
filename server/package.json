@@ -1,14 +1,15 @@
 {
   "scripts": {
-    "lint:eslint": "eslint --fix .",
-    "lint:typescript": "tsc --noEmit",
-    "lint": "npm run lint:eslint && npm run lint:typescript",
+    "lint:eslint:fix": "eslint --fix .",
+    "lint": "eslint .",
+    "eslint:print-config": "npx eslint --print-config src/libs/prisma/prisma.ts",
+    "typecheck": "tsc --noEmit",
     "dev": "dotenv -e .env -- ts-node-dev --respawn --transpile-only src/server.ts",
     "test": "vitest run",
     "test:watch": "vitest --watch",
     "test:coverage": "vitest run --coverage",
     "prepare": "cd .. && npx --prefix ./server husky",
-    "format": "prettier --write .",
+    "format": "prettier --write . && npm run lint:eslint:fix",
     "format:check": "prettier --check .",
     "db:migrate": "prisma migrate dev --schema=prisma/schema.prisma",
     "db:generate": "prisma generate --schema=prisma/schema.prisma",
@@ -19,8 +20,9 @@
     "db:reset:seed": "npm run db:reset && npm run db:seed",
     "db:format": "prisma format --schema=prisma/schema.prisma",
     "db:format:check": "prisma format --schema=prisma/schema.prisma --check",
-    "check:all": "npm run lint && npm run test:coverage && npm run db:format:check && npm run format:check",
-    "test:e2e": "vitest run --config vitest.e2e.config.ts src/e2e"
+    "check:all": "npm run format:check && npm run db:format:check",
+    "test:e2e": "vitest run --config vitest.e2e.config.ts src/e2e",
+    "build": "tsc --build tsconfig.build.json"
   },
   "lint-staged": {
     "src/**/*.{js,mjs,cjs,ts,mts,cts}": [

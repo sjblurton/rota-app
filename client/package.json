@@ -10,13 +10,14 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
-    "lint": "eslint",
-    "format": "prettier --write .",
-    "check": "prettier --check . && eslint --fix",
+    "lint": "eslint .",
+    "lint:eslint:fix": "eslint --fix .",
+    "format": "prettier --write . && npm run lint:eslint:fix",
+    "check": "prettier --check .",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "post-cta-init": "npx -y create-db@latest --user-agent tanstack/tsrouter",
-    "lint:typescript": "tsc --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
@@ -58,10 +59,10 @@
     "vite-tsconfig-paths": "^5.1.4",
     "vitest": "^4.1.5"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "esbuild",
-      "lightningcss"
+  "lint-staged": {
+    "src/**/*.{js,mjs,cjs,ts,mts,cts}": [
+      "eslint --fix",
+      "prettier --write"
     ]
   }
 }

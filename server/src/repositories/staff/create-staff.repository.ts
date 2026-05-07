@@ -9,7 +9,7 @@ type CreateStaffRepositoryInput = {
   data: CreateStaffInput
 }
 
-export const createStaffRepository = async ({ tx = prisma, data }: CreateStaffRepositoryInput) => {
+export const createStaffRepository = ({ tx = prisma, data }: CreateStaffRepositoryInput) => {
   const cleaned = cleanDeep(data, {
     undefinedValues: true,
   }) as Prisma.StaffCreateInput
