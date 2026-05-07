@@ -22,6 +22,7 @@ export const boundariesElements = [
   {
     type: ESLINT_BOUNDARIES_ELEMENTS.LIBS,
     pattern: 'src/libs/**/*',
+    capture: ['moduleName'],
     mode: 'full',
   },
   {
