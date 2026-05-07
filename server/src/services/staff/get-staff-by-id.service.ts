@@ -8,7 +8,7 @@ type GetStaffByIdServiceInput = {
   staffId: string
 }
 
-export const getStaffByIdService = async ({
+export const getStaffByIdService = ({
   staffId,
   getStaffById = getStaffByIdRepository,
 }: GetStaffByIdServiceInput) => {

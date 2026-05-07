@@ -7,7 +7,7 @@ type CreateUserRepositoryInput = {
   data: CreateUserInput
 }
 
-export const createUserRepository = async ({ tx = prisma, data }: CreateUserRepositoryInput) =>
+export const createUserRepository = ({ tx = prisma, data }: CreateUserRepositoryInput) =>
   tx.user.create({ data })
 
 export type CreateUserRepository = typeof createUserRepository
