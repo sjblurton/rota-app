@@ -1,7 +1,6 @@
-import z from 'zod'
-
 import { type ExpressHandlerContext } from '../../../@types/http'
 import { createStaffBodySchema } from '../../../libs/schemas/entities/staff'
+import { getOrganisationIdParamsSchema } from '../../../libs/schemas/params/getOrganisationIdParamsSchema'
 import {
   getOrganisationByIdService,
   type GetOrganisationByIdServiceType,
@@ -24,7 +23,7 @@ export const postStaffController = async ({
   createStaff = createStaffService,
 }: PostStaffControllerInput) => {
   const { organisation_id: organisationId } = validateAndParse(
-    z.object({ organisation_id: z.uuid() }),
+    getOrganisationIdParamsSchema,
     request.params,
   )
 
@@ -36,5 +35,5 @@ export const postStaffController = async ({
     data: { ...parsedBody, organisation_id: organisationId },
   })
 
-  response.status(201).json({ message: 'Staff member created successfully', staff })
+  return response.status(201).json(staff)
 }

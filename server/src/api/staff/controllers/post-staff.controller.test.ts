@@ -45,12 +45,9 @@ describe('postStaffController', () => {
     })
     expect(response.status).toHaveBeenCalledWith(201)
     expect(response.json).toHaveBeenCalledWith({
-      message: 'Staff member created successfully',
-      staff: expect.objectContaining({
-        id: 'staff-id',
-        ...validBody,
-        organisation_id: validParams.organisation_id,
-      }),
+      id: 'staff-id',
+      ...validBody,
+      organisation_id: validParams.organisation_id,
     })
   })
 

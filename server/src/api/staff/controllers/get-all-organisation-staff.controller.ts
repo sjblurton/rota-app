@@ -1,7 +1,6 @@
-import z from 'zod'
-
 import { type ExpressHandlerContext } from '../../../@types/http'
 import { organisationStaffPaginationQuerySchema } from '../../../libs/schemas/pagination/pagination-options-query'
+import { getOrganisationIdParamsSchema } from '../../../libs/schemas/params/getOrganisationIdParamsSchema'
 import {
   type GetOrganisationStaffService,
   getOrganisationStaffService,
@@ -12,17 +11,13 @@ type GetAllOrganisationStaffControllerInput = ExpressHandlerContext & {
   getOrganisationStaff?: GetOrganisationStaffService
 }
 
-type GetAllOrganisationStaffController = (
-  args: GetAllOrganisationStaffControllerInput,
-) => Promise<void>
-
-export const getAllOrganisationStaffController: GetAllOrganisationStaffController = async ({
+export const getAllOrganisationStaffController = async ({
   request,
   response,
   getOrganisationStaff = getOrganisationStaffService,
-}) => {
+}: GetAllOrganisationStaffControllerInput) => {
   const { organisation_id: organisationId } = validateAndParse(
-    z.object({ organisation_id: z.uuid() }),
+    getOrganisationIdParamsSchema,
     request.params,
   )
 
@@ -30,5 +25,5 @@ export const getAllOrganisationStaffController: GetAllOrganisationStaffControlle
 
   const staff = await getOrganisationStaff({ organisationId, paginationQuery })
 
-  response.json(staff)
+  return response.json(staff)
 }

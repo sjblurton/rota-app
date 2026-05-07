@@ -1,7 +1,6 @@
-import z from 'zod'
-
 import { type ExpressHandlerContext } from '../../../@types/http'
 import { createInviteBodySchema } from '../../../libs/schemas/entities/invite'
+import { getOrganisationIdParamsSchema } from '../../../libs/schemas/params/getOrganisationIdParamsSchema'
 import {
   type CreateInviteService,
   createInviteService,
@@ -24,7 +23,7 @@ export const postInvitesController = async ({
   createInvite = createInviteService,
 }: PostInvitesInput) => {
   const { organisation_id: organisationId } = validateAndParse(
-    z.object({ organisation_id: z.uuid() }),
+    getOrganisationIdParamsSchema,
     request.params,
   )
 
@@ -39,5 +38,5 @@ export const postInvitesController = async ({
     },
   })
 
-  response.status(201).json(invite)
+  return response.status(201).json(invite)
 }

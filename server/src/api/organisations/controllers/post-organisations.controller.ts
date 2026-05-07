@@ -19,5 +19,5 @@ export const postOrganisations = async ({
   const organisation = await createOrganisation({
     data: parsedBody,
   })
-  response.status(201).json(organisation)
+  return response.status(201).json(organisation)
 }
