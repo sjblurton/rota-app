@@ -2,7 +2,7 @@ import cleanDeep from 'clean-deep'
 
 import type { CreateStaffInput } from '../../@types/staff'
 import type { Prisma, PrismaClient } from '../../generated/prisma/client'
-import { prisma } from '../../libs/prisma/prisma'
+import { prisma } from '../../libs/prisma/prisma-temp-test'
 
 type CreateStaffRepositoryInput = {
   tx?: PrismaClient | Prisma.TransactionClient

@@ -1,7 +1,7 @@
 import { beforeAll, afterAll } from 'vitest'
 import { execa } from 'execa'
 import { logger } from '../src/libs/logger/logger'
-import { prisma } from '../src/libs/prisma/prisma'
+import { prisma } from '../src/libs/prisma/prisma-temp-test'
 import { requireEnv } from '../src/utils/env/requireEnv'
 
 const workerId = requireEnv('VITEST_WORKER_ID') || '0'

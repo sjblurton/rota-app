@@ -41,7 +41,7 @@ describe('prisma initialisation', () => {
 
     process.env['NODE_ENV'] = 'test'
 
-    const { prisma } = await import('./prisma')
+    const { prisma } = await import('./prisma-temp-test')
 
     expect(dotenvConfigMock).toHaveBeenCalledWith({ path: '.env.test', quiet: true })
     expect(requireEnvMock).toHaveBeenCalledWith('DATABASE_URL')
@@ -75,7 +75,7 @@ describe('prisma initialisation', () => {
 
     process.env['NODE_ENV'] = 'development'
 
-    await import('./prisma')
+    await import('./prisma-temp-test')
 
     expect(dotenvConfigMock).toHaveBeenCalledWith({ path: '.env.local', quiet: true })
     expect(requireEnvMock).toHaveBeenCalledWith('DATABASE_URL')
