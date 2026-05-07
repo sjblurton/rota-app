@@ -1,22 +1,25 @@
-const patchStaffPath = '/api/v1/admin/organisations/{organisation_id}/staff'
+import { describe, expect, it } from 'vitest'
+
+import { OpenApiPaths } from './constants/docs.routes'
+import { openApiDocument } from './openapi'
 
 describe('Staff PATCH OpenAPI', () => {
-  it('documents PATCH /api/v1/admin/organisations/{organisation_id}/staff path', () => {
-    const patchStaff = openApiDocument['paths']?.[patchStaffPath]
+  it(`documents PATCH ${OpenApiPaths.OPENAPI_PATHS.STAFF_BY_ID} path`, () => {
+    const patchStaff = openApiDocument['paths']?.[OpenApiPaths.OPENAPI_PATHS.STAFF_BY_ID]
     expect(patchStaff).toBeDefined()
     expect(patchStaff).toHaveProperty('patch')
     expect(patchStaff?.patch?.summary).toMatch(/update staff member/i)
     expect(patchStaff?.patch?.security).toEqual([{ BearerAuth: [] }])
     expect(patchStaff?.patch?.parameters?.[0]).toMatchObject({
-      name: 'organisation_id',
+      name: 'staff_id',
       in: 'path',
       required: true,
       schema: { type: 'string', format: 'uuid' },
     })
   })
 
-  it('documents correct request and response schemas for PATCH /api/v1/admin/organisations/{organisation_id}/staff', () => {
-    const patchStaff = openApiDocument?.['paths']?.[patchStaffPath]?.patch
+  it(`documents correct request and response schemas for PATCH ${OpenApiPaths.OPENAPI_PATHS.STAFF_BY_ID}`, () => {
+    const patchStaff = openApiDocument?.['paths']?.[OpenApiPaths.OPENAPI_PATHS.STAFF_BY_ID]?.patch
     expect(patchStaff).toBeDefined()
     const requestBody = patchStaff?.requestBody
     const hasContent = requestBody && 'content' in requestBody
@@ -24,8 +27,8 @@ describe('Staff PATCH OpenAPI', () => {
     expect(patchStaff?.responses?.['200']?.content?.['application/json']?.schema).toBeDefined()
   })
 
-  it('documents error responses for PATCH /api/v1/admin/organisations/{organisation_id}/staff', () => {
-    const patchStaff = openApiDocument?.['paths']?.[patchStaffPath]?.patch
+  it(`documents error responses for PATCH ${OpenApiPaths.OPENAPI_PATHS.STAFF_BY_ID}`, () => {
+    const patchStaff = openApiDocument?.['paths']?.[OpenApiPaths.OPENAPI_PATHS.STAFF_BY_ID]?.patch
     expect(patchStaff?.responses?.['400']).toBeDefined()
     expect(patchStaff?.responses?.['401']).toBeDefined()
     expect(patchStaff?.responses?.['403']).toBeDefined()
@@ -33,11 +36,10 @@ describe('Staff PATCH OpenAPI', () => {
     expect(patchStaff?.responses?.['409']).toBeDefined()
   })
 })
-const postStaffPath = '/api/v1/admin/organisations/{organisation_id}/staff'
 
 describe('Staff OpenAPI', () => {
-  it('documents POST /api/v1/admin/organisations/{orgId}/staff path', () => {
-    const postStaff = openApiDocument['paths']?.[postStaffPath]
+  it(`documents POST ${OpenApiPaths.OPENAPI_PATHS.STAFF_BY_ORGANISATION} path`, () => {
+    const postStaff = openApiDocument['paths']?.[OpenApiPaths.OPENAPI_PATHS.STAFF_BY_ORGANISATION]
     expect(postStaff).toBeDefined()
     expect(postStaff).toHaveProperty('post')
     expect(postStaff?.post?.summary).toMatch(/Create a staff member/i)
@@ -50,8 +52,9 @@ describe('Staff OpenAPI', () => {
     })
   })
 
-  it('documents correct request and response schemas for POST /api/v1/admin/organisations/{orgId}/staff', () => {
-    const postStaff = openApiDocument?.['paths']?.[postStaffPath]?.post
+  it(`documents correct request and response schemas for POST ${OpenApiPaths.OPENAPI_PATHS.STAFF_BY_ORGANISATION}`, () => {
+    const postStaff =
+      openApiDocument?.['paths']?.[OpenApiPaths.OPENAPI_PATHS.STAFF_BY_ORGANISATION]?.post
     expect(postStaff).toBeDefined()
     const requestBody = postStaff?.requestBody
     const hasContent = requestBody && 'content' in requestBody
@@ -59,16 +62,10 @@ describe('Staff OpenAPI', () => {
     expect(postStaff?.responses?.['201']?.content?.['application/json']?.schema).toBeDefined()
   })
 })
-import { describe, expect, it } from 'vitest'
-
-import { PATHS } from '../constants/paths'
-import { openApiDocument } from './openapi'
-
-const patchInvitePath = `${PATHS.apiBaseV1}${PATHS.admin}${PATHS.invites}/{invite_id}`
 
 describe('Invites OpenAPI', () => {
-  it('documents PATCH /api/v1/admin/invites/{invite_id} path', () => {
-    const patchInvite = openApiDocument['paths'][patchInvitePath]
+  it(`documents PATCH ${OpenApiPaths.OPENAPI_PATHS.INVITE_BY_ID} path`, () => {
+    const patchInvite = openApiDocument['paths'][OpenApiPaths.OPENAPI_PATHS.INVITE_BY_ID]
     expect(patchInvite).toBeDefined()
     expect(patchInvite).toHaveProperty('patch')
     expect(patchInvite?.patch?.summary).toMatch(/Accept an invite/i)
@@ -81,8 +78,8 @@ describe('Invites OpenAPI', () => {
     })
   })
 
-  it('documents correct request and response schemas for PATCH /api/v1/invites/{invite_id}', () => {
-    const patchInvite = openApiDocument?.['paths']?.[patchInvitePath]?.patch
+  it(`documents correct request and response schemas for PATCH ${OpenApiPaths.OPENAPI_PATHS.INVITE_BY_ID}`, () => {
+    const patchInvite = openApiDocument?.['paths']?.[OpenApiPaths.OPENAPI_PATHS.INVITE_BY_ID]?.patch
     expect(patchInvite).toBeDefined()
     const requestBody = patchInvite?.requestBody
     const hasContent = requestBody && 'content' in requestBody
@@ -90,25 +87,37 @@ describe('Invites OpenAPI', () => {
     expect(patchInvite?.responses?.['200']?.content?.['application/json']?.schema).toBeDefined()
   })
 
-  it('documents error responses for PATCH /api/v1/invites/{invite_id}', () => {
-    const patchInvite = openApiDocument?.['paths']?.[patchInvitePath]?.patch
+  it(`documents error responses for PATCH ${OpenApiPaths.OPENAPI_PATHS.INVITE_BY_ID}`, () => {
+    const patchInvite = openApiDocument?.['paths']?.[OpenApiPaths.OPENAPI_PATHS.INVITE_BY_ID]?.patch
     expect(patchInvite?.responses?.['400']).toBeDefined()
     expect(patchInvite?.responses?.['401']).toBeDefined()
     expect(patchInvite?.responses?.['404']).toBeDefined()
   })
+
+  it(`documents POST ${OpenApiPaths.OPENAPI_PATHS.ORGANISATION_INVITES} path`, () => {
+    const postInvite = openApiDocument['paths']?.[OpenApiPaths.OPENAPI_PATHS.ORGANISATION_INVITES]
+    expect(postInvite).toBeDefined()
+    expect(postInvite).toHaveProperty('post')
+    expect(postInvite?.post?.summary).toMatch(/Invite a user to an organisation/i)
+    expect(postInvite?.post?.security).toEqual([{ SuperadminKey: [] }])
+    expect(postInvite?.post?.parameters?.[0]).toMatchObject({
+      name: 'organisation_id',
+      in: 'path',
+      required: true,
+      schema: { type: 'string', format: 'uuid' },
+    })
+  })
 })
 
-const organisationsPath = `${PATHS.apiBaseV1}${PATHS.superadmin}${PATHS.organisations}`
-
-describe('openApiDocument', () => {
+describe('Organisations OpenAPI', () => {
   it('includes expected top-level metadata and key paths', () => {
     expect(openApiDocument['openapi']).toBe('3.0.3')
     expect(openApiDocument['info'].title).toBe('Rota App API')
-    expect(openApiDocument['paths']).toHaveProperty(organisationsPath)
+    expect(openApiDocument['paths']).toHaveProperty(OpenApiPaths.OPENAPI_PATHS.ORGANISATIONS)
   })
 
   it('documents superadmin organisation routes', () => {
-    const organisationPathItem = openApiDocument['paths'][organisationsPath]
+    const organisationPathItem = openApiDocument['paths'][OpenApiPaths.OPENAPI_PATHS.ORGANISATIONS]
 
     expect(organisationPathItem).toBeDefined()
     expect(organisationPathItem).toHaveProperty('post')
@@ -116,13 +125,13 @@ describe('openApiDocument', () => {
   })
 
   it('documents pagination query parameters for get organisations', () => {
-    const organisationPathItem = openApiDocument['paths'][organisationsPath]
+    const organisationPathItem = openApiDocument['paths'][OpenApiPaths.OPENAPI_PATHS.ORGANISATIONS]
     const getOperation = organisationPathItem?.get
 
     expect(getOperation).toBeDefined()
 
     const parameterNames = (getOperation?.parameters ?? [])
-      .map((parameter) => ('name' in parameter ? parameter.name : undefined))
+      .map((parameter: any) => ('name' in parameter ? parameter.name : undefined))
       .filter(Boolean)
 
     expect(parameterNames).toEqual(

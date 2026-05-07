@@ -1,25 +1,21 @@
-import { extendZodWithOpenApi, OpenAPIRegistry } from '@asteasolutions/zod-to-openapi'
-import { z } from 'zod'
+import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi'
 
+import { OpenApiPaths } from '../../../docs/constants/docs.routes'
+import { ADMIN_TAG } from '../../../docs/constants/tags'
 import { commonErrorResponses } from '../../../docs/errors/responses'
-import { staffSchema, updateStaffBodySchema } from '../../../libs/schemas/entities/staff'
+import { staffSchema, updateStaffSchema } from '../../../libs/schemas/entities/staff'
+import { getStaffIdParamsSchema } from '../../../libs/schemas/params/getStaffParamsSchema'
 import { STAFF_TAG } from './constants/tags'
 
-extendZodWithOpenApi(z)
-
-export const patchStaffRegistry = new OpenAPIRegistry()
-
-const patchStaffParamsSchema = z.object({
-  organisation_id: z.uuid().describe('Organisation UUID'),
-})
+const patchStaffRegistry = new OpenAPIRegistry()
 
 patchStaffRegistry.registerPath({
   method: 'patch',
-  path: '/api/v1/admin/organisations/{organisation_id}/staff',
-  tags: [STAFF_TAG],
-  summary: 'Update staff member(s) for an organisation',
+  path: OpenApiPaths.OPENAPI_PATHS.STAFF_BY_ID,
+  tags: [STAFF_TAG, ADMIN_TAG],
+  summary: 'Update staff member for an organisation',
   description: [
-    'Updates one or more staff members for the specified organisation.',
+    'Updates staff member.',
     '\n',
     'Business rules:',
     '- Only the fields provided will be updated.',
@@ -29,11 +25,11 @@ patchStaffRegistry.registerPath({
     'The endpoint will return a 409 Conflict error if the provided email or phone number already exists for another staff member in the same organisation.',
   ].join('\n'),
   request: {
-    params: patchStaffParamsSchema,
+    params: getStaffIdParamsSchema,
     body: {
       content: {
         'application/json': {
-          schema: updateStaffBodySchema,
+          schema: updateStaffSchema,
         },
       },
       required: true,

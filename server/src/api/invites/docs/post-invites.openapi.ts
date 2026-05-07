@@ -1,35 +1,23 @@
 import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi'
 
-import { PATHS } from '../../../constants/paths'
+import { OpenApiPaths } from '../../../docs/constants/docs.routes'
 import { commonErrorResponses } from '../../../docs/errors/responses'
 import { createInviteBodySchema, inviteSchema } from '../../../libs/schemas/entities/invite'
+import { getOrganisationIdParamsSchema } from '../../../libs/schemas/params/getOrganisationIdParamsSchema'
 import { INVITES_TAG } from './constants/tags'
 
 const superadminInvitesOpenApiRegistry = new OpenAPIRegistry()
 
-const inviteUserPath = `${PATHS.apiBaseV1}${PATHS.superadmin}${PATHS.organisations}/{organisation_id}/invites`
-
 superadminInvitesOpenApiRegistry.registerPath({
   method: 'post',
-  path: inviteUserPath,
-  parameters: [
-    {
-      name: 'organisation_id',
-      example: '00000000-0000-0000-0000-000000000000',
-      in: 'path',
-      required: true,
-      schema: {
-        type: 'string',
-        format: 'uuid',
-      },
-    },
-  ],
+  path: OpenApiPaths.OPENAPI_PATHS.ORGANISATION_INVITES,
   summary: 'Invite a user to an organisation (Superadmin)',
   description:
     'Invites a user to an organisation by email. Restricted to superadmin via `X-Superadmin-Key`. If the user already exists, an invite will not be sent.',
   tags: [INVITES_TAG],
   security: [{ SuperadminKey: [] }],
   request: {
+    params: getOrganisationIdParamsSchema,
     body: {
       required: true,
       content: {

@@ -1,6 +1,8 @@
 import { OpenAPIRegistry } from '@asteasolutions/zod-to-openapi'
 
-import { PATHS } from '../../../constants/paths'
+import { OpenApiPaths } from '../../../docs/constants/docs.routes'
+import { SUPERADMIN_TAG } from '../../../docs/constants/tags'
+// import { PATHS } from '../../../constants/paths' // Unused, remove
 import { commonErrorResponses } from '../../../docs/errors/responses'
 import {
   createOrganisationSchema,
@@ -11,13 +13,11 @@ import { ORGANISATIONS_TAG } from './constants/tags'
 
 const organisationsOpenApiRegistry = new OpenAPIRegistry()
 
-const organisationsPath = `${PATHS.apiBaseV1}${PATHS.superadmin}${PATHS.organisations}`
-
-const TAGS = [ORGANISATIONS_TAG]
+const TAGS = [ORGANISATIONS_TAG, SUPERADMIN_TAG]
 
 organisationsOpenApiRegistry.registerPath({
   method: 'post',
-  path: organisationsPath,
+  path: OpenApiPaths.OPENAPI_PATHS.ORGANISATIONS,
   summary: 'Create an organisation',
   description: 'Creates a new organisation. Restricted to the owner via `X-Superadmin-Key`.',
   tags: TAGS,
@@ -50,7 +50,7 @@ organisationsOpenApiRegistry.registerPath({
 
 organisationsOpenApiRegistry.registerPath({
   method: 'get',
-  path: organisationsPath,
+  path: OpenApiPaths.OPENAPI_PATHS.ORGANISATIONS,
   summary: 'Get all organisations',
   description:
     'Retrieves a list of all organisations. Restricted to the owner via `X-Superadmin-Key`.',
