@@ -1,5 +1,5 @@
 ---
-description: "Use when designing or planning REST API changes, endpoint shapes, validation schemas, OpenAPI documentation, pagination, authentication, or backend module boundaries."
+description: 'Use when designing or planning REST API changes, endpoint shapes, validation schemas, OpenAPI documentation, pagination, authentication, or backend module boundaries.'
 tools: [read, search, todo]
 user-invocable: true
 agents: []
@@ -155,6 +155,6 @@ Your job is to design API changes before implementation.
 - Do not duplicate repository logic in multiple modules—centralise in `libs/repository`.
 - Example import:
   ```ts
-  import { organisationsRepository } from "../../../libs/repository/organisations/organisations-repository";
+  import { organisationsRepository } from '../../../libs/repository/organisations/organisations-repository'
   ```
 - This ensures clean separation, reusability, and boundaries compliance.

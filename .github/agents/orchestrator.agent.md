@@ -1,5 +1,5 @@
 ---
-description: "Coordinates and sequences API development tasks. Assigns planning, documentation, and implementation to the appropriate agents. Ensures workflow and quality gates are followed."
+description: 'Coordinates and sequences API development tasks. Assigns planning, documentation, and implementation to the appropriate agents. Ensures workflow and quality gates are followed.'
 tools: [read, search, todo, agent]
 agents: [architect, coder]
 user-invocable: true
