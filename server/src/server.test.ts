@@ -29,7 +29,7 @@ describe('server entrypoint', () => {
       },
     }))
 
-    vi.doMock('./libs/prisma/prisma', () => ({
+    vi.doMock('./libs/prisma/prisma-temp-test', () => ({
       prisma: {
         $queryRaw: queryRawMock,
       },
