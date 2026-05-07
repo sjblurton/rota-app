@@ -22,8 +22,8 @@ jobs:
       - name: Knip
         run: npm run knip
 
-      - name: Debug boundaries config
-        run: cat eslint/boundaries/elements.mjs
+      - name: Verify boundaries config
+        run: sh ci-verify-boundaries.sh
         working-directory: server
 
       - name: Lint Server
