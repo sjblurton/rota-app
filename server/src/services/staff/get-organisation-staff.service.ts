@@ -10,7 +10,7 @@ type GetOrganisationStaffServiceInput = {
   organisationId: string
 }
 
-export const getOrganisationStaffService = async ({
+export const getOrganisationStaffService = ({
   organisationId,
   getOrganisationStaff = getOrganisationStaffRepository,
   paginationQuery = {},
