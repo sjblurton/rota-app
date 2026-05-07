@@ -13,7 +13,7 @@ const INVITE_ID = uuidv4()
 const ORG_ID = '00000000-0000-0000-0000-000000000000'
 const TEST_USER_EMAIL = faker.internet.email()
 
-const testApp = createTestAdminApp(
+const adminTestApp = createTestAdminApp(
   mockUser({
     email: TEST_USER_EMAIL,
     user_metadata: {
@@ -43,9 +43,10 @@ describe('/organisations/:id/invites', () => {
       expect(res.body.role).toBe('admin')
     })
   })
+
   describe('PATCH /invites/:invite_id', () => {
     it('accepts an invite', async () => {
-      const res = await request(testApp)
+      const res = await request(adminTestApp)
         .patch(`${PATHS.apiBaseV1}${PATHS.admin}${PATHS.invites}/${INVITE_ID}`)
         .send({
           status: 'accepted',
@@ -53,6 +54,16 @@ describe('/organisations/:id/invites', () => {
       expect(res.status).toBe(200)
       expect(res.body).toHaveProperty('invite')
       expect(res.body).toHaveProperty('user')
+    })
+  })
+
+  describe('GET /invites/:invite_id', () => {
+    it('retrieves an invite by id', async () => {
+      const res = await request(app).get(`${PATHS.apiBaseV1}${PATHS.invites}/${INVITE_ID}`).send()
+      expect(res.status).toBe(200)
+      expect(res.body).toHaveProperty('id')
+      expect(res.body.email).toBe(TEST_USER_EMAIL)
+      expect(res.body.role).toBe('admin')
     })
   })
 })
