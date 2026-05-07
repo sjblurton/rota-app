@@ -102,7 +102,7 @@ See [Testing section in README](README.md#testing) for full details on test setu
 
 - Development: cd server && npm run dev
 - Lint: cd server && npm run lint
-- Type check: cd server && npm run lint:typescript
+- Type check: cd server && npm run typecheck
 - Test: cd server && npm run test
 
 ## ESLint Boundaries

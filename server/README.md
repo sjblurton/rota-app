@@ -92,7 +92,7 @@ Enforced by `eslint-plugin-boundaries` with deny-by-default. **Global types** (`
 ```bash
 npm run dev            # Start development server with hot reload
 npm run lint           # ESLint
-npm run lint:typescript # TypeScript type check
+npm run typecheck      # TypeScript type check
 npm run test           # Run tests (Vitest)
 npm run test:int       # Run integration tests
 ```

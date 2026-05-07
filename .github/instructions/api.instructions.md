@@ -17,4 +17,4 @@ applyTo: 'server/src/**/*.ts'
 - Keep OpenAPI docs aligned with runtime request and response shapes.
 - Keep HTTP concerns in routers or controllers and orchestration in services.
 - Prefer small, focused changes that preserve the existing module boundaries.
-- After changing server API code, run `cd server && npm run lint && npm run lint:typescript`.
+- After changing server API code, run `cd server && npm run lint && npm run typecheck`.

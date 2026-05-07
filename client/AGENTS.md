@@ -42,6 +42,6 @@
 
 - Development: cd client && npm run dev
 - Lint: cd client && npm run lint
-- Type check: cd client && npm run lint:typescript
+- Type check: cd client && npm run typecheck
 - Test: cd client && npm run test
 - Storybook: cd client && npm run storybook
