@@ -3,7 +3,7 @@ import { staffSchema } from '../../libs/schemas/entities/staff'
 import {
   type CheckOrganisationStaffEmailUniqueRepository,
   checkOrganisationStaffEmailUniqueRepository,
-} from '../../repositories/staff/check-organisation-staff-email-unique.repository.ts'
+} from '../../repositories/staff/check-organisation-staff-email-unique.repository'
 import {
   type CheckOrganisationStaffPhoneUniqueRepository,
   checkOrganisationStaffPhoneUniqueRepository,
