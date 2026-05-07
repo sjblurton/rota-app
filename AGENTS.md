@@ -22,8 +22,8 @@
   - import { beforeEach, describe, expect, it, type Mock, vi } from "vitest";
 - Do not use jest imports or globals.
 - Update or create tests to follow this convention.
-- Client checks: cd client && npm run lint && npm run lint:typescript && npm run test
-- Server checks: cd server && npm run lint && npm run lint:typescript && npm run test
+- Client checks: cd client && npm run lint && npm run typecheck && npm run test
+- Server checks: cd server && npm run lint && npm run typecheck && npm run test
 
 ## Conventions
 

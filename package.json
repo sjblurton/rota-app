@@ -11,7 +11,7 @@
     "dev:server": "npm --prefix server run dev",
     "dev": "concurrently --names 'CLIENT,SERVER' --prefix-colors 'cyan,magenta' \"npm run dev:client\" \"npm run dev:server\"",
     "lint": "npm --prefix client run lint && npm --prefix server run lint",
-    "lint:fix": "npm --prefix client run lint:eslint:fix && npm --prefix server run lint:eslint:fix",
+    "lint:fix": "npm --prefix client run lint:fix && npm --prefix server run lint:fix",
     "typecheck": "npm --prefix client run typecheck && npm --prefix server run typecheck",
     "knip": "dotenv -e server/.env.test -- knip",
     "format": "prettier --write .",

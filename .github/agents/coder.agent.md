@@ -38,7 +38,7 @@ Your job is to make focused backend changes that keep runtime behaviour, shared 
 1. Read the nearest `AGENTS.md` instructions and existing module patterns.
 2. Implement the smallest coherent change.
 3. Update docs, schemas, and tests when behaviour changes.
-4. Run `cd server && npm run lint && npm run lint:typescript` and tests when relevant.
+4. Run `cd server && npm run lint && npm run typecheck` and tests when relevant.
 
 ## Automated Testing and Checks
 

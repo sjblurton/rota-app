@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "lint:eslint:fix": "eslint --fix .",
+    "lint:fix": "eslint --fix .",
     "lint": "eslint .",
     "eslint:print-config": "npx eslint --print-config src/libs/prisma/prisma.ts",
     "typecheck": "tsc --noEmit",
@@ -9,7 +9,7 @@
     "test:watch": "vitest --watch",
     "test:coverage": "vitest run --coverage",
     "prepare": "cd .. && npx --prefix ./server husky",
-    "format": "prettier --write . && npm run lint:eslint:fix",
+    "format": "prettier --write . && npm run lint:fix",
     "format:check": "prettier --check .",
     "db:migrate": "prisma migrate dev --schema=prisma/schema.prisma",
     "db:generate": "prisma generate --schema=prisma/schema.prisma",

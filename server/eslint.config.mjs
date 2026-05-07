@@ -132,6 +132,7 @@ export default [
         },
       ],
       complexity: ['error', 12],
+      'prefer-template': 'error',
       'sonarjs/cognitive-complexity': ['error', 20],
       'unicorn/no-abusive-eslint-disable': 'error',
       'unicorn/prefer-node-protocol': 'error',

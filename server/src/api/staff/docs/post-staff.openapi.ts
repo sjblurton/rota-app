@@ -11,7 +11,7 @@ const postStaffRegistry = new OpenAPIRegistry()
 
 postStaffRegistry.registerPath({
   method: 'post',
-  path: OpenApiPaths.OPENAPI_PATHS.STAFF_BY_ORGANISATION,
+  path: OpenApiPaths.OPENAPI_PATHS.ADMIN_STAFF_BY_ORGANISATION,
   tags: [STAFF_TAG, ADMIN_TAG],
   summary: 'Create a staff member for an organisation',
   description: [

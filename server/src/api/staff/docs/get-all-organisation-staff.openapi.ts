@@ -12,7 +12,7 @@ const registry = new OpenAPIRegistry()
 
 registry.registerPath({
   method: 'get',
-  path: OpenApiPaths.OPENAPI_PATHS.STAFF_BY_ORGANISATION,
+  path: OpenApiPaths.OPENAPI_PATHS.ADMIN_STAFF_BY_ORGANISATION,
   tags: [STAFF_TAG, ADMIN_TAG],
   summary: 'Get all staff members for an organisation',
   description:
