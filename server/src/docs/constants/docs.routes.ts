@@ -2,7 +2,7 @@ import { PATHS } from '../../constants/paths'
 
 export class OpenApiPaths {
   private static readonly apiBaseV1 = PATHS.apiBaseV1
-  private static readonly DOCS = PATHS.docs
+  static readonly SWAGGER_DOCS = `${OpenApiPaths.apiBaseV1}${PATHS.docs}`
 
   private static readonly ORGANISATION_ID_PARAM = '/{organisation_id}'
   private static readonly STAFF_ID_PARAM = '/{staff_id}'
@@ -31,6 +31,5 @@ export class OpenApiPaths {
     SUPERADMIN_ORGANISATIONS: `${OpenApiPaths.apiBaseV1}${OpenApiPaths.SUPERADMIN_PATH}${OpenApiPaths.ORGANISATIONS_PATH}`,
     SUPERADMIN_ORGANISATION_INVITES: `${OpenApiPaths.apiBaseV1}${OpenApiPaths.SUPERADMIN_PATH}${OpenApiPaths.ORGANISATION_INVITES_PATH}`,
     INVITE_BY_ID: `${OpenApiPaths.apiBaseV1}${OpenApiPaths.INVITE_BY_ID_PATH}`,
-    SWAGGER_DOCS: `${OpenApiPaths.apiBaseV1}${OpenApiPaths.DOCS}`,
   }
 }

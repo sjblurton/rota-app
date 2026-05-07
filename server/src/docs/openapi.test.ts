@@ -4,10 +4,7 @@ import { OpenApiPaths } from './constants/docs.routes'
 import { openApiDocument } from './openapi'
 
 describe('OpenAPI routes exist', () => {
-  const noneDocsRoutes = Object.values(OpenApiPaths.OPENAPI_PATHS).filter(
-    (route) => route !== OpenApiPaths.OPENAPI_PATHS.SWAGGER_DOCS,
-  )
-  const routesToTest = noneDocsRoutes
+  const routesToTest = Object.values(OpenApiPaths.OPENAPI_PATHS)
 
   routesToTest.forEach((route) => {
     it(`should have a route for ${route}`, () => {
