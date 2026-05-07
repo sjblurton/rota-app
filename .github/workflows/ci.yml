@@ -18,13 +18,12 @@ jobs:
         with:
           node-version: '22.22.2'
       - run: npm ci
-      - run: npm run db:generate --workspace server
+
+      - name: Generate Prisma Client
+        run: npm run db:generate --workspace server
 
       - name: Knip
         run: npm run knip
-
-      - name: Print ESLint Config
-        run: npm run eslint:print-config --workspace server
 
       - name: Lint Server
         run: npm run lint --workspace server
