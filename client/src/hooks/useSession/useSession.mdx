@@ -1,0 +1,21 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Hooks/useSession" />
+
+# useSession
+
+A hook that listens to the Supabase auth state and returns the current session.
+
+Returns `Session` when the user is signed in, or `null` when signed out.
+
+## Usage
+
+```tsx
+const session = useSession()
+
+if (!session) {
+  return <p>Not logged in</p>
+}
+
+return <p>Welcome, {session.user.email}</p>
+```
