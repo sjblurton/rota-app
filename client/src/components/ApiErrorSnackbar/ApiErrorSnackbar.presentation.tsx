@@ -1,6 +1,7 @@
 import { IconButton } from '@mui/material'
 import Alert from '@mui/material/Alert'
-import Snackbar, { type SnackbarCloseReason } from '@mui/material/Snackbar'
+import Snackbar from '@mui/material/Snackbar'
+import type {SnackbarCloseReason} from '@mui/material/Snackbar';
 import { useMemo } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 
