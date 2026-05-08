@@ -1,5 +1,5 @@
 import { act, renderHook, waitFor } from '@testing-library/react'
-import { type Session } from '@supabase/supabase-js'
+import type { Session } from '@supabase/supabase-js'
 import { useNavigate } from '@tanstack/react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { useInviteById } from './useInviteById'
@@ -7,7 +7,7 @@ import { useAcceptInvite } from '#/hooks/invites/useAcceptInvite/useAcceptInvite
 import { useGetInviteById } from '#/hooks/invites/useGetInviteById/useGetInviteById'
 import { useSession } from '#/hooks/useSession/useSession'
 
-import { type Invite } from '#/libs/api/invites/@types/invites'
+import type { Invite } from '#/libs/api/invites/@types/invites'
 
 vi.mock('@tanstack/react-router', () => ({
   useNavigate: vi.fn(),
