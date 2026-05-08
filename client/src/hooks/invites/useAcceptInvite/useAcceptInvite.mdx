@@ -1,0 +1,46 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Hooks/Invites/useAcceptInvite" />
+
+# useAcceptInvite
+
+Accepts an invite by patching its status to `accepted` via the API.
+
+Thin wrapper around `useMutation` with `patchInvite` as the mutation function.
+
+## Usage
+
+```tsx
+const { mutate: acceptInvite, status } = useAcceptInvite()
+
+acceptInvite(
+  { inviteId, token: session.access_token, body: { status: 'accepted' } },
+  { onSuccess: () => navigate({ to: '/' }) },
+)
+```
+
+## Parameters
+
+The mutation function accepts a single object:
+
+| Property   | Type                     | Description                                           |
+| ---------- | ------------------------ | ----------------------------------------------------- |
+| `inviteId` | `string`                 | The ID of the invite to accept.                       |
+| `token`    | `string`                 | Bearer token used to authorise the PATCH request.     |
+| `body`     | `{ status: 'accepted' }` | Request payload — currently only `accepted` is valid. |
+
+## Returns
+
+Standard TanStack Query mutation result object. Key properties:
+
+| Property  | Type                                          | Description                                 |
+| --------- | --------------------------------------------- | ------------------------------------------- |
+| `mutate`  | `(variables, options?) => void`               | Trigger the mutation imperatively.          |
+| `status`  | `'idle' \| 'pending' \| 'success' \| 'error'` | Current mutation state.                     |
+| `isError` | `boolean`                                     | `true` if the last mutation attempt failed. |
+| `error`   | `Error` or `null`                             | The error from the last failed attempt.     |
+| `reset`   | `() => void`                                  | Resets the mutation back to `idle`.         |
+
+## API
+
+Sends an authenticated `PATCH` to `admin/invites/:inviteId` with the bearer token in the `Authorization` header.
