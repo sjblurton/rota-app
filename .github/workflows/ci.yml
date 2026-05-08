@@ -58,7 +58,7 @@ jobs:
       - run: npm ci --workspace client
 
       - name: Install Playwright browser
-        run: npx playwright install --with-deps chromium
+        run: npm exec --workspace client playwright install --with-deps chromium
 
       - name: Test
         run: npm run test --workspace client
