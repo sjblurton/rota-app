@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { type Session } from '@supabase/supabase-js'
+import type { Session } from '@supabase/supabase-js'
 import { supabase } from '#/libs/auth/supabase'
 
 /**

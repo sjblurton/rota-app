@@ -1,6 +1,7 @@
 import { act, renderHook } from '@testing-library/react'
-import { type Mock, beforeEach, describe, expect, it, vi } from 'vitest'
-import { type AuthChangeEvent, type Session } from '@supabase/supabase-js'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
+import type { Mock } from 'vitest'
+import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
 import { useSession } from './useSession'
 
 import { supabase } from '#/libs/auth/supabase'
