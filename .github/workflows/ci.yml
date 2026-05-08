@@ -46,6 +46,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: test
     env:
+      STORYBOOK_DISABLE_TELEMETRY: '1'
       SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
       SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
       SUPERADMIN_API_KEY: ${{ secrets.SUPERADMIN_API_KEY }}
@@ -55,6 +56,9 @@ jobs:
         with:
           node-version: 22
       - run: npm ci --workspace client
+
+      - name: Install Playwright browser
+        run: npm exec --workspace client playwright install --with-deps chromium
 
       - name: Test
         run: npm run test --workspace client

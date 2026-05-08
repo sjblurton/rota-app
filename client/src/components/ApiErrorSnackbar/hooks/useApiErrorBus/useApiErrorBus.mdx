@@ -1,0 +1,35 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Components/ApiErrorSnackbar/hooks/useApiErrorBus" />
+
+# useApiErrorBus
+
+Private hook used exclusively by `ApiErrorSnackbar`.
+
+Connects to the global API error bus and exposes the latest error message.
+`ApiErrorSnackbar` is rendered once in `RootDocument`, which ensures only one listener is ever registered at a time.
+
+## Usage
+
+```tsx
+const { errorMessage, clearError } = useApiErrorBus()
+
+<Snackbar open={!!errorMessage} onClose={clearError}>
+  <Alert severity="error" onClose={clearError} variant="filled">
+    {errorMessage}
+  </Alert>
+</Snackbar>
+```
+
+## Returns
+
+| Property       | Type               | Description                                                        |
+| -------------- | ------------------ | ------------------------------------------------------------------ |
+| `errorMessage` | `string` or `null` | The latest API error string, or `null` when there is no error.     |
+| `clearError`   | `() => void`       | Dismisses the current error by resetting `errorMessage` to `null`. |
+
+## How it works
+
+The hook registers a listener with `api-error-bus` on mount
+and unregisters it on unmount. The Axios interceptor calls `emitApiError` when a request fails,
+which triggers the listener and updates `errorMessage`.
