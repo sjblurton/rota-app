@@ -1,0 +1,47 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Routes/Invite/hooks/useInviteById" />
+
+# useInviteById
+
+Orchestrates the full invite acceptance flow for a given invite ID.
+
+Combines `useGetInviteById`, `useAcceptInvite`, and `useSession` to manage fetching, accepting, and navigating — leaving the route component as pure presentation.
+
+## Usage
+
+```tsx
+const { errorMessage, isLoading } = useInviteById(inviteId)
+```
+
+## Parameters
+
+| Parameter  | Type     | Description                                  |
+| ---------- | -------- | -------------------------------------------- |
+| `inviteId` | `string` | The invite identifier from the route params. |
+
+## Returns
+
+| Property       | Type               | Description                                                                       |
+| -------------- | ------------------ | --------------------------------------------------------------------------------- |
+| `errorMessage` | `string` or `null` | User-facing error string when the invite is expired, revoked, or a request fails. |
+| `isLoading`    | `boolean`          | `true` while the invite is being fetched or the accept mutation is in flight.     |
+
+## Behaviour
+
+| Invite status | Action                                                                                 |
+| ------------- | -------------------------------------------------------------------------------------- |
+| `accepted`    | Navigates to `/` immediately.                                                          |
+| `invited`     | Calls `acceptInvite` with the current session token, then navigates to `/` on success. |
+| `expired`     | Sets `errorMessage` to `'This invite has expired.'`                                    |
+| `revoked`     | Sets `errorMessage` to `'This invite has been revoked.'`                               |
+
+Network failures and unexpected API errors are handled globally via the TanStack Query `MutationCache` and surfaced in `ApiErrorSnackbar` — `errorMessage` covers the `isAcceptError` and `isInviteError` fallback locally.
+
+## Dependencies
+
+| Hook               | Role                                             |
+| ------------------ | ------------------------------------------------ |
+| `useGetInviteById` | Fetches the invite and its current status.       |
+| `useAcceptInvite`  | Sends the PATCH request to accept the invite.    |
+| `useSession`       | Provides the bearer token for the PATCH request. |

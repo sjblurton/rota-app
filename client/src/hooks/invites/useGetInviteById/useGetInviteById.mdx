@@ -1,0 +1,40 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Hooks/Invites/useGetInviteById" />
+
+# useGetInviteById
+
+Fetches a single invite by its ID using TanStack Query.
+
+Thin wrapper around `useQuery` with `inviteQueryOptions` — caches under the `['invites', inviteId]` query key.
+
+## Usage
+
+```tsx
+const { data: invite, isLoading, isError } = useGetInviteById(inviteId)
+```
+
+## Parameters
+
+| Parameter  | Type     | Description                    |
+| ---------- | -------- | ------------------------------ |
+| `inviteId` | `string` | The ID of the invite to fetch. |
+
+## Returns
+
+Standard TanStack Query result object. Key properties:
+
+| Property    | Type                    | Description                                       |
+| ----------- | ----------------------- | ------------------------------------------------- |
+| `data`      | `Invite` or `undefined` | The fetched invite, or `undefined` while loading. |
+| `isLoading` | `boolean`               | `true` while the request is in flight.            |
+| `isError`   | `boolean`               | `true` if the request failed.                     |
+| `error`     | `Error` or `null`       | The error object if the request failed.           |
+
+## Query key
+
+```ts
+;['invites', inviteId]
+```
+
+Use this key with `queryClient.invalidateQueries` or `queryClient.setQueryData` when mutating invite data.
