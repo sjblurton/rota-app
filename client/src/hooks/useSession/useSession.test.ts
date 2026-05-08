@@ -48,7 +48,7 @@ describe('useSession', () => {
   it('starts with no session and subscribes to auth changes', () => {
     const { result } = renderHook(() => useSession())
 
-    expect(result.current).toBeNull()
+    expect(result.current).toEqual({ session: null, isLoading: true })
     expect(onAuthStateChange).toHaveBeenCalledTimes(1)
   })
 
@@ -60,7 +60,7 @@ describe('useSession', () => {
       authChangeCallback?.('SIGNED_IN', session)
     })
 
-    expect(result.current).toEqual(session)
+    expect(result.current).toEqual({ session, isLoading: false })
   })
 
   it('clears session when auth emits signed out', () => {
@@ -72,7 +72,7 @@ describe('useSession', () => {
       authChangeCallback?.('SIGNED_OUT', session)
     })
 
-    expect(result.current).toBeNull()
+    expect(result.current).toEqual({ session: null, isLoading: false })
   })
 
   it('cleans up auth subscription on unmount', () => {
