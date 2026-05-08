@@ -1,6 +1,6 @@
 import { isAxiosError } from 'axios'
 import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import type {ReactNode} from 'react';
+import type { ReactNode } from 'react'
 import { emitApiError } from '#/libs/api/api-error-bus'
 
 type ApiErrorResponse = {
