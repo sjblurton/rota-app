@@ -6,13 +6,14 @@ import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 
+import { type QueryClient } from '@tanstack/react-query'
 import TanStackQueryProvider from '../integrations/tanstack-query/root-provider'
 
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 
-import type { QueryClient } from '@tanstack/react-query'
+import { ApiErrorSnackbar } from '#/components/ApiErrorSnackbar/ApiErrorSnackbar'
 
-interface MyRouterContext {
+type MyRouterContext = {
   queryClient: QueryClient
 }
 
@@ -62,6 +63,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           />
         </TanStackQueryProvider>
         <Scripts />
+        <ApiErrorSnackbar />
       </body>
     </html>
   )

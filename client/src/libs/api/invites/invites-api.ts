@@ -1,5 +1,5 @@
 import { api } from '../axios-instance'
-import type { Invite } from '#/libs/api/invites/@types/invites'
+import { type Invite } from '#/libs/api/invites/@types/invites'
 
 /**
  * Accepts an invite by patching its status to accepted.
