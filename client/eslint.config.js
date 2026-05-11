@@ -9,6 +9,8 @@ import storybook from 'eslint-plugin-storybook'
 import unicorn from 'eslint-plugin-unicorn'
 import vitest from 'eslint-plugin-vitest'
 
+import customPlugin from './eslint/plugin.mjs'
+
 const clientBoundariesElements = [
   {
     type: 'app',
@@ -262,6 +264,15 @@ export default [
           rules: clientBoundariesDependencyRules,
         },
       ],
+    },
+  },
+  {
+    files: ['src/components/**/*.{ts,tsx}', 'src/routes/**/*.{ts,tsx}'],
+    ignores: ['**/*.test.{ts,tsx}'],
+    plugins: { custom: customPlugin },
+    rules: {
+      'custom/require-callback-hook': 'error',
+      'custom/require-event-callback-hook': 'error',
     },
   },
   {
