@@ -30,11 +30,27 @@ jobs:
       - name: Install client dependencies
         run: npm ci --workspace client
 
+      - name: Ensure Chromatic token is configured
+        if: env.CHROMATIC_PROJECT_TOKEN == ''
+        run: |
+          echo "CHROMATIC_PROJECT_TOKEN is missing. Configure it in repository Actions secrets." >&2
+          exit 1
+
       - name: Publish to Chromatic
+        id: chromatic
         if: env.CHROMATIC_PROJECT_TOKEN != ''
         uses: chromaui/action@latest
         with:
           projectToken: ${{ env.CHROMATIC_PROJECT_TOKEN }}
           workingDir: client
           onlyChanged: true
-          exitOnceUploaded: true
+
+      - name: Write Chromatic links to job summary
+        if: env.CHROMATIC_PROJECT_TOKEN != ''
+        run: |
+          {
+            echo "## Chromatic"
+            echo ""
+            echo "- Build: ${{ steps.chromatic.outputs.buildUrl }}"
+            echo "- Storybook: ${{ steps.chromatic.outputs.storybookUrl }}"
+          } >> "$GITHUB_STEP_SUMMARY"
