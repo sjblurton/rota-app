@@ -45,3 +45,4 @@ jobs:
           projectToken: ${{ env.CHROMATIC_PROJECT_TOKEN }}
           workingDir: client
           onlyChanged: true
+          exitZeroOnChanges: false
