@@ -1,7 +1,6 @@
-import { IconButton } from '@mui/material'
+import { IconButton, useEventCallback } from '@mui/material'
 import Alert from '@mui/material/Alert'
 import Snackbar, { type SnackbarCloseReason } from '@mui/material/Snackbar'
-import { useMemo } from 'react'
 import CloseIcon from '@mui/icons-material/Close'
 
 type Props = {
@@ -10,14 +9,13 @@ type Props = {
 }
 
 export const ApiErrorSnackbarPresentation = ({ errorMessage, onClose }: Props) => {
-  const handleClose = useMemo(
-    () => (_event: React.SyntheticEvent | Event, reason?: SnackbarCloseReason) => {
+  const handleClose = useEventCallback(
+    (_event: React.SyntheticEvent | Event, reason?: SnackbarCloseReason) => {
       if (reason === 'clickaway') {
         return
       }
       onClose()
     },
-    [onClose],
   )
 
   return (

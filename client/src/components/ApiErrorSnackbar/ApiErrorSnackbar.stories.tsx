@@ -1,4 +1,4 @@
-import { expect, fn, userEvent, within } from 'storybook/test'
+import { expect, fn, screen, userEvent, within } from 'storybook/test'
 import { type Meta, type StoryObj } from '@storybook/react-vite'
 import { ApiErrorSnackbarPresentation } from './ApiErrorSnackbar.presentation'
 
@@ -7,6 +7,13 @@ const meta = {
   component: ApiErrorSnackbarPresentation,
   args: {
     onClose: fn(),
+  },
+  parameters: {
+    docs: {
+      story: {
+        height: '150px',
+      },
+    },
   },
 } satisfies Meta<typeof ApiErrorSnackbarPresentation>
 
@@ -32,5 +39,10 @@ export const LongMessage: Story = {
   args: {
     errorMessage:
       'Request failed with status 500: Internal Server Error. The server encountered an unexpected condition that prevented it from fulfilling the request.',
+  },
+  play: async ({ args }) => {
+    await userEvent.click(document.body)
+    await expect(args.onClose).not.toHaveBeenCalled()
+    await expect(screen.getByRole('alert')).toBeInTheDocument()
   },
 }
