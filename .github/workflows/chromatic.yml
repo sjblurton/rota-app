@@ -45,6 +45,7 @@ jobs:
           projectToken: ${{ env.CHROMATIC_PROJECT_TOKEN }}
           workingDir: client
           onlyChanged: true
+          exitZeroOnChanges: false
 
       - name: Write Chromatic links to job summary
         if: env.CHROMATIC_PROJECT_TOKEN != ''
