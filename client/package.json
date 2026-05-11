@@ -10,6 +10,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "vitest run",
+    "test:watch": "vitest",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "format": "prettier --write . && npm run lint:fix",
@@ -17,7 +18,9 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "post-cta-init": "npx -y create-db@latest --user-agent tanstack/tsrouter",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "typecheck:watch": "tsc --noEmit --watch",
+    "work:watch": "concurrently --names 'CLIENT,SERVER' --prefix-colors 'cyan,magenta' \"npm run typecheck:watch\""
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",
