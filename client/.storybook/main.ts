@@ -22,7 +22,11 @@ const config: StorybookConfig = {
   ],
   framework: {
     name: getAbsolutePath('@storybook/react-vite'),
-    options: {},
+    options: {
+      builder: {
+        viteConfigPath: '.storybook/vite.storybook.ts',
+      },
+    },
   },
   async viteFinal(finalConfig) {
     finalConfig.plugins = finalConfig.plugins || []
