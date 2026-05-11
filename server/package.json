@@ -4,10 +4,13 @@
     "lint": "eslint .",
     "eslint:print-config": "npx eslint --print-config src/libs/prisma/prisma.ts",
     "typecheck": "tsc --noEmit",
+    "typecheck:watch": "tsc --noEmit --watch",
+    "work:watch": "concurrently --names 'SERVER' --prefix-colors 'magenta' \"npm run typecheck:watch\"",
     "dev": "dotenv -e .env -- ts-node-dev --respawn --transpile-only src/server.ts",
     "test": "vitest run",
     "test:watch": "vitest --watch",
     "test:coverage": "vitest run --coverage",
+    "test:e2e": "vitest run --config vitest.e2e.config.ts src/e2e",
     "prepare": "cd .. && npx --prefix ./server husky",
     "format": "prettier --write . && npm run lint:fix",
     "format:check": "prettier --check .",
@@ -21,7 +24,6 @@
     "db:format": "prisma format --schema=prisma/schema.prisma",
     "db:format:check": "prisma format --schema=prisma/schema.prisma --check",
     "check:all": "npm run format:check && npm run db:format:check",
-    "test:e2e": "vitest run --config vitest.e2e.config.ts src/e2e",
     "build": "tsc --build tsconfig.build.json"
   },
   "lint-staged": {
