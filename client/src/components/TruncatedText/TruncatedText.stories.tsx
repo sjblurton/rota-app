@@ -7,7 +7,6 @@ const meta = {
   component: TruncatedText,
   args: {
     maxWidth: '300px',
-    variant: 'h5',
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
