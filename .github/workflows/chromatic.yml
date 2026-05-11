@@ -13,6 +13,7 @@ jobs:
   chromatic:
     name: Publish Storybook to Chromatic
     runs-on: ubuntu-latest
+    environment: test
     env:
       STORYBOOK_DISABLE_TELEMETRY: '1'
       CHROMATIC_PROJECT_TOKEN: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
