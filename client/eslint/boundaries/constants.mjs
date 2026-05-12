@@ -63,10 +63,7 @@ export const ELEMENT_PATTERNS = {
     mode: 'full',
   },
   [ELEMENT_TYPES.ROUTES_ROOT_TESTS]: {
-    pattern: [
-      'src/routes/tests/**/*',
-      '#/routes/tests/**/*',
-    ],
+    pattern: ['src/routes/tests/**/*', '#/routes/tests/**/*'],
     mode: 'full',
   },
 }
