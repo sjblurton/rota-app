@@ -16,7 +16,7 @@ export function App() {
       <CssBaseline />
       <Container>
         <Stack spacing={2} sx={{ py: 6 }}>
-          <Typography variant="h4">Rota App</Typography>
+          <Typography variant="h1">Rota App</Typography>
 
           {isLoading ? (
             <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>

@@ -18,6 +18,8 @@ export default defineConfig({
       {
         extends: true,
         test: {
+          include: ['src/**/*.test.ts', 'src/**/*.test.tsx'],
+          exclude: ['**/*.stories.*', '**/*.spec.ts'],
           setupFiles: ['./test/setup-env.ts'],
           environment: 'jsdom',
           globals: true,
