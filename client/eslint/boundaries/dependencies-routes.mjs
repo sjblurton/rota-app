@@ -12,10 +12,9 @@ export const routesRootDependencies = {
   allow: [
     { to: { type: ELEMENT_TYPES.ROUTES_ROOT } },
     { to: { type: ELEMENT_TYPES.COMPONENTS_SINGLETON } },
-    { to: { type: ELEMENT_TYPES.COMPONENTS } },
-    { to: { type: ELEMENT_TYPES.HOOKS } },
     { to: { type: ELEMENT_TYPES.INTEGRATIONS } },
-    { to: { type: ELEMENT_TYPES.LIBS } },
+    { to: { type: ELEMENT_TYPES.PLAYWRIGHT } },
+    { to: { type: ELEMENT_TYPES.HOME_FEATURE } },
   ],
 }
 
@@ -28,9 +27,11 @@ export const routesDependencies = {
         captured: { moduleName: '{{from.captured.moduleName}}' },
       },
     },
-    { to: { type: ELEMENT_TYPES.COMPONENTS } },
-    { to: { type: ELEMENT_TYPES.HOOKS } },
-    { to: { type: ELEMENT_TYPES.INTEGRATIONS } },
-    { to: { type: ELEMENT_TYPES.LIBS } },
+    {
+      to: {
+        type: ELEMENT_TYPES.FEATURES,
+        captured: { moduleName: '{{from.captured.moduleName}}' },
+      },
+    },
   ],
 }

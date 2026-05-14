@@ -1,17 +1,20 @@
-import { HeadContent, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
-import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { TanStackDevtools } from '@tanstack/react-devtools'
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
 
+import { HeadContent, Scripts, createRootRouteWithContext } from '@tanstack/react-router'
+import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
+import { TanStackDevtools } from '@tanstack/react-devtools'
+import { useEffect } from 'react'
+
 import { type QueryClient } from '@tanstack/react-query'
+import { CssBaseline } from '@mui/material'
+
 import TanStackQueryProvider from '../integrations/tanstack-query/root-provider'
-
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
-
 import { ApiErrorSnackbar } from '#/components/ApiErrorSnackbar/ApiErrorSnackbar'
+import { startPlaywrightMswIfEnabled } from '#/playwright/mocks/bootstrap'
 
 type MyRouterContext = {
   queryClient: QueryClient
@@ -31,11 +34,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         title: 'TanStack Start Starter',
       },
     ],
-    links: [
-      {
-        rel: 'stylesheet',
-      },
-    ],
+    links: [],
   }),
   shellComponent: RootDocument,
 })
@@ -47,7 +46,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
+        <CssBaseline />
         <TanStackQueryProvider>
+          <PlaywrightMswBootstrap />
           {children}
           <TanStackDevtools
             config={{
@@ -67,4 +68,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </body>
     </html>
   )
+}
+
+function PlaywrightMswBootstrap() {
+  useEffect(() => {
+    void startPlaywrightMswIfEnabled()
+  }, [])
+
+  return null
 }
