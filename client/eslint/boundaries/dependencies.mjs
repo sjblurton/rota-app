@@ -15,12 +15,12 @@ import { hooksDependencies } from './dependencies-hooks.mjs'
 import { integrationsDependencies } from './dependencies-integrations.mjs'
 import { libsDependencies } from './dependencies-libs.mjs'
 import { playwrightDependencies } from './dependencies-playwright.mjs'
-import { routesRootTestsDependencies } from './dependencies-routes-root-tests.mjs'
+import { featuresDependencies } from './dependencies-features.mjs'
+import { homeFeatureDependencies } from './dependencies-home.mjs'
 
 export const getDependencies = () => [
   appDependencies,
   routesRootDependencies,
-  routesRootTestsDependencies,
   routesDependencies,
   componentsSingletonDependencies,
   componentsDependencies,
@@ -28,4 +28,6 @@ export const getDependencies = () => [
   integrationsDependencies,
   libsDependencies,
   playwrightDependencies,
+  homeFeatureDependencies,
+  featuresDependencies,
 ]

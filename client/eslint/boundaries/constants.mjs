@@ -8,7 +8,6 @@
 export const ELEMENT_TYPES = {
   APP: 'app',
   ROUTES_ROOT: 'routes-root',
-  ROUTES_ROOT_TESTS: 'routes-root-tests',
   ROUTES: 'routes',
   COMPONENTS_SINGLETON: 'components-singleton',
   COMPONENTS: 'components',
@@ -16,6 +15,8 @@ export const ELEMENT_TYPES = {
   INTEGRATIONS: 'integrations',
   LIBS: 'libs',
   PLAYWRIGHT: 'playwright',
+  FEATURES: 'features',
+  HOME_FEATURE: 'home-feature',
 }
 
 export const ELEMENT_TYPE_VALUES = Object.values(ELEMENT_TYPES)
@@ -62,8 +63,13 @@ export const ELEMENT_PATTERNS = {
     pattern: ['src/playwright/**/*', '#/playwright/**/*'],
     mode: 'full',
   },
-  [ELEMENT_TYPES.ROUTES_ROOT_TESTS]: {
-    pattern: ['src/routes/tests/**/*', '#/routes/tests/**/*'],
+  [ELEMENT_TYPES.HOME_FEATURE]: {
+    pattern: ['src/features/home/**/*', '#/features/home/**/*'],
+    mode: 'full',
+  },
+  [ELEMENT_TYPES.FEATURES]: {
+    pattern: ['src/features/*/**/*', '#/features/*/**/*'],
+    capture: ['moduleName'],
     mode: 'full',
   },
 }
