@@ -1,4 +1,7 @@
 package-lock.json
 pnpm-lock.yaml
 yarn.lock
+client/public/mockServiceWorker.js
 client/storybook-static/**/*
+client/playwright-report
+client/dist
