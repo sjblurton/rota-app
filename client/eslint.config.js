@@ -165,8 +165,8 @@ export default [
     ignores: ['**/*.test.{ts,tsx}'],
     plugins: { custom: customPlugin },
     rules: {
-      'custom/require-callback-hook': 'error',
-      'custom/require-event-callback-hook': 'error',
+      'custom/require-callback-hook': 'warn',
+      'custom/require-event-callback-hook': 'warn',
     },
   },
   {

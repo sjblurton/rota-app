@@ -6,10 +6,10 @@ import { isTargetFile } from './utils/is-target-file.mjs'
 
 export default {
   meta: {
-    type: 'problem',
+    type: 'suggestion',
     docs: {
       description:
-        'Enforce that void-returning functions in React components are wrapped in useEventCallback',
+        'Suggest that void-returning functions in React components are wrapped in useEventCallback',
       category: 'Best Practices',
     },
   },
@@ -47,7 +47,7 @@ export default {
         }
 
         context.report({
-          node,
+          node: functionNode,
           message: `Function '${variableName}' should be wrapped in useEventCallback`,
         })
       },

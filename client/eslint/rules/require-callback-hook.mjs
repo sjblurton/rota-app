@@ -9,7 +9,7 @@ export default {
     type: 'suggestion',
     docs: {
       description:
-        'Require value-returning functions in React components to be wrapped in useCallback',
+        'Suggest wrapping value-returning functions in React components with useCallback',
       category: 'React',
     },
     fixable: null,

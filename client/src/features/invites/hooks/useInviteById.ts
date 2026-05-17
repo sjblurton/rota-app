@@ -40,7 +40,11 @@ export const useInviteById = (inviteId: string) => {
     if (invite.status === 'invited') {
       acceptInvite(
         { inviteId, token: session.access_token, body: { status: 'accepted' } },
-        { onSuccess: () => navigate({ to: '/' }) },
+        {
+          onSuccess: () => {
+            void navigate({ to: '/' })
+          },
+        },
       )
       return
     }

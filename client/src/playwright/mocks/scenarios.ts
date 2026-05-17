@@ -1,4 +1,10 @@
-import { type PlaywrightScenario } from './constants'
+import { type Session } from '@supabase/supabase-js'
+import { type PlaywrightAuthScenario, type PlaywrightScenario } from './constants'
+
+type PlaywrightAuthOverride = {
+  isLoading: boolean
+  session: null | Session
+}
 
 type InviteScenario = {
   getInviteStatus: number
@@ -32,6 +38,42 @@ const baseInvite: MockInvite = {
   role: 'admin',
   status: 'invited',
   updated_at: '2026-01-01T00:00:00.000Z',
+}
+
+const baseSession: Session = {
+  access_token: 'playwright-access-token',
+  refresh_token: 'playwright-refresh-token',
+  expires_in: 3600,
+  expires_at: 1_767_225_600,
+  token_type: 'bearer',
+  user: {
+    id: 'playwright-user-id',
+    app_metadata: {},
+    user_metadata: {},
+    aud: 'authenticated',
+    email: 'playwright.user@example.com',
+    created_at: '2026-01-01T00:00:00.000Z',
+  },
+}
+
+export function buildAuthOverrideForScenario(
+  scenario: PlaywrightAuthScenario,
+): PlaywrightAuthOverride {
+  switch (scenario) {
+    case 'auth-signed-out': {
+      return {
+        session: null,
+        isLoading: false,
+      }
+    }
+
+    case 'auth-signed-in': {
+      return {
+        session: baseSession,
+        isLoading: false,
+      }
+    }
+  }
 }
 
 export function buildInviteScenario(scenario: PlaywrightScenario): InviteScenario {
