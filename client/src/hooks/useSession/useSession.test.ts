@@ -2,6 +2,7 @@ import { act, renderHook } from '@testing-library/react'
 import { type Mock, beforeEach, describe, expect, it, vi } from 'vitest'
 import { type AuthChangeEvent, type Session } from '@supabase/supabase-js'
 import { useSession } from './useSession'
+import { type PlaywrightWindow } from './playwright-auth-seam'
 
 import { supabase } from '#/libs/auth/supabase'
 
@@ -27,6 +28,7 @@ describe('useSession', () => {
   let onAuthStateChange: Mock
 
   beforeEach(() => {
+    delete (window as PlaywrightWindow).playwrightAuthOverride
     authChangeCallback = null
     unsubscribe = vi.fn()
     onAuthStateChange = supabase.auth.onAuthStateChange as Mock
@@ -42,6 +44,32 @@ describe('useSession', () => {
         },
       }
     })
+  })
+
+  it('uses Playwright auth override when present and skips Supabase subscription', () => {
+    const session = buildSession()
+
+    ;(window as PlaywrightWindow).playwrightAuthOverride = {
+      session,
+      isLoading: false,
+    }
+
+    const { result } = renderHook(() => useSession())
+
+    expect(result.current).toEqual({ session, isLoading: false })
+    expect(onAuthStateChange).not.toHaveBeenCalled()
+  })
+
+  it('uses Playwright signed-out override when present', () => {
+    ;(window as PlaywrightWindow).playwrightAuthOverride = {
+      session: null,
+      isLoading: false,
+    }
+
+    const { result } = renderHook(() => useSession())
+
+    expect(result.current).toEqual({ session: null, isLoading: false })
+    expect(onAuthStateChange).not.toHaveBeenCalled()
   })
 
   it('starts with no session and subscribes to auth changes', () => {

@@ -1,15 +1,38 @@
 import { test as base, expect } from '@playwright/test'
 import { InvitesPageOM } from '../ObjectModels/InvitesPage.om'
-import { PLAYWRIGHT_ENABLE_MOCKS_STORAGE_KEY, type PlaywrightScenario } from '../mocks/constants'
-import { inviteIdForScenario } from '../mocks/scenarios'
+import {
+  PLAYWRIGHT_AUTH_OVERRIDE_WINDOW_KEY,
+  PLAYWRIGHT_ENABLE_MOCKS_STORAGE_KEY,
+  type PlaywrightAuthScenario,
+  type PlaywrightScenario,
+} from '../mocks/constants'
+import { buildAuthOverrideForScenario, inviteIdForScenario } from '../mocks/scenarios'
 
 type PlaywrightFixtures = {
+  setAuthSession: (scenario: PlaywrightAuthScenario) => Promise<void>
   enableBackendMocks: () => Promise<void>
   inviteIdForScenario: (scenario: PlaywrightScenario) => string
   invitePage: InvitesPageOM
 }
 
 export const test = base.extend<PlaywrightFixtures>({
+  setAuthSession: async ({ page }, use) => {
+    await use(async (scenario) => {
+      const authOverride = buildAuthOverrideForScenario(scenario)
+
+      await page.addInitScript(
+        ({ key, override }) => {
+          const target = window as unknown as Record<string, unknown>
+          target[key] = override
+        },
+        {
+          key: PLAYWRIGHT_AUTH_OVERRIDE_WINDOW_KEY,
+          override: authOverride,
+        },
+      )
+    })
+  },
+
   enableBackendMocks: async ({ page }, use) => {
     await page.addInitScript(
       ({ key }) => {
