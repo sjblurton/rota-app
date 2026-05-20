@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { type Meta, type StoryObj } from '@storybook/react-vite'
-import { expect, fn, userEvent, within } from 'storybook/test'
+import { expect, fn, screen, userEvent, within } from 'storybook/test'
 import { NavigationBarPresentation } from './NavigationBar.presentation'
 
 const onClicks = {
@@ -27,7 +27,32 @@ const meta = {
     onCloseUserMenu: onClicks.closeUserMenu,
     userName: 'User',
   },
-
+  argTypes: {
+    onOpenUserMenu: {
+      action: 'openUserMenu',
+      description:
+        'Callback fired when the user menu is opened. Receives the open event as an argument.',
+    },
+    onCloseUserMenu: {
+      action: 'closeUserMenu',
+      description: 'Callback fired when the user menu is closed.',
+    },
+    pages: {
+      control: false,
+      description:
+        'The navigation items to display in the main navigation bar, and their corresponding actions.',
+    },
+    settings: {
+      control: false,
+      description:
+        'The navigation items to display in the user menu, and their corresponding actions.',
+    },
+    menu: {
+      control: false,
+      description:
+        'The anchor element for the user menu. If provided, the menu will be controlled by this prop instead of internal state.',
+    },
+  },
   component: NavigationBarPresentation,
 } satisfies Meta<typeof NavigationBarPresentation>
 
@@ -38,10 +63,10 @@ type Story = StoryObj<typeof meta>
 export const Uncontrolled: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
-    const userButton = await canvas.findByRole('button', { name: /user/i })
+    const userButton = await canvas.findByRole('button', { name: /u/i })
     await userEvent.click(userButton)
     await expect(onClicks.openUserMenu).toHaveBeenCalled()
-    await expect(await canvas.findByText('Settings')).toBeInTheDocument()
+    await expect(await screen.findByRole('menuitem', { name: 'Settings' })).toBeInTheDocument()
   },
 }
 
@@ -66,10 +91,10 @@ export const Controlled: Story = {
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
-    const userButton = await canvas.findByRole('button', { name: /user/i })
+    const userButton = await canvas.findByRole('button', { name: /u/i })
     await userEvent.click(userButton)
     await expect(onClicks.openUserMenu).toHaveBeenCalled()
-    await expect(await canvas.findByText('Logout')).toBeInTheDocument()
+    await expect(await screen.findByRole('menuitem', { name: 'Logout' })).toBeInTheDocument()
   },
 }
 
@@ -108,7 +133,7 @@ export const OpenUserMenu: Story = {
     )
   },
   play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement)
-    await expect(await canvas.findByText('Settings')).toBeInTheDocument()
+    void canvasElement
+    await expect(await screen.findByRole('menuitem', { name: 'Settings' })).toBeInTheDocument()
   },
 }

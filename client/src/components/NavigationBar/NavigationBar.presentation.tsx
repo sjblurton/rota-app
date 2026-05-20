@@ -13,17 +13,14 @@ import ScheduleIcon from '@mui/icons-material/Schedule'
 import { useControlledState } from '#/hooks/useControlledState/useControlledState'
 import { getInitials } from '#/utils/strings/getInitials.ts'
 
-export type NavigationBarPage = {
+type Navigation = {
   label: string
   onClick?: () => void
 }
-export type NavigationBarSetting = {
-  label: string
-  onClick?: () => void
-}
+
 export type NavigationBarPresentationProps = {
-  pages: Array<NavigationBarPage>
-  settings: Array<NavigationBarSetting>
+  pages: Array<Navigation>
+  settings: Array<Navigation>
   onOpenUserMenu?: (event: React.MouseEvent<HTMLElement>) => void
   onCloseUserMenu?: () => void
   userName?: string
@@ -89,7 +86,9 @@ export function NavigationBarPresentation({
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar alt={userName}>{getInitials(userName)}</Avatar>
+              <Avatar alt={userName} sx={{ bgcolor: 'white' }}>
+                {getInitials(userName)}
+              </Avatar>
             </IconButton>
             <Menu
               sx={{ mt: '45px' }}
