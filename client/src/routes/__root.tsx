@@ -9,12 +9,12 @@ import { TanStackDevtools } from '@tanstack/react-devtools'
 import { useEffect } from 'react'
 
 import { type QueryClient } from '@tanstack/react-query'
-import { CssBaseline } from '@mui/material'
 
 import TanStackQueryProvider from '../integrations/tanstack-query/root-provider'
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 import { ApiErrorSnackbar } from '#/components/ApiErrorSnackbar/ApiErrorSnackbar'
 import { startPlaywrightMswIfEnabled } from '#/playwright/mocks/bootstrap'
+import { ThemeProvider } from '#/libs/theme/ThemeProvider.tsx'
 
 type MyRouterContext = {
   queryClient: QueryClient
@@ -45,26 +45,28 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
+
       <body>
-        <CssBaseline />
-        <TanStackQueryProvider>
-          <PlaywrightMswBootstrap />
-          {children}
-          <TanStackDevtools
-            config={{
-              position: 'bottom-right',
-            }}
-            plugins={[
-              {
-                name: 'Tanstack Router',
-                render: <TanStackRouterDevtoolsPanel />,
-              },
-              TanStackQueryDevtools,
-            ]}
-          />
-        </TanStackQueryProvider>
-        <Scripts />
-        <ApiErrorSnackbar />
+        <ThemeProvider>
+          <TanStackQueryProvider>
+            <PlaywrightMswBootstrap />
+            {children}
+            <TanStackDevtools
+              config={{
+                position: 'bottom-right',
+              }}
+              plugins={[
+                {
+                  name: 'Tanstack Router',
+                  render: <TanStackRouterDevtoolsPanel />,
+                },
+                TanStackQueryDevtools,
+              ]}
+            />
+          </TanStackQueryProvider>
+          <Scripts />
+          <ApiErrorSnackbar />
+        </ThemeProvider>
       </body>
     </html>
   )
