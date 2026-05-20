@@ -15,6 +15,7 @@ export const routesRootDependencies = {
     { to: { type: ELEMENT_TYPES.INTEGRATIONS } },
     { to: { type: ELEMENT_TYPES.PLAYWRIGHT } },
     { to: { type: ELEMENT_TYPES.HOME_FEATURE } },
+    { to: { type: ELEMENT_TYPES.LIBS } },
   ],
 }
 
