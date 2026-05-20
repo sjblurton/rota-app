@@ -57,5 +57,9 @@ export function getElements() {
       type: ELEMENT_TYPES.PLAYWRIGHT,
       ...ELEMENT_PATTERNS[ELEMENT_TYPES.PLAYWRIGHT],
     },
+    {
+      type: ELEMENT_TYPES.UTILS,
+      ...ELEMENT_PATTERNS[ELEMENT_TYPES.UTILS],
+    },
   ]
 }

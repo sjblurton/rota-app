@@ -23,5 +23,6 @@ export const featuresDependencies = {
     { to: { type: ELEMENT_TYPES.HOOKS } },
     { to: { type: ELEMENT_TYPES.INTEGRATIONS } },
     { to: { type: ELEMENT_TYPES.LIBS } },
+    { to: { type: ELEMENT_TYPES.UTILS } },
   ],
 }

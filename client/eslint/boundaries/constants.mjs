@@ -17,6 +17,7 @@ export const ELEMENT_TYPES = {
   PLAYWRIGHT: 'playwright',
   FEATURES: 'features',
   HOME_FEATURE: 'home-feature',
+  UTILS: 'utils',
 }
 
 export const ELEMENT_TYPE_VALUES = Object.values(ELEMENT_TYPES)
@@ -70,6 +71,10 @@ export const ELEMENT_PATTERNS = {
   [ELEMENT_TYPES.FEATURES]: {
     pattern: ['src/features/*/**/*', '#/features/*/**/*'],
     capture: ['moduleName'],
+    mode: 'full',
+  },
+  [ELEMENT_TYPES.UTILS]: {
+    pattern: ['src/utils/**/*', '#/utils/**/*'],
     mode: 'full',
   },
 }
