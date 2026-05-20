@@ -1,40 +1,33 @@
-import { useEventCallback } from '@mui/material'
-import Tooltip from '@mui/material/Tooltip'
-import Typography, { type TypographyProps } from '@mui/material/Typography'
 import { useRef, useState } from 'react'
+import { useEventCallback } from '@mui/material/utils'
+import {
+  TruncatedTextPresentation,
+  type TruncatedTextPresentationProps,
+} from './TruncatedText.presentation'
 
-type Props = {
-  text: string
-  maxWidth?: string | number
-} & Pick<TypographyProps, 'variant' | 'component'>
+type Props = Pick<TruncatedTextPresentationProps, 'text' | 'maxWidth' | 'variant' | 'component'>
 
-export const TruncatedText = ({ text, maxWidth = '100%', variant, component }: Props) => {
-  const ref = useRef<HTMLElement>(null)
+export const TruncatedText = ({ text, maxWidth = '100%', variant, component, ...props }: Props) => {
+  const ref = useRef<HTMLElement | null>(null)
   const [isTruncated, setIsTruncated] = useState(false)
 
   const handleMouseEnter = useEventCallback(() => {
     if (ref.current) {
-      setIsTruncated(ref.current.scrollWidth > ref.current.clientWidth)
+      const { scrollWidth, clientWidth } = ref.current
+      setIsTruncated(scrollWidth > clientWidth)
     }
   })
 
   return (
-    <Tooltip title={isTruncated ? text : ''} placement="top">
-      <Typography
-        ref={ref}
-        variant={variant}
-        component={component ?? 'span'}
-        onMouseEnter={handleMouseEnter}
-        sx={{
-          display: 'block',
-          overflow: 'hidden',
-          whiteSpace: 'nowrap',
-          textOverflow: 'ellipsis',
-          maxWidth,
-        }}
-      >
-        {text}
-      </Typography>
-    </Tooltip>
+    <TruncatedTextPresentation
+      ref={ref}
+      component={component}
+      text={text}
+      maxWidth={maxWidth}
+      variant={variant}
+      handleMouseEnter={handleMouseEnter}
+      isTruncated={isTruncated}
+      {...props}
+    />
   )
 }
