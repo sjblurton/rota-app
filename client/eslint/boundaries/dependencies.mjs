@@ -17,8 +17,10 @@ import { libsDependencies } from './dependencies-libs.mjs'
 import { playwrightDependencies } from './dependencies-playwright.mjs'
 import { featuresDependencies } from './dependencies-features.mjs'
 import { homeFeatureDependencies } from './dependencies-home.mjs'
+import { utilsDependencies } from './dependencies-utils.mjs'
 
 export const getDependencies = () => [
+  utilsDependencies,
   appDependencies,
   routesRootDependencies,
   routesDependencies,
