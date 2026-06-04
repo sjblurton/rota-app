@@ -26,5 +26,6 @@ export const componentsDependencies = {
     { to: { type: ELEMENT_TYPES.INTEGRATIONS } },
     { to: { type: ELEMENT_TYPES.LIBS } },
     { to: { type: ELEMENT_TYPES.UTILS } },
+    { to: { type: ELEMENT_TYPES.CONSTANTS } },
   ],
 }

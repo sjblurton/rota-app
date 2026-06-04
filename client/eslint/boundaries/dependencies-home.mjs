@@ -19,5 +19,6 @@ export const homeFeatureDependencies = {
     { to: { type: ELEMENT_TYPES.LIBS } },
     { to: { type: ELEMENT_TYPES.ROUTES_ROOT } },
     { to: { type: ELEMENT_TYPES.HOME_FEATURE } },
+    { to: { type: ELEMENT_TYPES.CONSTANTS } },
   ],
 }

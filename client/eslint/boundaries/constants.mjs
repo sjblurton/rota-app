@@ -18,6 +18,7 @@ export const ELEMENT_TYPES = {
   FEATURES: 'features',
   HOME_FEATURE: 'home-feature',
   UTILS: 'utils',
+  CONSTANTS: 'constants',
 }
 
 export const ELEMENT_TYPE_VALUES = Object.values(ELEMENT_TYPES)
@@ -75,6 +76,10 @@ export const ELEMENT_PATTERNS = {
   },
   [ELEMENT_TYPES.UTILS]: {
     pattern: ['src/utils/**/*', '#/utils/**/*'],
+    mode: 'full',
+  },
+  [ELEMENT_TYPES.CONSTANTS]: {
+    pattern: ['src/constants/**/*', '#/constants/**/*'],
     mode: 'full',
   },
 }

@@ -61,5 +61,9 @@ export function getElements() {
       type: ELEMENT_TYPES.UTILS,
       ...ELEMENT_PATTERNS[ELEMENT_TYPES.UTILS],
     },
+    {
+      type: ELEMENT_TYPES.CONSTANTS,
+      ...ELEMENT_PATTERNS[ELEMENT_TYPES.CONSTANTS],
+    },
   ]
 }
