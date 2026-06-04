@@ -1,12 +1,15 @@
 import { type Meta, type StoryObj } from '@storybook/react-vite'
-import { expect, screen, userEvent, within } from 'storybook/test'
-import { TruncatedText } from './TruncatedText'
+import { expect, fn, screen, userEvent, within } from 'storybook/test'
+import { TruncatedTextPresentation } from './TruncatedText.presentation'
+
+const handleMouseEnter = fn()
 
 const meta = {
   tags: ['autodocs'],
-  component: TruncatedText,
+  component: TruncatedTextPresentation,
   args: {
     maxWidth: '300px',
+    handleMouseEnter,
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
@@ -17,7 +20,7 @@ const meta = {
       textOverflow: 'ellipsis',
     })
   },
-} satisfies Meta<typeof TruncatedText>
+} satisfies Meta<typeof TruncatedTextPresentation>
 
 export default meta
 
@@ -25,6 +28,7 @@ type Story = StoryObj<typeof meta>
 
 export const Truncated: Story = {
   args: {
+    isTruncated: true,
     text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
   },
   play: async ({ canvasElement }) => {
@@ -41,10 +45,11 @@ export const Truncated: Story = {
 export const ShortText: Story = {
   args: {
     text: 'Short text.',
+    isTruncated: false,
   },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
-    const textElement = await canvas.findByText(/Short text/i)
+    const textElement = await canvas.findByText(/Short text/)
     await userEvent.hover(textElement)
     const tooltip = screen.queryByRole('tooltip')
     await expect(tooltip).toBeNull()

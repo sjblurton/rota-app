@@ -1,0 +1,59 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Hooks/useControlledState" />
+
+# useControlledState
+
+Manages controlled and uncontrolled state with one API.
+
+Use this when a component should support both patterns:
+
+- uncontrolled: parent does not pass `value`, hook owns state
+- controlled: parent passes `value`, parent owns state
+
+## Usage
+
+```tsx
+const [isOpen, setIsOpen, isControlled] = useControlledState({
+  value,
+  defaultValue: false,
+  onChange,
+})
+```
+
+## Options
+
+| Option         | Type                            | Description                                                      |
+| -------------- | ------------------------------- | ---------------------------------------------------------------- |
+| `value`        | `T` (optional)                  | Controlled value. When provided, the hook is in controlled mode. |
+| `defaultValue` | `T`                             | Initial internal value for uncontrolled mode.                    |
+| `onChange`     | `(value: T) => void` (optional) | Called whenever `setValue` resolves a new value in both modes.   |
+
+## Returns
+
+| Item           | Type                                           | Description                                                                   |
+| -------------- | ---------------------------------------------- | ----------------------------------------------------------------------------- |
+| `currentValue` | `T`                                            | The active value (`value` when controlled, internal state when uncontrolled). |
+| `setValue`     | `(nextValue: React.SetStateAction<T>) => void` | Setter that accepts a direct value or functional update.                      |
+| `isControlled` | `boolean`                                      | `true` when `value` is provided, otherwise `false`.                           |
+
+## Behaviour
+
+- Controlled mode (`value` provided):
+  - `currentValue` always mirrors `value` from props
+  - `setValue` does not mutate internal state
+  - `onChange` still fires with the resolved next value
+- Uncontrolled mode (`value` undefined):
+  - internal state starts from `defaultValue`
+  - `setValue` updates internal state
+  - `onChange` fires after resolving the next value
+
+## Functional updates
+
+`setValue` supports updater functions, same as React state setters:
+
+```tsx
+setValue((previousValue) => previousValue + 1)
+```
+
+The updater is resolved against the current active value and passed to `onChange`.

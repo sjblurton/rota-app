@@ -85,7 +85,7 @@ export function NavigationBarPresentation({
             ))}
           </Box>
           <Box sx={{ flexGrow: 0 }}>
-            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+            <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }} aria-label="User menu">
               <Avatar alt={userName} sx={{ bgcolor: 'white' }}>
                 {getInitials(userName)}
               </Avatar>

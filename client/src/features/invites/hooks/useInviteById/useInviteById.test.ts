@@ -2,21 +2,21 @@ import { act, renderHook, waitFor } from '@testing-library/react'
 import { useNavigate } from '@tanstack/react-router'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { type Session } from '@supabase/supabase-js'
+import { useAcceptInvite } from '../useAcceptInvite/useAcceptInvite'
+import { useGetInviteById } from '../useGetInviteById/useGetInviteById'
 import { useInviteById } from './useInviteById'
 import { type Invite } from '#/libs/api/invites/@types/invites'
-import { useAcceptInvite } from '#/hooks/invites/useAcceptInvite/useAcceptInvite'
-import { useGetInviteById } from '#/hooks/invites/useGetInviteById/useGetInviteById'
 import { useSession } from '#/hooks/useSession/useSession'
 
 vi.mock('@tanstack/react-router', () => ({
   useNavigate: vi.fn(),
 }))
 
-vi.mock('#/hooks/invites/useAcceptInvite/useAcceptInvite', () => ({
+vi.mock('#/features/invites/hooks/useAcceptInvite/useAcceptInvite', () => ({
   useAcceptInvite: vi.fn(),
 }))
 
-vi.mock('#/hooks/invites/useGetInviteById/useGetInviteById', () => ({
+vi.mock('#/features/invites/hooks/useGetInviteById/useGetInviteById', () => ({
   useGetInviteById: vi.fn(),
 }))
 
@@ -39,6 +39,7 @@ const buildInvite = (status: Invite['status']): Invite => ({
 describe('useInviteById', () => {
   const navigate = vi.fn()
   const mutate = vi.fn()
+  const refetch = vi.fn()
 
   beforeEach(() => {
     vi.clearAllMocks()
@@ -54,6 +55,8 @@ describe('useInviteById', () => {
       data: undefined,
       isError: false,
       isLoading: false,
+      isFetching: false,
+      refetch,
     } as any)
   })
 
@@ -152,10 +155,95 @@ describe('useInviteById', () => {
       data: undefined,
       isError: false,
       isLoading: true,
+      isFetching: false,
+      refetch,
     } as any)
 
     const { result } = renderHook(() => useInviteById('invite-1'))
 
     expect(result.current.isLoading).toBe(true)
+  })
+
+  it('exposes retry and refetches invite when invite query fails', () => {
+    vi.mocked(useSession).mockReturnValue({
+      session: { access_token: 'token' } as unknown as Session,
+      isLoading: false,
+    })
+    vi.mocked(useGetInviteById).mockReturnValue({
+      data: undefined,
+      isError: true,
+      isLoading: false,
+      isFetching: false,
+      refetch,
+    } as any)
+
+    const { result } = renderHook(() => useInviteById('invite-1'))
+
+    expect(result.current.canRetry).toBe(true)
+
+    act(() => {
+      result.current.retry()
+    })
+
+    expect(refetch).toHaveBeenCalledTimes(1)
+    expect(mutate).not.toHaveBeenCalled()
+  })
+
+  it('retries accepting invite when mutation failed and session is available', () => {
+    vi.mocked(useSession).mockReturnValue({
+      session: { access_token: 'token' } as unknown as Session,
+      isLoading: false,
+    })
+    vi.mocked(useAcceptInvite).mockReturnValue({
+      mutate,
+      isError: true,
+      status: 'error',
+    } as any)
+    vi.mocked(useGetInviteById).mockReturnValue({
+      data: buildInvite('invited'),
+      isError: false,
+      isLoading: false,
+      isFetching: false,
+      refetch,
+    } as any)
+
+    const { result } = renderHook(() => useInviteById('invite-1'))
+
+    expect(result.current.canRetry).toBe(true)
+
+    act(() => {
+      result.current.retry()
+    })
+
+    expect(mutate).toHaveBeenCalledWith(
+      { inviteId: 'invite-1', token: 'token', body: { status: 'accepted' } },
+      expect.objectContaining({ onSuccess: expect.any(Function) }),
+    )
+  })
+
+  it('does not allow retrying accept when session is missing', () => {
+    vi.mocked(useSession).mockReturnValue({ session: null, isLoading: false })
+    vi.mocked(useAcceptInvite).mockReturnValue({
+      mutate,
+      isError: true,
+      status: 'error',
+    } as any)
+    vi.mocked(useGetInviteById).mockReturnValue({
+      data: buildInvite('invited'),
+      isError: false,
+      isLoading: false,
+      isFetching: false,
+      refetch,
+    } as any)
+
+    const { result } = renderHook(() => useInviteById('invite-1'))
+
+    expect(result.current.canRetry).toBe(false)
+
+    act(() => {
+      result.current.retry()
+    })
+
+    expect(mutate).not.toHaveBeenCalled()
   })
 })

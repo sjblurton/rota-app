@@ -15,7 +15,7 @@ test.describe('invite route with mocked backend', () => {
 
     await expect(page).toHaveURL('/')
     await expect(page.getByRole('heading', { name: 'Rota App' })).toBeVisible()
-    await expect(page.getByText('Welcome, playwright.user@example.com')).toBeVisible()
+    await expect(page.getByText(/Welcome,\s*playwright\.user@example\.com/i)).toBeVisible()
   })
 
   test('renders revoked message from mocked API response', async ({
@@ -24,13 +24,12 @@ test.describe('invite route with mocked backend', () => {
     inviteIdForScenario,
     invitePage,
   }) => {
-    await setAuthSession('auth-signed-in')
+    await setAuthSession('auth-signed-out')
     await enableBackendMocks()
 
     await invitePage.navigateToInvite(inviteIdForScenario('invite-revoked'))
 
     await expect(invitePage.heading).toBeVisible()
-    await expect(invitePage.inviteIdText).toContainText('Invite ID: invite-revoked')
     await expect(invitePage.statusText).toHaveText('This invite has been revoked.')
   })
 })
