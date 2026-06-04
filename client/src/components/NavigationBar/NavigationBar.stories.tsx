@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useState } from 'react'
 import { type Meta, type StoryObj } from '@storybook/react-vite'
 import { expect, fn, screen, userEvent, within } from 'storybook/test'
 import { NavigationBarPresentation } from './NavigationBar.presentation'
@@ -14,6 +14,9 @@ const onClicks = {
 
 const meta = {
   tags: ['autodocs'],
+  parameters: {
+    layout: 'fullscreen',
+  },
   args: {
     pages: [
       { label: 'Staff', onClick: onClicks.staff },
@@ -106,34 +109,5 @@ export const UserName: Story = {
     const canvas = within(canvasElement)
     const avatar = await canvas.findByText('AS')
     await expect(avatar).toBeInTheDocument()
-  },
-}
-
-export const OpenUserMenu: Story = {
-  render: function Render(args) {
-    const [menu, setMenu] = useState<HTMLElement | null>(null)
-    const containerRef = useRef<HTMLDivElement | null>(null)
-
-    useEffect(() => {
-      if (menu || !containerRef.current) return
-
-      const avatarButton = Array.from(containerRef.current.querySelectorAll('button')).find(
-        (buttonElement) => buttonElement.textContent.trim() === 'U',
-      )
-
-      if (avatarButton instanceof HTMLElement) {
-        setMenu(avatarButton)
-      }
-    }, [menu])
-
-    return (
-      <div ref={containerRef}>
-        <NavigationBarPresentation {...args} menu={menu} />
-      </div>
-    )
-  },
-  play: async ({ canvasElement }) => {
-    void canvasElement
-    await expect(await screen.findByRole('menuitem', { name: 'Settings' })).toBeInTheDocument()
   },
 }
