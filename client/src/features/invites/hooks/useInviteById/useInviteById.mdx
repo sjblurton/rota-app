@@ -1,6 +1,6 @@
 import { Meta } from '@storybook/addon-docs/blocks'
 
-<Meta title="Routes/Invite/hooks/useInviteById" />
+<Meta title="features/invites/hooks/useInviteById" />
 
 # useInviteById
 
@@ -11,7 +11,7 @@ Combines `useGetInviteById`, `useAcceptInvite`, and `useSession` to manage fetch
 ## Usage
 
 ```tsx
-const { errorMessage, isLoading } = useInviteById(inviteId)
+const { errorMessage, isLoading, canRetry, retry } = useInviteById(inviteId)
 ```
 
 ## Parameters
@@ -22,10 +22,12 @@ const { errorMessage, isLoading } = useInviteById(inviteId)
 
 ## Returns
 
-| Property       | Type               | Description                                                                       |
-| -------------- | ------------------ | --------------------------------------------------------------------------------- |
-| `errorMessage` | `string` or `null` | User-facing error string when the invite is expired, revoked, or a request fails. |
-| `isLoading`    | `boolean`          | `true` while the invite is being fetched or the accept mutation is in flight.     |
+| Property       | Type               | Description                                                                                               |
+| -------------- | ------------------ | --------------------------------------------------------------------------------------------------------- |
+| `errorMessage` | `string` or `null` | User-facing error string when the invite is expired, revoked, or a request fails.                         |
+| `isLoading`    | `boolean`          | `true` while session state is loading, the invite query is loading/refetching, or accept is pending.      |
+| `canRetry`     | `boolean`          | `true` when retrying is possible (invite fetch failed, or accept failed while invite is still `invited`). |
+| `retry`        | `() => void`       | Retries the appropriate failed action: refetch invite data or retry invite acceptance.                    |
 
 ## Behaviour
 
@@ -37,6 +39,12 @@ const { errorMessage, isLoading } = useInviteById(inviteId)
 | `revoked`     | Sets `errorMessage` to `'This invite has been revoked.'`                               |
 
 Network failures and unexpected API errors are handled globally via the TanStack Query `MutationCache` and surfaced in `ApiErrorSnackbar` — `errorMessage` covers the `isAcceptError` and `isInviteError` fallback locally.
+
+## Retry behaviour
+
+- If the invite query fails, `retry()` calls `refetchInvite()`.
+- If accept fails and the invite is still `invited` with a valid session token, `retry()` attempts acceptance again.
+- `canRetry` is `false` while session/query are loading or fetching.
 
 ## Dependencies
 
