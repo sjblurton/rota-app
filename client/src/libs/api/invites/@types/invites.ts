@@ -1,6 +1,6 @@
 type Role = 'admin'
 
-type InviteStatus = 'invited' | 'accepted' | 'revoked' | 'expired'
+export type InviteStatus = 'invited' | 'accepted' | 'revoked' | 'expired'
 
 type PreferenceContactMethod = 'email'
 

@@ -8,7 +8,7 @@ export class InvitesPageOM extends BaseOM {
 
   constructor(page: Page) {
     super(page)
-    this.heading = page.getByRole('heading', { name: 'Invite Page' })
+    this.heading = page.getByRole('heading', { name: 'Rota App' })
     this.inviteIdText = page.locator('p').nth(0)
     this.statusText = page.locator('p').nth(1)
   }
