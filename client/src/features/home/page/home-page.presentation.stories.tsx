@@ -1,7 +1,7 @@
 import { type Session } from '@supabase/supabase-js'
 import { type Meta, type StoryObj } from '@storybook/react-vite'
 import { expect, within } from 'storybook/test'
-import { HomePresentationPage } from './home-page.presentation'
+import { HomePagePresentation } from '../page/home-page.presentation'
 
 const signedInSession = {
   user: {
@@ -10,14 +10,37 @@ const signedInSession = {
 } as Session
 
 const meta = {
-  title: 'Features/Home/HomePresentationPage',
+  title: 'Features/Home/Home Page',
   tags: ['autodocs'],
-  component: HomePresentationPage,
+  component: HomePagePresentation,
   args: {
     isLoading: false,
     session: null,
   },
-} satisfies Meta<typeof HomePresentationPage>
+  argTypes: {
+    session: {
+      description:
+        'The current user session. If `null`, the user is signed out. If a Session object, the user is signed in.',
+      control: {
+        type: 'select',
+        labels: {
+          signedOut: 'Signed out',
+          signedIn: 'Signed in',
+        },
+      },
+      options: ['signedOut', 'signedIn'],
+      defaultValue: 'signedOut',
+      mapping: {
+        signedOut: null,
+        signedIn: signedInSession,
+      },
+    },
+    isLoading: {
+      description:
+        'Whether the session state is currently being loaded. Should be `true` until the initial session state has been determined.',
+    },
+  },
+} satisfies Meta<typeof HomePagePresentation>
 
 export default meta
 
