@@ -1,0 +1,81 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Style Guide/Data Flow" />
+
+# Data Flow
+
+This page describes how data moves through the client app and where each responsibility sits.
+
+## Core Principle
+
+Data should flow in one direction:
+
+```text
+Route -> Feature page -> Feature hook -> Query/mutation hook -> API adapter -> Backend
+```
+
+UI renders from hook/query state. Side effects and orchestration stay in hooks, not presentation components.
+
+## Read Flow (Query)
+
+Typical read path:
+
+1. A route renders a feature page.
+2. The feature page calls a feature hook.
+3. The feature hook calls a query hook (TanStack Query).
+4. The query hook calls an API adapter in `src/libs/api`.
+5. Response is cached by TanStack Query.
+6. Components re-render from cached query state.
+
+## Write Flow (Mutation)
+
+Typical write path:
+
+1. User action triggers a mutation from a feature hook.
+2. Mutation calls API adapter.
+3. On success, hook performs follow-up actions:
+   - navigate
+   - refetch/invalidate query data
+   - clear local error state
+4. On failure, error is surfaced through:
+   - local error mapping for feature-specific messages
+   - global API snackbar for generic API failures
+
+## State Ownership
+
+- Server state: TanStack Query cache.
+- UI state: local component state (`useState`) and feature hooks.
+- Auth state: `useSession`.
+- Global API error display: error bus + snackbar presentation.
+
+## Boundaries by Layer
+
+- `routes/`: route composition and route params.
+- `features/`: feature behaviour and orchestration.
+- `components/`: presentation only.
+- `hooks/`: reusable logic.
+- `libs/api/`: transport and endpoint adapters.
+- `integrations/`: framework wiring (for example query provider).
+
+## Error Flow
+
+- API adapter throws/rejects.
+- Query/mutation state marks error.
+- Feature hook maps domain-specific errors where needed.
+- Global error handling surfaces fallback API errors in snackbar.
+
+## Retry Strategy
+
+Retry is controlled in feature hooks where context exists.
+
+Examples:
+
+- Refetch a failed query if data load failed.
+- Retry a mutation only when prerequisites are met (for example token present and valid status).
+
+## Practical Rules
+
+- Do not fetch directly in presentational components.
+- Keep API shape mapping close to the feature hook.
+- Keep route files thin; orchestration belongs in hooks.
+- Use query keys intentionally and consistently.

@@ -1,0 +1,80 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Style Guide/Design Principles" />
+
+# Design Principles
+
+These principles guide UI decisions in the client app.
+
+## 1. Clarity First
+
+- Prioritise clear intent over visual complexity.
+- Use explicit labels and meaningful empty, loading, and error states.
+- Prefer familiar interaction patterns unless there is a strong reason not to.
+
+## 2. Consistent Structure
+
+- Keep page and component layout patterns predictable.
+- Reuse spacing, typography hierarchy, and surface patterns.
+- Favour shared components when the same UI appears in multiple places.
+
+## 3. Accessible by Default
+
+- Meet WCAG AA colour contrast and keyboard navigation expectations.
+- Ensure all interactive elements have visible focus states.
+- Use semantic HTML and appropriate ARIA only where needed.
+
+## 4. State Visibility
+
+- Always communicate state transitions:
+  - loading
+  - success
+  - error
+  - empty
+- Do not leave users without feedback after actions.
+
+## 5. Separation of Concerns
+
+- Presentation components focus on rendering.
+- Hooks and feature modules manage orchestration and data flow.
+- Keep API and side-effect logic out of presentational components.
+
+## 6. Progressive Disclosure
+
+- Show essential information first.
+- Reveal advanced actions or secondary details when relevant.
+- Avoid overwhelming screens with low-priority options.
+
+## 7. Performance-Aware UI
+
+- Avoid unnecessary re-renders and expensive visual work.
+- Keep perceived performance high with responsive interactions and loading feedback.
+- Optimise critical user journeys before cosmetic enhancements.
+
+## 8. Error Recovery
+
+- Error messages should be actionable and specific where possible.
+- Provide retry paths when recovery is feasible.
+- Use global error patterns for generic failures, local messaging for domain-specific failures.
+
+## 9. Content and Language
+
+- Use concise, plain language.
+- Keep tone consistent across screens and states.
+- Prefer British English spelling in repository-authored content.
+
+## 10. Testable UI Behaviour
+
+- Design components and states so they are straightforward to verify in Storybook and tests.
+- Keep behaviour deterministic to reduce flaky tests.
+- Treat stories as documentation and executable behaviour checks.
+
+## Practical Checklist
+
+Before shipping UI changes:
+
+1. Is the primary user action clear?
+2. Are loading, empty, and error states covered?
+3. Does keyboard navigation and focus behaviour work correctly?
+4. Are messages clear and consistent?
+5. Is behaviour covered by story and/or test updates?

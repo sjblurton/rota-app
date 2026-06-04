@@ -1,0 +1,103 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Style Guide/Testing Strategy" />
+
+# Testing Strategy
+
+This project uses a layered testing approach so behaviour is verified at the right level:
+
+1. Unit and hook tests for deterministic logic.
+2. Storybook interaction tests for component states and accessibility-friendly behaviour.
+3. Playwright end-to-end tests for route-level user journeys.
+
+## Testing Pyramid (for this client)
+
+```text
+E2E (Playwright)        -> critical flows and integration seams
+Storybook tests         -> component states, interactions, visual contracts
+Unit/hook tests         -> fast logic validation and edge cases
+```
+
+## What runs with `npm run test`
+
+`npm run test` runs `vitest run`, which includes two Vitest projects:
+
+- Unit/hook tests (`*.test.ts` / `*.test.tsx`) in `jsdom`.
+- Storybook tests via `@storybook/addon-vitest` in headless Chromium.
+
+This is configured in `client/vitest.config.ts`.
+
+## Unit and Hook Tests
+
+Scope:
+
+- Pure utilities and mapping logic.
+- Hook behaviour and state transitions.
+- Error and edge paths.
+
+Conventions:
+
+- Test observable outputs, not implementation details.
+- Keep tests deterministic and isolated.
+- Use explicit scenarios and names that describe intent.
+
+## Storybook Tests
+
+Purpose:
+
+- Validate component states and interactions close to UI documentation.
+- Keep docs and tests aligned through stories.
+
+How it works here:
+
+- Stories are discovered from `src/**/*.stories.*` and `src/**/*.mdx`.
+- Storybook tests run in browser mode (Chromium) through Vitest.
+- Useful for smoke-checking presentation behaviour and story play functions.
+
+## Playwright End-to-End Tests
+
+Scope:
+
+- Route-level user journeys (for example home auth states, invite acceptance paths).
+- Real browser verification with stable mock seams.
+
+Key fixtures and seams:
+
+- `setAuthSession(...)` injects auth override before app bootstrap.
+- `enableBackendMocks()` enables MSW-backed API mock handlers.
+- Scenario helpers map invite IDs to mocked API outcomes.
+
+This keeps E2E deterministic while still exercising browser behaviour.
+
+## Mocking Approach
+
+- Unit/hook tests: local function and module mocking as needed.
+- Browser/E2E tests: scenario-driven MSW handlers plus auth overrides.
+- Unhandled MSW requests default to bypass to avoid over-mocking unrelated traffic.
+
+## CI Notes
+
+- Dependency pre-optimisation is configured in `vitest.config.ts` to reduce Vite re-optimisation flakes during browser-based Storybook tests.
+- Chromatic is used for visual review and regression checks in PR workflows.
+
+## Commands
+
+```bash
+# Unit + Storybook tests
+npm run test
+
+# E2E tests
+npm run test:e2e
+npm run test:e2e:headed
+npm run test:e2e:ui
+
+# Storybook local dev
+npm run storybook
+```
+
+## Principles
+
+- Keep tests deterministic.
+- Cover behaviour changes and failure paths.
+- Prefer small focused tests over broad brittle ones.
+- Use the cheapest test layer that gives sufficient confidence.
