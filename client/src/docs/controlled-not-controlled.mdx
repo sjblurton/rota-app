@@ -1,0 +1,76 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Style Guide/Controlled vs Uncontrolled" />
+
+# Controlled vs Uncontrolled Components
+
+This guide explains when a component should be controlled, uncontrolled, or support both.
+
+## Definitions
+
+- Controlled component: parent owns the value and passes it through props.
+- Uncontrolled component: component owns the value internally.
+
+## Why support both
+
+Supporting both patterns gives flexibility:
+
+- Controlled mode is ideal for orchestration-heavy screens and shared state.
+- Uncontrolled mode is ideal for simple local interactions.
+
+## Project convention
+
+- Keep rendering in `Component.presentation.tsx` components.
+- Keep orchestration in container components or feature hooks.
+- When a presentational component needs local state behaviour, prefer the shared `useControlledState` hook so behaviour stays consistent across components.
+
+## `useControlledState` in this project
+
+The shared hook is documented in `Hooks/useControlledState` and provides one API for both modes.
+
+Usage:
+
+```tsx
+const [value, setValue, isControlled] = useControlledState({
+  value: props.value,
+  defaultValue: props.defaultValue,
+  onChange: props.onChange,
+})
+```
+
+Behaviour:
+
+- In controlled mode, `value` comes from props and internal state is not mutated.
+- In uncontrolled mode, internal state starts from `defaultValue` and updates locally.
+- `onChange` fires in both modes with the resolved next value.
+
+## Practical pattern
+
+```text
+Component.presentation.tsx  -> renders from props and calls callbacks
+Component.tsx               -> maps domain state to presentation props
+useControlledState          -> standardises controlled/uncontrolled behaviour
+```
+
+## When to choose each mode
+
+Use controlled when:
+
+- parent needs full control (forms, URL state, multi-component coordination)
+- state must be reset/synchronised externally
+
+Use uncontrolled when:
+
+- interaction is local and independent
+- parent does not need to manage intermediate state
+
+Support both when:
+
+- component is reusable and used in both simple and orchestrated contexts
+
+## Checklist
+
+1. Are `value`, `defaultValue`, and `onChange` contracts clear?
+2. Is behaviour consistent in both modes?
+3. Does Storybook include stories for controlled and uncontrolled examples?
+4. Is orchestration kept out of the presentation component?

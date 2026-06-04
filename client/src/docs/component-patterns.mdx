@@ -1,0 +1,111 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Style Guide/Component Patterns" />
+
+# Component Patterns
+
+This project uses a clear separation between presentation and orchestration.
+
+## Presentation-first convention
+
+Every component should have a presentation variant:
+
+- `Component.presentation.tsx`: pure rendering and event wiring only
+- container file (for example `Component.tsx`): orchestration, hooks, API calls, and data mapping
+
+Storybook stories should target `Component.presentation.tsx` components wherever possible.
+
+If a presentation component needs state behaviour (for example open/closed state), prefer using `useControlledState` so controlled and uncontrolled patterns are consistent.
+
+## Why this convention exists
+
+- Keeps UI deterministic and easy to test.
+- Makes Storybook stories focused on visual and behavioural states.
+- Reduces coupling between rendering and data-fetching concerns.
+- Encourages small, composable containers and presentation layers.
+
+## Responsibilities
+
+### `Component.presentation.tsx`
+
+- Accepts serialisable props where possible.
+- Renders UI state (loading, success, error, empty).
+- Calls prop callbacks on user interactions.
+- May use `useControlledState` for local state behaviour without introducing orchestration concerns.
+- Does not fetch data.
+- Does not own business rules.
+
+### Container component / feature hook
+
+- Calls query and mutation hooks.
+- Maps domain data to presentation props.
+- Handles navigation and side effects.
+- Handles orchestration logic and retry decisions.
+
+## Hook usage guidance
+
+Use memoisation hooks intentionally, not by default.
+
+### `useCallback`
+
+Use when:
+
+- A callback is passed to memoised children.
+- A callback appears in a dependency array and should be stable.
+
+Avoid when:
+
+- The callback is local and stability provides no practical value.
+
+### `useMemo`
+
+Use when:
+
+- You compute a derived value that is expensive or recreated frequently.
+- Stable identity of a derived object/array matters for child rendering.
+
+Avoid when:
+
+- The value is trivial and memoisation adds complexity.
+
+### `useEventCallback`
+
+Use for event handlers that must keep a stable identity while still reading fresh state.
+
+Typical use:
+
+- MUI event handlers where stale closures can cause subtle bugs.
+- Handlers passed to components that subscribe/unsubscribe by function identity.
+
+### `memo`
+
+Use for presentational components with stable props and measurable re-render pressure.
+
+Guideline:
+
+- Start without `memo`.
+- Add `memo` only when profiling or behaviour indicates unnecessary re-renders.
+
+## Storybook rules
+
+- Create stories for presentation components first.
+- Drive states through args (`loading`, `errorMessage`, `canRetry`, etc.).
+- Keep stories free of API calls and runtime orchestration logic.
+
+## Example file shape
+
+```text
+src/components/ApiErrorSnackbar/
+├── ApiErrorSnackbar.presentation.tsx
+├── ApiErrorSnackbar.tsx
+└── ApiErrorSnackbar.stories.tsx
+```
+
+## Checklist
+
+Before shipping a new component:
+
+1. Is there a `*.presentation.tsx` file?
+2. Does Storybook target the presentation component?
+3. Is data-fetching and orchestration kept out of presentation?
+4. Are callback/memo hooks used intentionally (not automatically)?
