@@ -11,6 +11,11 @@ const preview: Preview = {
   ],
   parameters: {
     a11y: { test: 'error' },
+    options: {
+      storySort: {
+        order: ['Style Guide', '*'],
+      },
+    },
     docs: {
       theme: themes.dark,
     },

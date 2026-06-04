@@ -1,0 +1,82 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Style Guide/Architecture" />
+
+# Frontend Architecture
+
+This guide describes how the client is structured and how responsibilities are split.
+
+The aim is predictable code paths, simpler maintenance, and easier testing.
+
+## Layering
+
+```text
+routes -> features -> hooks -> libs/integrations -> external systems
+```
+
+- `routes/`: route wiring and page composition only.
+- `features/`: feature-specific presentation and orchestration.
+- `hooks/`: reusable app-level behaviour.
+- `libs/`: infrastructure adapters (API, auth, theme, shared wiring).
+- `integrations/`: framework integration setup (for example TanStack Query provider).
+- `components/`: reusable UI building blocks used across features.
+
+## Directory Shape
+
+```text
+src/
+├── components/
+├── constants/
+├── docs/
+├── features/
+├── hooks/
+├── integrations/
+├── libs/
+├── playwright/
+├── routes/
+└── utils/
+```
+
+## Data Flow
+
+Typical read flow:
+
+1. Route renders a feature page.
+2. Feature page calls a feature hook.
+3. Hook uses TanStack Query query hooks.
+4. Query hooks call API functions in `libs/api`.
+5. API adapter performs HTTP call.
+6. Query cache updates and re-renders subscribers.
+
+Typical write flow:
+
+1. User action triggers a mutation from a feature hook.
+2. Mutation calls API adapter.
+3. On success, route navigation or cache updates happen in hook callbacks.
+4. On failure, error is surfaced through local state and global error patterns.
+
+## State Boundaries
+
+- Server state: TanStack Query.
+- UI state: local component state or feature hook state.
+- Auth state: `useSession` hook.
+- Global API error display: API error bus + snackbar presentation.
+
+## Error Handling
+
+- API failures are normalised in hook/presentation boundaries.
+- Global failures are surfaced in a shared snackbar.
+- Feature-specific errors (for example invite expired/revoked) remain local and user-facing.
+
+## Testing Strategy
+
+- Unit tests: utilities and hooks.
+- Component and behaviour checks: Storybook + addon-vitest.
+- Browser flows: Playwright with mock seams for deterministic auth and API scenarios.
+
+## Rules of Thumb
+
+- Keep route files thin.
+- Keep business decisions in hooks or utilities, not in presentational components.
+- Keep API shapes and feature mappings explicit.
+- Prefer small, composable modules over large multi-purpose files.

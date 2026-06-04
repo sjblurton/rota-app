@@ -8,6 +8,7 @@ Monorepo containing the Rota client and server applications.
   - Local: http://localhost:3000/api/v1/docs/
 - [Server README](server/README.md) — Backend setup and API guide
 - [Client README](client/README.md) — Frontend setup guide
+- [Storybook](https://sjblurton.github.io/rota-app/) — UI component library and documentation
 
 ## Getting Started
 
