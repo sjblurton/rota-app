@@ -1,0 +1,98 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Style Guide/ESLint Boundaries" />
+
+# ESLint Boundaries
+
+This project uses `eslint-plugin-boundaries` to enforce architectural dependency rules in the client codebase.
+
+Configuration lives in `client/eslint/boundaries` and is wired into `client/eslint.config.js` via:
+
+- `getElements()` from `elements.mjs`
+- `getDependencies()` from `dependencies.mjs`
+
+## Why we use boundaries
+
+- Prevent architectural drift over time.
+- Keep dependency direction intentional.
+- Make feature ownership and layering explicit.
+- Catch invalid imports in CI before they reach production.
+
+## Where it is configured
+
+- `client/eslint.config.js`
+- `client/eslint/boundaries/constants.mjs`
+- `client/eslint/boundaries/elements.mjs`
+- `client/eslint/boundaries/dependencies*.mjs`
+
+## Element Types
+
+Element types are defined in `constants.mjs` and mapped to file patterns in `ELEMENT_PATTERNS`.
+
+Current types:
+
+- `app`
+- `routes-root`
+- `routes`
+- `home-feature`
+- `features`
+- `components-singleton`
+- `components`
+- `hooks`
+- `integrations`
+- `libs`
+- `playwright`
+- `utils`
+- `constants`
+
+## Dependency Model
+
+Default policy is `disallow`. Each layer must be explicitly allowed by rule.
+
+## Allowed imports by layer
+
+| From layer             | Allowed to import                                                                                           |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------- |
+| `app`                  | `app`, `routes-root`, `routes`, `components`, `hooks`, `integrations`, `libs`                               |
+| `routes-root`          | `routes-root`, `components-singleton`, `integrations`, `playwright`, `home-feature`, `libs`                 |
+| `routes`               | `routes` within same `moduleName`, `features` with same `moduleName`                                        |
+| `home-feature`         | `components`, `hooks`, `integrations`, `libs`, `routes-root`, `home-feature`, `constants`                   |
+| `features`             | same-feature `features` (`moduleName`), `components`, `hooks`, `integrations`, `libs`, `utils`, `constants` |
+| `components-singleton` | `components-singleton`, `components`, `hooks`, `integrations`, `libs`                                       |
+| `components`           | `components`, `hooks`, `integrations`, `libs`, `utils`, `constants`                                         |
+| `hooks`                | `hooks`, `integrations`, `libs`                                                                             |
+| `integrations`         | `integrations`, `libs`                                                                                      |
+| `libs`                 | `libs`                                                                                                      |
+| `utils`                | `utils`                                                                                                     |
+| `playwright`           | `playwright`                                                                                                |
+
+## Special constraints
+
+- `routes` and `features` use captured `moduleName` to prevent cross-feature coupling.
+- `playwright` is isolated from app/runtime code.
+- `libs` and `utils` are intentionally narrow to avoid becoming dependency sinks.
+- `components-singleton` exists for global singleton UI concerns (for example global error snackbar).
+
+## How to add a new layer
+
+1. Add an element type in `constants.mjs`.
+2. Add a file pattern in `ELEMENT_PATTERNS`.
+3. Register it in `elements.mjs`.
+4. Add a dependency rule in a `dependencies-*.mjs` file.
+5. Include that rule in `dependencies.mjs`.
+6. Run `npm run lint` from `client` and verify expected violations.
+
+## How to change import permissions safely
+
+1. Update only the layer-specific `dependencies-*.mjs` file.
+2. Keep changes minimal and explicit.
+3. Prefer discussing boundary relaxations before merging.
+4. Validate with lint and tests, then document the intent.
+
+## Practical examples
+
+- If a `hook` imports from `components`, lint fails.
+- If a route in one module imports a feature from another module, lint fails.
+- If a Playwright test imports from app layers, lint fails.
+
+These rules are intentional: they preserve boundaries and keep the architecture maintainable.
