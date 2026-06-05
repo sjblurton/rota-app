@@ -7,7 +7,7 @@ const meta = {
   component: DashboardStatCard,
   decorators: [
     (Story) => (
-      <div style={{ width: 'fit-content' }}>
+      <div style={{ width: 'fit-content', minWidth: '300px' }}>
         <Story />
       </div>
     ),
