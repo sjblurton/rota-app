@@ -129,7 +129,7 @@ export const SmsUsage: Story = {
 export const RotaStaffResponses: Story = {
   args: {
     title: 'Rota Staff Responses',
-    primaryValue: '20 / 25 responded',
+    primaryValue: '20 / 25 Responded',
     progress: 80,
   },
   play: async ({ canvasElement }) => {
